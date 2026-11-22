@@ -3,7 +3,10 @@
 Each entry says what changes for a repository that takes the release, in plain words. The release page shows
 the entry of its version.
 
-## v0.1.0
+Changes merged since the last release go under "Unreleased". The release pull request renames that heading to
+the new version and raises `package.json` to match; merging it starts the release.
+
+## Unreleased
 
 The first release. A repository that takes it gains:
 

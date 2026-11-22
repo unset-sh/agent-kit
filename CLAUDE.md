@@ -49,9 +49,11 @@ Other repositories load a copy of these. Here they are the source, so they are i
 - **`sync.mjs` uses Node built-ins only** and reads as an ordered sequence of checks. Every refusal has a test
   that shows it refusing. Changing where it may write, what it accepts or where it downloads from is a
   security decision: stop and ask.
-- **A change that alters what a repository's assistant does** gets an entry in `CHANGELOG.md` under the next
-  version, and `package.json` carries that version. Releases follow `skills/org-release/SKILL.md`, and a
-  separate thread reviews the full diff since the last release before the tag.
+- **A change that alters what a repository's assistant does** gets an entry in `CHANGELOG.md` under
+  "Unreleased". A release is one pull request that renames that heading to the new version and raises
+  `package.json` to match; merging it starts the release, and Alex's one step is Approve
+  (`skills/org-release/SKILL.md`). A separate thread reviews the full diff since the last release before that
+  pull request is merged.
 - Node 26 (`.nvmrc`), no dependencies, `node:test` only. Actions are pinned by full commit SHA.
 
 ## Commands
