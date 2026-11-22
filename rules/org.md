@@ -5,8 +5,12 @@ them there, never in this copy. A repository's own `CLAUDE.md` adds its own rule
 
 ## Licence
 
-- Everything written for unset.sh is AGPL-3.0-only. Work we use from others keeps its own licence.
-- The only exceptions are the ones a repository's `CLAUDE.md` names.
+- Licence is set per repository, and the owner sets it. Product repositories are AGPL-3.0-only and take no
+  outside code for now.
+- Work made to be copied stays permissive: the recipes in `profile-recipes` are CC0-1.0 and the lexicon schemas
+  are MIT. Those two take outside work with a DCO sign-off only.
+- There is no contributor licence agreement. Do not propose one, or any other signing step.
+- Where the owner has not set a licence, say so and ask. Work we use from others keeps its own licence.
 - Never change the licence of anything already published without the owner's decision.
 - The copyright line is `Copyright (c) 2026 Alex (Undefined6799)`.
 
@@ -20,9 +24,9 @@ them there, never in this copy. A repository's own `CLAUDE.md` adds its own rule
 - One job per repository. The map of every repository is
   <https://github.com/unset-sh/.github/blob/main/MAP.md>. Read it before moving work between repositories or
   starting work that might belong elsewhere.
-- Repositories meet only through pinned versions: a package at an exact version, a release asset, or a full
-  commit while no release exists. A copy of another repository's files is allowed only when it is pinned and a
-  check proves it still matches.
+- What one repository takes from another comes at a pinned version: a package at an exact version, a release
+  asset, or a full commit while no release exists. A copy is allowed only when it is pinned and a check proves
+  it still matches. The pushes the map records (docs into `unset-sh/docs`, the lexicon mirror) are exceptions.
 - Never create, rename, archive or change the visibility of an organisation repository without the owner's
   approval for that repository.
 - When a change adds, removes or moves a responsibility, or changes what a repository uses or ships, update
@@ -32,8 +36,8 @@ them there, never in this copy. A repository's own `CLAUDE.md` adds its own rule
 
 ## Decisions
 
-- Organisation decisions go in the organisation's own decision records, which the map points to. Never add or
-  edit an ADR in the app repository for organisation work.
+- Organisation decisions go in the organisation's own decision records, never in the app repository's ADRs.
+  Until those records have a home, ask the owner where a decision goes.
 - An accepted decision record is never edited, only superseded by a new one.
 
 ## Releases
@@ -47,4 +51,4 @@ them there, never in this copy. A repository's own `CLAUDE.md` adds its own rule
 
 - Assistants never create, read, copy, place or rotate a deploy key, a private key or a token that can write.
   The owner does that by hand. A read-only token used only to pull packages is fine.
-- Secrets and personal data never appear in code, logs, commits, pull requests or chat.
+- Secrets and users' personal data never appear in code, logs, commits, pull requests or chat.

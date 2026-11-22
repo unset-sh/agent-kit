@@ -11,13 +11,13 @@ The guiding rule: choose the simplest design that keeps responsibilities clear a
 
 - Model the application's concepts first. External technology sits behind small contracts, in adapters.
 - Define the smallest contract the application needs. Do not mirror an external API.
-- Dependencies point toward stable application concepts, never toward implementation details.
+- Dependencies point toward stable application concepts rather than toward implementation details.
 - Wire known dependencies in a composition root. Use a registry or a plugin only when something truly is dynamic.
 - No layer, abstraction or file without a responsibility that needs it now. Clarity comes before reuse: extract
   a shared concept only once the pattern is stable and changes for the same reason.
 - Spend design effort where a decision is expensive to reverse; keep cheap decisions simple.
-- A failure in one external provider must not take down unrelated parts.
-- Names say what something is responsible for. Never `Helper`, `Manager`, `Utils` or `Wrapper`.
+- A failure in one external provider should not take down unrelated parts.
+- Names say what something is responsible for, not which technology it uses, except at the boundary.
 - Principles are tools for reasoning, not laws. When following one adds complexity without solving a real
   problem, prefer the simpler design.
 
