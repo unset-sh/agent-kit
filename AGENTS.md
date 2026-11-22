@@ -9,6 +9,7 @@ this file:
 
 - [Organisation rules](rules/org.md): repository ownership and where AI working material belongs.
 - [Brand requests](skills/org-brand-request/SKILL.md): request missing shared tokens or assets and fulfil a request.
+- [Map maintenance](skills/org-map-maintenance/SKILL.md): generate, refresh and review repository or workflow maps.
 - [Organisation decisions](skills/org-decisions/SKILL.md): accepted decisions and their history.
 - [Kit updates](skills/org-kit-update/SKILL.md): distribute a reviewed release to a consuming repository.
 

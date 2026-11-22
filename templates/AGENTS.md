@@ -13,6 +13,7 @@ Use these installed files as signposts rather than duplicating their instruction
 
 - [Organisation rules](.claude/rules/org/org.md): ownership and where AI working material belongs.
 - [Brand requests](.claude/skills/org-brand-request/SKILL.md): missing shared tokens or assets and provider handoffs.
+- [Map maintenance](.claude/skills/org-map-maintenance/SKILL.md): automatic map refresh and source review.
 - [Organisation decisions](.claude/skills/org-decisions/SKILL.md): accepted decisions and their history.
 - [Kit updates](.claude/skills/org-kit-update/SKILL.md): take the approved release containing a missing procedure.
 

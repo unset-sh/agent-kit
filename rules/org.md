@@ -17,12 +17,12 @@ them there, never in this copy. A repository's own `CLAUDE.md` adds its own rule
 
 ## Repositories
 
-- One job per repository. The map of every repository is
-  <https://github.com/unset-sh/.github/blob/main/MAP.md>. Read it before moving work between repositories or
-  starting work that might belong elsewhere.
-- Repositories meet only through pinned versions: a package at an exact version, a release asset, or a full
-  commit while no release exists. A copy of another repository's files is allowed only when it is pinned and a
-  check proves it still matches.
+- One job per repository. Read <https://github.com/unset-sh/.github/blob/main/MAP.md>
+  before moving work between repositories or starting work that might belong elsewhere.
+- Repositories meet only through exact package versions, pinned release assets, or full commits while no release exists.
+  Copies of another repository's files require a pin and a check proving they still match.
+- Generate maps from authoritative sources and refresh them automatically through shared tooling. Follow
+  `org-map-maintenance` for registration, source evidence, freshness, failure handling and meaning review.
 - For missing shared design tokens or brand assets, follow `org-brand-request`: open or update a concrete
   request in `unset-sh/brand` issues. The requester/provider handoff instructions live in agent-kit.
 - Never create, rename, archive or change the visibility of an organisation repository without the owner's
