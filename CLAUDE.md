@@ -6,11 +6,12 @@ This is `unset-sh/agent-kit`: the rules, skills and templates every unset.sh rep
 released as one version and copied into each repository.
 
 - **Belongs here:** the organisation's rules, the engineering principles, skills and subagents for jobs that
-  repeat across repositories, the `CLAUDE.md` and `AGENTS.md` templates, the text of the Claude project
-  instructions, and `sync.mjs`, which installs a release in a repository and checks the copy.
+  repeat across repositories, the organisation's decision records in `skills/org-decisions/records/`, the
+  `CLAUDE.md` and `AGENTS.md` templates, the text of the Claude project instructions, and `sync.mjs`, which
+  installs a release in a repository and checks the copy.
 - **Does not belong here:** a repository's own rules (its `CLAUDE.md`); the map of repositories (that is
-  `unset-sh/.github`); decision records (the organisation's decision set); CI workflows other repositories
-  run; anything written for members' assistants (that is `unset-sh/profile-recipes`).
+  `unset-sh/.github`); a repository's own decision records; organisation workflow implementations (also
+  `unset-sh/.github`, org-0004); anything written for members' assistants (that is `unset-sh/profile-recipes`).
 - **Uses:** nothing. **Used by:** every organisation repository, as a committed copy under `.claude/` pinned by
   `.claude/agent-kit/lock.json`.
 - **Licence:** follows the organisation rule.

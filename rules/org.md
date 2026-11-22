@@ -32,8 +32,8 @@ them there, never in this copy. A repository's own `CLAUDE.md` adds its own rule
 
 ## Decisions
 
-- Organisation decisions go in the organisation's own decision records, which the map points to. Never add or
-  edit an ADR in the app repository for organisation work.
+- Organisation decisions live in agent-kit, in the skill `org-decisions`; read it before changing an
+  organisation-wide decision. Never add or edit an ADR in the app repository for organisation work.
 - An accepted decision record is never edited, only superseded by a new one.
 
 ## Releases

@@ -10,12 +10,17 @@ whatever repository they are in, and gets it to them in a way that cannot drift 
 | Folder | What it holds | In a repository it becomes |
 | --- | --- | --- |
 | [`rules/`](rules/) | The organisation's rules, how to work, and the engineering principles in short. Loaded at the start of every session, so kept to 150 lines in total | `.claude/rules/org/` |
-| [`skills/`](skills/) | Procedures for jobs that repeat across repositories, read only when the job comes up | `.claude/skills/org-*/` |
+| [`skills/`](skills/) | Procedures for jobs that repeat across repositories and organisation decision records, read when needed | `.claude/skills/org-*/` |
 | [`sync.mjs`](sync.mjs) | Installs a release in a repository and checks the copy. Node built-ins only | `.claude/agent-kit/sync.mjs` |
 | [`templates/`](templates/) | The `CLAUDE.md` and `AGENTS.md` a new repository starts from | Copied once, then owned by the repository |
 | [`projects/`](projects/) | The text of the instructions for Claude projects | Pasted into a project's settings by hand |
 
 What belongs here and what does not is in [`CLAUDE.md`](CLAUDE.md).
+
+The [organisation decisions](skills/org-decisions/SKILL.md) record settled choices and their history. The
+current workflow ownership is [org-0004](skills/org-decisions/records/org-0004-workflows-live-in-github.md):
+implementations belong in `unset-sh/.github`, with category sources and generated GitHub entry points.
+This kit records that decision; consumer workflow adoption and signer verification change separately.
 
 ## How a repository uses it
 
