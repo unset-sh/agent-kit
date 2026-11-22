@@ -21,13 +21,13 @@ and deployment. This ledger is task evidence; `.github/repos.json` remains the o
 
 | Work | State | Evidence / remaining work |
 | --- | --- | --- |
-| Agent-kit decision and chat record | Prepared for a local DCO-signed commit on `claude/org-architecture` | Based on freshly fetched `origin/main` at `ca8a1f6`; publication and PR creation pending |
+| Agent-kit decision and chat record | [PR #11](https://github.com/unset-sh/agent-kit/pull/11) open, unmerged | Initial published head `3447b767a55f22fd600ee7d1d3c8c12b89b54d98` on `claude/org-architecture`, based on `origin/main` at `ca8a1f6` |
 | Research preservation | Eight documents copied without modification | `artifacts/org-architecture/snapshot.json` records bytes and hashes |
 | Organisation catalog changes | [PR #11](https://github.com/unset-sh/.github/pull/11) open, unmerged | Reviewed head `deaca1d`; replaces obsolete proposals and records the three active foundations |
 | [Backend](https://github.com/unset-sh/backend) repository | Created publicly; [foundation PR #1](https://github.com/unset-sh/backend/pull/1) open, unmerged | Repository ID `1467866773`; PR head `ac0d7de`; initial main has README/AGPL, no running backend |
 | [Web](https://github.com/unset-sh/web) repository | Created publicly; [foundation PR #1](https://github.com/unset-sh/web/pull/1) open, unmerged | Repository ID `1467866856`; PR head `f2f785a`; initial main has README/AGPL, no migrated web app |
 | [Deployment](https://github.com/unset-sh/deployment) repository | Created publicly; [foundation PR #1](https://github.com/unset-sh/deployment/pull/1) open, unmerged | Repository ID `1467866959`; PR head `8610876`; initial main has README/AGPL, no live rollout |
-| Cursor-requested review handoff | Codex handoff chat created for read-only review of the four PRs | Chat `01a20493-42ea-7140-a6b3-5d7b805295e4`; no launched Cursor agent verified |
+| Cursor-requested review handoff | Codex handoff chat covers read-only review of all five PRs, including agent-kit | Chat `01a20493-42ea-7140-a6b3-5d7b805295e4`; no launched Cursor agent verified |
 | Agent-kit release | Not published by this task | Pending version prepared only; owner approval and release review still required |
 | Consumer kit adoption | Not performed by this task | Installed copies need a later pinned release/update |
 | Complete app migration, protocol cutover and production rollout | Not implemented by this documentation change | Follow the staged plan with actual contracts and deployment evidence |
@@ -55,9 +55,10 @@ working flow until that migration is reviewed. A successful source check does no
   passed for tracked changes. The existing bundle tests passed, including exclusion of task working material.
 - The coordinating task reports all 22 map tests passing and a fresh live comparison with zero findings
   across 13 repositories. This is catalog/foundation evidence, not product-runtime or delivery verification.
-- This agent-kit change is prepared for a DCO-signed local commit. It has not been pushed or opened as a PR
-  at this checkpoint; no release, consumer installation or production action is part of this documentation
-  change. The four other repository PRs above were opened by the coordinating task.
+- The DCO-signed agent-kit commit was pushed and opened as PR #11 at the initial head recorded above.
+  All five PRs remain open and unmerged at this checkpoint. No release, consumer installation or production
+  action is part of this documentation change. This ledger-only correction received a diff check; the
+  broader test and artifact evidence above is preserved without rerunning those checks.
 
 The older artifact audit is dated history. In particular, earlier pending `.github` tooling placement and
 draft schema snapshots must not be reused as current status without reinspection. No failing application
