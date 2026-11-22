@@ -18,6 +18,7 @@ for organisation work.
 | [org-0002](records/org-0002-docs-site-shows-only-organisation-docs.md) | docs.unset.sh shows only docs from `unset-sh` repositories; the current site stays up until replaced |
 | [org-0003](records/org-0003-shared-workflows-live-in-workflows.md) | Superseded by org-0004; originally placed shared workflows in `unset-sh/workflows` |
 | [org-0004](records/org-0004-workflows-live-in-github.md) | Organisation workflows live in `unset-sh/.github`, with category sources and generated GitHub entry points |
+| [org-0005](records/org-0005-ai-working-material-lives-in-agent-kit.md) | AI working notes and artifacts live in agent-kit, grouped by task and excluded from the kit |
 
 ## Before you decide something
 

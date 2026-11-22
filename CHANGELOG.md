@@ -12,6 +12,10 @@ Combine this entry with the other pending changes and choose the version when pr
   move to `unset-sh/.github`, grouped by purpose with committed generated GitHub entry points.
 - Point current ownership and the organisation rule to those records. This change does not migrate
   callers, change release verification, publish a kit release or retire the old repository.
+- Add org-0005: keep AI plans, notes and review reports in agent-kit under `notes/<task>/`, and supporting
+  artifacts under `artifacts/<task>/`, outside the distributed kit. Maintained human docs belong in the
+  owning repository's `docs/`, follow `org-documentation`, and export to `unset-sh/docs` for publication.
+  Historical files are not moved or deleted by this rule alone.
 
 ## v0.1.0
 

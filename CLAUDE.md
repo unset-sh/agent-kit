@@ -8,10 +8,13 @@ released as one version and copied into each repository.
 - **Belongs here:** the organisation's rules, the engineering principles, skills and subagents for jobs that
   repeat across repositories, the organisation's decision records in `skills/org-decisions/records/`, the
   `CLAUDE.md` and `AGENTS.md` templates, the text of the Claude project instructions, and `sync.mjs`, which
-  installs a release in a repository and checks the copy.
+  installs a release in a repository and checks the copy; AI working notes in `notes/<task>/` and supporting
+  artifacts in `artifacts/<task>/` (org-0005), kept here but excluded from the distributed kit.
 - **Does not belong here:** a repository's own rules (its `CLAUDE.md`); the map of repositories (that is
   `unset-sh/.github`); a repository's own decision records; organisation workflow implementations (also
-  `unset-sh/.github`, org-0004); anything written for members' assistants (that is `unset-sh/profile-recipes`).
+  `unset-sh/.github`, org-0004); another repository's maintained human documentation (its own `docs/`,
+  following `org-documentation`, exported to `unset-sh/docs`); anything written for members' assistants
+  (that is `unset-sh/profile-recipes`).
 - **Uses:** nothing. **Used by:** every organisation repository, as a committed copy under `.claude/` pinned by
   `.claude/agent-kit/lock.json`.
 - **Licence:** follows the organisation rule.
@@ -33,8 +36,10 @@ Other repositories load a copy of these. Here they are the source, so they are i
 
 ## Rules
 
-- **The test for what goes in:** would an assistant working in any organisation repository need it, whatever
-  that repository is? If only one repository needs it, it stays in that repository.
+- **The test for what ships:** would an assistant working in any organisation repository need it, whatever
+  that repository is? Task-specific AI notes and artifacts stay here under `notes/` and `artifacts/`, outside
+  the bundle. Product-specific rules and maintained human documentation stay in the repository that owns
+  the product; human docs follow `org-documentation` and its publication/export mechanism.
 - **What ships is text a person can review in a diff.** Only `.md` files under `rules/`, `skills/` and
   `agents/`, plus `sync.mjs`. No hooks, no MCP server definitions, no settings files, no scripts inside skills,
   no skill line that runs a shell command, and no front matter that grants tools or changes the model. The
@@ -44,7 +49,7 @@ Other repositories load a copy of these. Here they are the source, so they are i
   a budget of 150 lines. A new rule has to earn its lines; anything longer belongs in a skill.
 - **A rule states something Alex decided.** When you add or reword one from your own judgment, say so in the
   pull request so he can strike it. Write what to do and why, in plain words.
-- **Nothing here may depend on one repository.** No step ids, folder names or tools that only one repository has.
+- **Nothing shipped may depend on one repository.** No step ids, folder names or tools that only one repository has.
 - **Everything shipped carries an `org` name** (`skills/org-*`, `agents/org-*`), so a repository's own files
   never clash with the kit's.
 - **`sync.mjs` uses Node built-ins only** and reads as an ordered sequence of checks. Every refusal has a test
