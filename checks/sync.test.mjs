@@ -380,3 +380,44 @@ test("the command refuses arguments it does not understand", async () => {
 test("a release is downloaded from this repository's release page and nowhere else", () => {
   assert.equal(releaseUrl("1.2.3"), "https://github.com/unset-sh/agent-kit/releases/download/v1.2.3/agent-kit.json");
 });
+
+test("a download that fails, is refused, breaks off or is too large is a plain refusal", async (t) => {
+  // fetch is the one unmanaged dependency here: replaced for this test only, and put back after it.
+  const realFetch = globalThis.fetch;
+  t.after(() => {
+    globalThis.fetch = realFetch;
+  });
+  const answer = (response) => {
+    globalThis.fetch = async (url) => {
+      assert.equal(url, releaseUrl("1.2.3"));
+      if (response instanceof Error) throw response;
+      return response;
+    };
+  };
+  const root = repository(t);
+  const run = () => main(["1.2.3", "--root", root], () => {});
+  answer(new TypeError("fetch failed"));
+  await assert.rejects(run(), /could not download .*fetch failed.*--from/);
+  answer(new Response("missing", { status: 404 }));
+  await assert.rejects(run(), /answered 404/);
+  const broken = new ReadableStream({
+    start(controller) {
+      controller.enqueue(new TextEncoder().encode("{"));
+      controller.error(new Error("connection reset"));
+    },
+  });
+  answer(new Response(broken, { status: 200 }));
+  await assert.rejects(run(), /broke off \(connection reset\)/);
+  answer(new Response(Buffer.alloc(8 * 1024 * 1024 + 1), { status: 200 }));
+  await assert.rejects(run(), /larger than the kit allows/);
+  answer(new Response(bundleText(), { status: 200 }));
+  assert.equal(await run(), 0);
+  assert.deepEqual(check(root), { version: "1.2.3", problems: [] });
+});
+
+test("a local bundle that is too large is refused before it is read as JSON", async (t) => {
+  const root = repository(t);
+  const from = join(root, "agent-kit.json");
+  writeFileSync(from, Buffer.alloc(8 * 1024 * 1024 + 1, 0x20));
+  await assert.rejects(main(["1.2.3", "--from", from, "--root", root], () => {}), /larger than the kit allows/);
+});
