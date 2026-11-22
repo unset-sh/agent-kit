@@ -57,5 +57,5 @@ their line endings (for example with `core.autocrlf` on Windows; a `.gitattribut
 ## When the check fails
 
 `sync.mjs --check` names each problem: a changed file, a missing file, or a file under the kit's names that
-the lock does not list. Restore the copy by running step 2 with the version already in `lock.json`. A new
+the lock does not list. Restore the copy by running steps 2 to 4 with the version already in `lock.json`. A new
 rule or skill of the repository's own must not use an `org` name or live under `.claude/rules/org/`.

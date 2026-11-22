@@ -30,11 +30,14 @@ that are always loaded. (Claude Code documentation, read 2026-11-21:
 [what project threads pick up](https://code.claude.com/docs/en/claude-projects#what-threads-pick-up-from-your-repositories),
 [plugin reference](https://code.claude.com/docs/en/plugins-reference).)
 
-**Adopt it** (once per repository), with `sync.mjs` downloaded from a
-[release](https://github.com/unset-sh/agent-kit/releases) into a temporary folder:
+**Adopt it** (once per repository): download `sync.mjs` and `agent-kit.json` from a
+[release](https://github.com/unset-sh/agent-kit/releases) into a folder outside the repository, verify both
+against the release workflow on `main`, then install from the file:
 
 ```sh
-node /path/to/downloaded/sync.mjs 0.1.0
+gh attestation verify agent-kit.json --repo unset-sh/agent-kit \
+  --signer-workflow unset-sh/agent-kit/.github/workflows/release.yml --source-ref refs/heads/main
+node /path/to/downloaded/sync.mjs 0.1.0 --from /path/to/downloaded/agent-kit.json
 ```
 
 **Check the copy** in the repository's CI. It needs no network and fails when a kit file was edited by hand,
@@ -46,14 +49,15 @@ needs a check outside the repository that compares each copy with the published 
 node .claude/agent-kit/sync.mjs --check
 ```
 
-**Take a newer release** on a branch, then open a pull request. It is reviewed and merged like code:
+**Take a newer release** on a branch, then open a pull request. It is reviewed and merged like code. Download
+and verify `agent-kit.json` the same way first, then:
 
 ```sh
-node .claude/agent-kit/sync.mjs 0.2.0
+node .claude/agent-kit/sync.mjs 0.2.0 --from /path/to/downloaded/agent-kit.json
 ```
 
-If the download is blocked, fetch `agent-kit.json` from the release page another way and add
-`--from <path to agent-kit.json>`.
+Without `--from`, `sync.mjs` downloads the bundle itself, unverified; the skill `org-kit-update` does not do
+that. The full steps are in that skill.
 
 To change a rule or a skill, change it here. The copy in a repository is never edited.
 
