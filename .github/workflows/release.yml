@@ -191,3 +191,16 @@ jobs:
         run: |
           gh release create "v$VERSION" dist/agent-kit.json dist/sync.mjs \
             --target "$GITHUB_SHA" --title "v$VERSION" --notes-file dist/notes.md
+      - name: The published tag points at this commit
+        env:
+          GH_TOKEN: ${{ github.token }}
+          GH_REPO: ${{ github.repository }}
+          VERSION: ${{ needs.plan.outputs.version }}
+        run: |
+          # A tag pushed in the seconds between the check above and the create would be reused by gh. The release
+          # cannot be taken back once published, but the run fails loudly so the owner knows not to announce it.
+          tagged="$(gh api "repos/$GH_REPO/commits/v$VERSION" --jq .sha)"
+          if [ "$tagged" != "$GITHUB_SHA" ]; then
+            echo "v$VERSION points at $tagged, not $GITHUB_SHA. Do not use this release; tell the owner."
+            exit 1
+          fi

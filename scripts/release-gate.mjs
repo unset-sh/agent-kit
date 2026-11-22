@@ -14,7 +14,7 @@
 //
 // "Allow administrators to bypass configured protection rules" is on by default. Neither REST page lists a
 // field for it, but the environment response carries `can_admins_bypass` (read by google/go-github `master`,
-// github/environments.go, as the re-check of 2026-11-22 found). The gate requires it to be false, and fails
+// github/repos_environments.go, as the re-check of 2026-11-22 found). The gate requires it to be false, and fails
 // closed when GitHub does not say.
 
 import { readFileSync, realpathSync } from "node:fs";
