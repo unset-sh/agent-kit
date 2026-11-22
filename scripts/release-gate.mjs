@@ -12,8 +12,10 @@
 // https://docs.github.com/en/rest/deployments/branch-policies ("List deployment branch policies"), read
 // 2026-11-22. Unverified against a live response until the first release run.
 //
-// Not checked here: "Allow administrators to bypass configured protection rules", on by default, which the
-// owner must turn off. Neither REST page lists a field for it, so the org-release skill asks for it instead.
+// "Allow administrators to bypass configured protection rules" is on by default. Neither REST page lists a
+// field for it, but the environment response carries `can_admins_bypass` (read by google/go-github `master`,
+// github/environments.go, as the re-check of 2026-11-22 found). The gate requires it to be false, and fails
+// closed when GitHub does not say.
 
 import { readFileSync, realpathSync } from "node:fs";
 import { fileURLToPath } from "node:url";
@@ -34,6 +36,9 @@ export function gateProblems(environment, branchPolicies) {
   if (!onlyOwner) problems.push(`the required reviewer must be ${OWNER}, and no one else`);
   if (reviewRules.some((rule) => rule.prevent_self_review === true)) {
     problems.push(`"Prevent self-review" is on, so ${OWNER} could not approve a run that the owner's own merge started`);
+  }
+  if (environment?.can_admins_bypass !== false) {
+    problems.push('"Allow administrators to bypass configured protection rules" must be off (or GitHub did not say)');
   }
   const policy = environment?.deployment_branch_policy;
   const names = Array.isArray(branchPolicies?.branch_policies) ? branchPolicies.branch_policies : [];

@@ -16,6 +16,7 @@ function environment(overrides = {}, reviewRule = {}) {
       },
     ],
     deployment_branch_policy: { protected_branches: false, custom_branch_policies: true },
+    can_admins_bypass: false,
     ...overrides,
   };
 }
@@ -29,7 +30,7 @@ test("an environment where only the owner approves, only from main, passes", () 
 
 test("an environment GitHub created on its own, with no protection, is refused", () => {
   const bare = { name: "release", protection_rules: [], deployment_branch_policy: null };
-  assert.equal(gateProblems(bare, {}).length, 2);
+  assert.equal(gateProblems(bare, {}).length, 3);
 });
 
 test("a reviewer other than the owner, or one beside the owner, is refused", () => {
@@ -48,6 +49,12 @@ test("a reviewer other than the owner, or one beside the owner, is refused", () 
 
 test("self-review turned off is refused, because the owner's merge starts the run", () => {
   assert.match(gateProblems(environment({}, { prevent_self_review: true }), mainOnly).join("\n"), /Prevent self-review/);
+});
+
+test("an administrator bypass that is on, or not reported, is refused", () => {
+  for (const can_admins_bypass of [true, undefined, "false"]) {
+    assert.match(gateProblems(environment({ can_admins_bypass }), mainOnly).join("\n"), /bypass/, String(can_admins_bypass));
+  }
 });
 
 test("deployment from any branch or tag other than main is refused", () => {

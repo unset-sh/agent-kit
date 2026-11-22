@@ -20,6 +20,8 @@ const root = new URL("../", import.meta.url);
  * could change after review, and sync.mjs never writes one.
  */
 export function shippedPaths(base = root) {
+  const script = lstatSync(new URL("sync.mjs", base), { throwIfNoEntry: false });
+  if (script === undefined || !script.isFile()) throw new Error("sync.mjs must be a regular file, not a link");
   const paths = ["sync.mjs"];
   for (const folder of SHIPPED_FOLDERS) {
     const url = new URL(`${folder}/`, base);

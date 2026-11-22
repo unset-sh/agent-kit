@@ -19,9 +19,9 @@ pushed tag, tell the owner and propose moving it to this pattern before its next
 1. Check that the repository has a `release` environment where the owner is the only required reviewer,
    "Prevent self-review" is off (the owner's merge starts the run), "Allow administrators to bypass
    configured protection rules" is off (assistants act through the owner's account, an administrator's), and
-   deployment is limited to the one branch `main`. If it does not, stop and ask the owner to set it up.
-   Assistants do not create or change it. The release workflow checks all of this except the bypass setting,
-   which GitHub's REST API does not show.
+   deployment is limited to the one branch `main`. Release immutability (Settings, Releases) must be on, so a
+   published release's tag and files cannot change. If any of this is missing, stop and ask the owner to set
+   it up. Assistants do not create or change it. The release workflow checks the environment before it builds.
 2. Decide the version. Major: something consumers rely on changed meaning or was removed. Minor: something
    was added. Patch: a fix with no change for consumers.
 3. In one pull request, raise the version in the repository's manifest and give the changelog entry that
@@ -38,9 +38,11 @@ pushed tag, tell the owner and propose moving it to this pattern before its next
 
 ## After approval
 
-7. Check that the release page holds the artefact and that its attestation verifies
-   (`gh attestation verify <file> --repo <owner>/<repo>`). Until a first release has proved these steps in a
-   repository, say they are unverified.
+7. Check that the release page holds the artefact and that its attestation names the release workflow on
+   `main`: `gh attestation verify <file> --repo <owner>/<repo> --signer-workflow
+   <owner>/<repo>/.github/workflows/release.yml --source-ref refs/heads/main`. `--repo` alone accepts any
+   workflow of the repository on any branch, and a workflow on a pushed branch can publish without the
+   environment. Until a first release has proved these steps in a repository, say they are unverified.
 8. Consumers take the release by an exact version, each in its own pull request.
 
 ## Never

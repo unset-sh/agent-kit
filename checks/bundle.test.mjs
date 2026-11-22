@@ -60,4 +60,8 @@ test("the bundle refuses a symbolic link in a shipped folder", (t) => {
   rmSync(join(base, "rules"), { recursive: true });
   symlinkSync(base, join(base, "rules"));
   assert.throws(() => shippedPaths(pathToFileURL(`${base}/`)), /rules must be a folder/);
+  rmSync(join(base, "rules"));
+  rmSync(join(base, "sync.mjs"));
+  symlinkSync(join(base, "outside.md"), join(base, "sync.mjs"));
+  assert.throws(() => shippedPaths(pathToFileURL(`${base}/`)), /sync\.mjs must be a regular file/);
 });
