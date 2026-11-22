@@ -17,9 +17,11 @@ pushed tag, tell the owner and propose moving it to this pattern before its next
 ## Before the merge
 
 1. Check that the repository has a `release` environment where the owner is the only required reviewer,
-   "Prevent self-review" is off (the owner's merge starts the run), and deployment is limited to the one
-   branch `main`. If it does not, stop and ask the owner to set it up. Assistants do not create or change it.
-   The release workflow checks the same before it builds anything.
+   "Prevent self-review" is off (the owner's merge starts the run), "Allow administrators to bypass
+   configured protection rules" is off (assistants act through the owner's account, an administrator's), and
+   deployment is limited to the one branch `main`. If it does not, stop and ask the owner to set it up.
+   Assistants do not create or change it. The release workflow checks all of this except the bypass setting,
+   which GitHub's REST API does not show.
 2. Decide the version. Major: something consumers rely on changed meaning or was removed. Minor: something
    was added. Patch: a fix with no change for consumers.
 3. In one pull request, raise the version in the repository's manifest and give the changelog entry that

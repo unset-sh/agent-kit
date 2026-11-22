@@ -11,6 +11,9 @@
 // Field names from https://docs.github.com/en/rest/deployments/environments ("Get an environment") and
 // https://docs.github.com/en/rest/deployments/branch-policies ("List deployment branch policies"), read
 // 2026-11-22. Unverified against a live response until the first release run.
+//
+// Not checked here: "Allow administrators to bypass configured protection rules", on by default, which the
+// owner must turn off. Neither REST page lists a field for it, so the org-release skill asks for it instead.
 
 import { readFileSync, realpathSync } from "node:fs";
 import { fileURLToPath } from "node:url";
