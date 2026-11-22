@@ -1,6 +1,6 @@
 # org-0004. Organisation workflows live in unset-sh/.github
 
-Status: accepted (2026-11-22, Alex: "yes but its makes sense that workflows live in the .github", then
+Status: superseded by org-0006; originally accepted (2026-11-22, Alex: "yes but its makes sense that workflows live in the .github", then
 "WHY DONT WE USE a folder layout similar to this inside .github?", referring to actions/starter-workflows;
 after the category-source and generated-entry-point layout was explained, "yes ok well lets build this
 then, we are going to get rid of the workflows repo")

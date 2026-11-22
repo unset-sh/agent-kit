@@ -7,11 +7,14 @@ the entry of its version.
 
 Combine this entry with the other pending changes and choose the version when preparing the release.
 
-- Add the `org-decisions` skill and preserve accepted records org-0001 to org-0003 from the pending
-  decision-record work. Mark org-0003 superseded and add org-0004: organisation workflow implementations
-  move to `unset-sh/.github`, grouped by purpose with committed generated GitHub entry points.
-- Point current ownership and the organisation rule to those records. This change does not migrate
-  callers, change release verification, publish a kit release or retire the old repository.
+- Add the `org-decisions` skill and preserve the accepted history in org-0001 to org-0004. Org-0003's
+  separate workflows repository was superseded by org-0004's `.github` ownership; org-0006 now supersedes
+  that implementation placement with the public `unset-sh/tooling` repository.
+- Point current ownership to org-0006: shared CI, release and deployment implementations, helpers and
+  tests live in tooling. `.github` retains organisation metadata, community defaults, workflow-picker
+  templates and local metadata checks. Consumers keep small callers, build/test logic and reviewed pins.
+  This kit change does not migrate callers, change signer verification, enable automatic adoption or
+  publish a release. Existing owner release approvals remain required.
 - Add org-0005: keep AI plans, notes and review reports in agent-kit under `notes/<task>/`, and supporting
   artifacts under `artifacts/<task>/`, outside the distributed kit. Maintained human docs belong in the
   owning repository's `docs/`, follow `org-documentation`, and export to `unset-sh/docs` for publication.

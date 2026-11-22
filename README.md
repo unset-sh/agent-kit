@@ -20,9 +20,11 @@ whatever repository they are in, and gets it to them in a way that cannot drift 
 What belongs here and what does not is in [`CLAUDE.md`](CLAUDE.md).
 
 The [organisation decisions](skills/org-decisions/SKILL.md) record settled choices and their history. The
-current workflow ownership is [org-0004](skills/org-decisions/records/org-0004-workflows-live-in-github.md):
-implementations belong in `unset-sh/.github`, with category sources and generated GitHub entry points.
-This kit records that decision; consumer workflow adoption and signer verification change separately.
+current workflow ownership is [org-0006](skills/org-decisions/records/org-0006-developer-tooling-lives-in-tooling.md):
+shared CI, release and deployment implementations belong in the public `unset-sh/tooling` repository.
+`unset-sh/.github` retains organisation metadata, community defaults, workflow-picker templates and its local
+metadata checks. Consumers retain small callers, their build/test logic and reviewed pins. This kit records the
+decision; caller adoption, signer verification and automatic update delivery change through their own reviewed work.
 
 [Org-0005](skills/org-decisions/records/org-0005-ai-working-material-lives-in-agent-kit.md) keeps AI working
 material here, grouped by task, instead of adding ad hoc Markdown to consuming repositories. Maintained

@@ -17,8 +17,9 @@ for organisation work.
 | [org-0001](records/org-0001-decision-records-live-in-agent-kit.md) | Decision records live in agent-kit and ship with each kit release |
 | [org-0002](records/org-0002-docs-site-shows-only-organisation-docs.md) | docs.unset.sh shows only docs from `unset-sh` repositories; the current site stays up until replaced |
 | [org-0003](records/org-0003-shared-workflows-live-in-workflows.md) | Superseded by org-0004; originally placed shared workflows in `unset-sh/workflows` |
-| [org-0004](records/org-0004-workflows-live-in-github.md) | Organisation workflows live in `unset-sh/.github`, with category sources and generated GitHub entry points |
+| [org-0004](records/org-0004-workflows-live-in-github.md) | Superseded by org-0006; originally placed organisation workflow implementations in `unset-sh/.github` |
 | [org-0005](records/org-0005-ai-working-material-lives-in-agent-kit.md) | AI working notes and artifacts live in agent-kit, grouped by task and excluded from the kit |
+| [org-0006](records/org-0006-developer-tooling-lives-in-tooling.md) | Shared developer tooling lives in public `unset-sh/tooling`; `.github` retains organisation metadata and community defaults |
 
 ## Before you decide something
 

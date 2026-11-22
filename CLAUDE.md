@@ -11,8 +11,8 @@ released as one version and copied into each repository.
   installs a release in a repository and checks the copy; AI working notes in `notes/<task>/` and supporting
   artifacts in `artifacts/<task>/` (org-0005), kept here but excluded from the distributed kit.
 - **Does not belong here:** a repository's own rules (its `CLAUDE.md`); the map of repositories (that is
-  `unset-sh/.github`); a repository's own decision records; organisation workflow implementations (also
-  `unset-sh/.github`, org-0004); another repository's maintained human documentation (its own `docs/`,
+  `unset-sh/.github`); a repository's own decision records; shared developer-tooling implementations
+  (`unset-sh/tooling`, org-0006); another repository's maintained human documentation (its own `docs/`,
   following `org-documentation`, exported to `unset-sh/docs`); anything written for members' assistants
   (that is `unset-sh/profile-recipes`).
 - **Uses:** nothing. **Used by:** every organisation repository, as a committed copy under `.claude/` pinned by

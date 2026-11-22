@@ -1,0 +1,9 @@
+LICENSE: SHA-256, export, import and committed source match
+_index.md: SHA-256, export, import and committed source match
+export-docs.md: SHA-256, export, import and committed source match
+manage-docs-publishing-key.md: SHA-256, export, import and committed source match
+organisation-defaults.md: SHA-256, export, import and committed source match
+workflow-templates.md: SHA-256, export, import and committed source match
+Only github/ differs from the checked-out docs HEAD; no framework files changed.
+Source: unset-sh/.github at 0e49c58b61370a33429c802064c205589f0619ce
+Provenance validated for all six files and source.json.
