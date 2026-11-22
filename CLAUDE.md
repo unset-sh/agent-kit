@@ -38,8 +38,8 @@ Other repositories load a copy of these. Here they are the source, so they are i
   `agents/`, plus `sync.mjs`. No hooks, no MCP server definitions, no settings files, no scripts inside skills,
   no skill line that runs a shell command, no `@path` import, and no front matter that grants tools. A
   subagent may set only `model` and `effort` beyond its name and description. The kit's own checks enforce
-  this on what it releases; `sync.mjs` does not re-check content when it installs. Changing it needs the owner's decision first: whoever can change this repository can
-  steer every assistant in every repository.
+  this on what it releases; `sync.mjs` does not re-check content when it installs. Changing it needs the
+  owner's decision first: whoever can change this repository can steer every assistant in every repository.
 - **Every always-loaded line is paid for in every session of every repository.** The files in `rules/` share
   a budget of 150 lines. A new rule has to earn its lines; anything longer belongs in a skill.
 - **A rule states something Alex decided.** When you add or reword one from your own judgment, say so in the

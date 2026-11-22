@@ -80,6 +80,7 @@ test("no shipped file imports another file into context", () => {
     const prose = readText(path)
       .replace(/```[\s\S]*?```/g, "")
       .replace(/`[^`\n]*`/g, "");
-    assert.doesNotMatch(prose, /(^|[\s(])@[\w~./-]/m, `${path} has an @ import`);
+    // Any @ not inside a word, so "[@x]", "see:@x" and "&gt;@x" are caught as well as " @x".
+    assert.doesNotMatch(prose, /(?<!\w)@\S/, `${path} has an @ import`);
   }
 });

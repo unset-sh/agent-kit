@@ -63,7 +63,8 @@ To change a rule or a skill, change it here. The copy in a repository is never e
   `.claude/agent-kit/`. Where a file lands is decided by fixed rules in the script, never by the release.
 - It refuses a release whose name or version is wrong, whose commit is not a full sha, or whose files do not
   match the sha256 the release itself states, and any path outside those names. Those hashes catch corruption,
-  not a forged release: for that, verify the release's attestation (skill `org-kit-update`).
+  not a forged release: for that, verify the release's attestation against the release workflow on `main`
+  before installing (skill `org-kit-update`).
 - It refuses to read or write through a symbolic link.
 - It never touches a repository's own `CLAUDE.md`, rules, skills, subagents or settings.
 
