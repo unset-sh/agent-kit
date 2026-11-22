@@ -1,0 +1,8 @@
+.github/ISSUE_TEMPLATE/accessibility.yml: valid parsed keys, 4 inputs, 2 required; no labels/assignees/projects/type dependencies
+.github/ISSUE_TEMPLATE/bug.yml: valid parsed keys, 5 inputs, 3 required; no labels/assignees/projects/type dependencies
+.github/ISSUE_TEMPLATE/feature.yml: valid parsed keys, 3 inputs, 2 required; no labels/assignees/projects/type dependencies
+.github/ISSUE_TEMPLATE/question.yml: valid parsed keys, 3 inputs, 1 required; no labels/assignees/projects/type dependencies
+.github/VULNERABILITY_REPORT.yml: valid parsed keys, 5 inputs, 4 required; no labels/assignees/projects/type dependencies
+config.yml: valid chooser fields, HTTPS contact links; question form provides a support route with blank issues disabled.
+Compared with GitHub form schema, issue-form syntax and custom private vulnerability form documentation on 2026-11-22.
+This is local parse/contract validation; GitHub will recognise the forms after they reach the default branch.

@@ -5,13 +5,10 @@ them there, never in this copy. A repository's own `CLAUDE.md` adds its own rule
 
 ## Licence
 
-- Licence is set per repository, and the owner sets it. Product repositories are AGPL-3.0-only and take no
-  outside code for now.
-- Work made to be copied stays permissive: the recipes in `profile-recipes` are CC0-1.0 and the lexicon schemas
-  are MIT. Those two take outside work with a DCO sign-off only.
-- There is no contributor licence agreement. Do not propose one, or any other signing step.
-- Where the owner has not set a licence, say so and ask. Work we use from others keeps its own licence.
-- Never change the licence of anything already published without the owner's decision.
+- The owner sets each repository's licence and decides any change to a published one; where none is set, ask.
+  Product repositories are AGPL-3.0-only and take no outside code for now. Others' work keeps its own licence.
+- Work made to be copied stays permissive (`profile-recipes` recipes CC0-1.0, lexicon schemas MIT) and takes
+  outside work with a DCO sign-off only. Propose no contributor licence agreement or other signing step.
 - The copyright line is `Copyright (c) 2026 Alex (Undefined6799)`.
 
 ## The owner
@@ -36,9 +33,14 @@ them there, never in this copy. A repository's own `CLAUDE.md` adds its own rule
 
 ## Decisions
 
-- Organisation decisions go in the organisation's own decision records, never in the app repository's ADRs.
-  Until those records have a home, ask the owner where a decision goes.
+- Organisation decisions live in agent-kit, in the skill `org-decisions`; read it before changing an
+  organisation-wide decision. Never add or edit an ADR in the app repository for organisation work.
 - An accepted decision record is never edited, only superseded by a new one.
+- Keep AI plans, working notes and review reports in `unset-sh/agent-kit` under `notes/<task>/`, and their
+  supporting artifacts under `artifacts/<task>/`; neither folder ships in the kit (org-0005).
+- Put maintained human documentation in its owner's `docs/`, follow `org-documentation`, and export it
+  through the documentation pipeline to `unset-sh/docs`. Keep ad hoc AI task/design/review Markdown out
+  of consuming repositories; do not infer a bulk move or deletion of historical files.
 
 ## Releases
 

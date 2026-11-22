@@ -1,0 +1,20 @@
+[
+  {
+    "folder": "hosted-tooling-export",
+    "repository": "unset-sh/tooling",
+    "revision": "18a51dd2b58d43fc88e9fcab690768474e95a9d2",
+    "section": "tooling",
+    "files": 7,
+    "hashes_match": true,
+    "matches_local_source_files": true
+  },
+  {
+    "folder": "hosted-github-export",
+    "repository": "unset-sh/.github",
+    "revision": "f213eec4b86d95aec3f044de804eb5b90d7e6ba8",
+    "section": "github",
+    "files": 6,
+    "hashes_match": true,
+    "matches_local_source_files": true
+  }
+]

@@ -1,0 +1,2 @@
+Hosted export: github/ folder preserved; all six source hashes match the checked local export; no unresolved source-link markers.
+Run 45007716191, PR merge commit 0e63ea3650607f8ea78eed8bc60489651731d1c8.

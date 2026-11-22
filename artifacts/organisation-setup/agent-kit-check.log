@@ -1,0 +1,58 @@
+
+> @unset-sh/agent-kit@0.1.0 check
+> node --test "checks/*.test.mjs"
+
+✔ the bundle lists every shipped file once, sorted, with the package version and the commit (6.903625ms)
+✔ the same commit gives the same bundle, byte for byte (2.604041ms)
+✔ the bundle refuses a commit that is not a full sha (0.202542ms)
+✔ the bundle installs into a repository whose copy then passes the check, byte for byte (8.575834ms)
+✔ CLAUDE.md and its template both open with where the repository fits (2.1145ms)
+✔ CLAUDE.md imports every rule file, so work here follows the rules it ships (0.717917ms)
+✔ the templates and the project instructions exist (0.121833ms)
+✔ the newest changelog entry is the package version and says something (0.333125ms)
+✔ release notes are one version's entry, and a missing or empty entry is an error (0.756708ms)
+✔ every workflow drops all permissions at the top and pins each action to a full commit (0.887084ms)
+✔ there are rule files, all Markdown, all directly in rules/ (0.822584ms)
+✔ the rule files stay within 150 lines in total (1.253333ms)
+✔ every rule file starts with a title and says where to change it (0.544208ms)
+✔ no rule file has front matter, so every rule loads in every session (0.325166ms)
+✔ only Markdown and sync.mjs are shipped, and sync.mjs accepts every one of them (0.637291ms)
+✔ no two shipped files differ only by letter case (0.08175ms)
+✔ shipped files are UTF-8 with LF line endings and end with a newline (0.918042ms)
+✔ no shipped file is executable (0.131708ms)
+✔ no shipped file holds something shaped like a secret (0.599209ms)
+✔ no rule or skill written here names something only one repository has (0.375125ms)
+✔ skills/ holds only folders named org-<something>, each with a SKILL.md (0.513709ms)
+✔ a skill's front matter is its own name, a description and nothing that grants power (1.411083ms)
+✔ no skill file runs a shell command when it loads (2.9625ms)
+✔ every file a skill links to exists (0.376333ms)
+✔ a subagent is agents/org-<something>.md with a name, a description and no tools of its own (0.077291ms)
+✔ a kit path lands only under the kit's own names (1.372416ms)
+✔ a path outside those names, or one that could leave them, has no destination (0.771209ms)
+✔ the kit owns its own names and nothing else under .claude (0.113584ms)
+✔ a valid bundle is accepted and keeps its version and commit (2.168833ms)
+✔ a bundle is refused when anything about it is off (0.351416ms)
+✔ a bundle cannot write outside the kit's names (0.100459ms)
+✔ a bundle whose content does not match its sha256 is refused (0.059667ms)
+✔ a bundle that lists one destination twice is refused, whatever the letter case (0.072ms)
+✔ installing writes the files and a lock, and the check then passes (3.297ms)
+✔ the check names a kit file edited by hand (3.329584ms)
+✔ the check names a missing kit file (2.485917ms)
+✔ the check names a file added under the kit's names (3.08875ms)
+✔ the check leaves a repository's own rules, skills and subagents alone (3.045917ms)
+✔ the check names a kit file replaced by a symbolic link (2.083125ms)
+✔ the check refuses a lock that is missing, broken or lists a path the kit does not own (2.015416ms)
+✔ installing a newer release removes kit files the release no longer has, and nothing else (2.706209ms)
+✔ installing refuses to write through a symbolic link (0.874583ms)
+✔ installing and checking refuse a folder that is not a repository root (0.332042ms)
+✔ the command installs from a file, reports a clean copy as 0 and a changed one as 1 (2.381833ms)
+✔ the command refuses arguments it does not understand (0.167208ms)
+✔ a release is downloaded from this repository's release page and nowhere else (0.021833ms)
+ℹ tests 46
+ℹ suites 0
+ℹ pass 46
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 86.177125

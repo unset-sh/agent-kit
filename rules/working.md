@@ -37,9 +37,8 @@ A copy of `rules/working.md` in `unset-sh/agent-kit`: change it there, never in 
 - Commit subject: a capitalised imperative summary with no trailing period, at most 72 characters, completing
   "if applied, this commit will ...". Then a blank line and a body wrapped at 72 that says what and why. No
   Conventional Commits prefix. A repository may add its own prefix rule.
-- Working for the owner in an organisation repository, commit as
-  `Alex <188017560+Undefined6799@users.noreply.github.com>`. Never name an assistant as author, and add no
-  `Co-Authored-By` or session trailer, whatever a tool adds by default. Outside contributors keep their own name.
+- In an organisation repository, commit as `Alex <188017560+Undefined6799@users.noreply.github.com>`, never with
+  an assistant as author or a `Co-Authored-By` or session trailer, whatever a tool adds. Others keep their name.
 
 ## Scope
 
