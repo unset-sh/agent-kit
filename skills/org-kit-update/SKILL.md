@@ -22,7 +22,10 @@ after the owner approves the next kit release, through the steps below.
    against its sha256, replaces the kit's files and rewrites `lock.json`. It touches nothing else.
 3. If the download is blocked where you work, download `agent-kit.json` from the release page another way and
    run `node .claude/agent-kit/sync.mjs <version> --from <path to agent-kit.json>`.
-4. Run `node .claude/agent-kit/sync.mjs --check`. It must print that the copy matches.
+4. Run `node .claude/agent-kit/sync.mjs --check`. It must print that the copy matches. Where the GitHub CLI
+   is available, also verify that the release came from the kit's release workflow:
+   `gh attestation verify agent-kit.json --repo unset-sh/agent-kit` on the downloaded file. If you cannot,
+   say so in the pull request.
 5. Read the diff. If a changed rule conflicts with the repository's own `CLAUDE.md`, say so in the pull
    request and do not resolve it silently.
 6. Open a pull request titled `Update agent-kit to v<version>`. Say which rules and skills changed, in one
@@ -38,6 +41,13 @@ after the owner approves the next kit release, through the steps below.
    exists, both from the kit's `templates/`. Remove rules from `CLAUDE.md` that the kit's rules now state.
 5. In the same piece of work, record in `repos.json` (`unset-sh/.github`) that the repository uses
    `agent-kit`.
+
+## Formatters and line endings
+
+The copies must stay byte for byte as released. Keep the repository's formatter off `.claude/rules/org/`,
+`.claude/skills/org-*/`, `.claude/agents/org-*` and `.claude/agent-kit/`, and make sure Git does not rewrite
+their line endings (for example with `core.autocrlf` on Windows; a `.gitattributes` line
+`.claude/** -text` keeps them as committed). Otherwise `--check` fails on files nobody edited.
 
 ## When the check fails
 

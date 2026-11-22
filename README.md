@@ -3,7 +3,7 @@
 Shared rules, skills and templates for AI assistants working on unset.sh.
 
 Every unset.sh repository is worked on by AI assistants. This repository holds what all of them need to know,
-whatever repository they are in, and gets it to them in a way that cannot drift without someone noticing.
+whatever repository they are in, and gets it to them as a pinned copy that each repository's CI checks.
 
 ## What is in it
 
@@ -38,7 +38,9 @@ node /path/to/downloaded/sync.mjs 0.1.0
 ```
 
 **Check the copy** in the repository's CI. It needs no network and fails when a kit file was edited by hand,
-is missing, or when a file was added under the kit's names:
+is missing, or when a file was added under the kit's names. It compares the copy with the lock beside it, so it
+catches accidents, not intent: someone who edits a kit file and its lock together passes it. Catching that
+needs a check outside the repository that compares each copy with the published release:
 
 ```sh
 node .claude/agent-kit/sync.mjs --check
@@ -59,9 +61,10 @@ To change a rule or a skill, change it here. The copy in a repository is never e
 
 - It writes only under `.claude/rules/org/`, `.claude/skills/org-*/`, `.claude/agents/org-*.md` and
   `.claude/agent-kit/`. Where a file lands is decided by fixed rules in the script, never by the release.
-- It refuses a release whose name, version, commit or any file's sha256 does not check out, and any path
-  outside those names.
-- It refuses to write through a symbolic link.
+- It refuses a release whose name or version is wrong, whose commit is not a full sha, or whose files do not
+  match the sha256 the release itself states, and any path outside those names. Those hashes catch corruption,
+  not a forged release: for that, verify the release's attestation (skill `org-kit-update`).
+- It refuses to read or write through a symbolic link.
 - It never touches a repository's own `CLAUDE.md`, rules, skills, subagents or settings.
 
 ## Releases

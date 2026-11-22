@@ -9,5 +9,5 @@ Every assistant working in this repository (Claude, Cursor, Codex or another) fo
 The procedures in `.claude/skills/org-*/SKILL.md` describe jobs that repeat across repositories, such as
 preparing a release. Read the one that fits before doing that job.
 
-Files under `.claude/rules/org/`, `.claude/skills/org-*/` and `.claude/agent-kit/` are copies of a release of
-`unset-sh/agent-kit` and are checked by CI. Never edit them here.
+Files under `.claude/rules/org/`, `.claude/skills/org-*/`, `.claude/agents/org-*` and `.claude/agent-kit/` are
+copies of a release of `unset-sh/agent-kit` and are checked by CI. Never edit them here.
