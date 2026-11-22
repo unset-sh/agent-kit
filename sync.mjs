@@ -11,15 +11,28 @@
 // is one of the copied files and is checked like the others.
 
 import { createHash } from "node:crypto";
-import { existsSync, lstatSync, mkdirSync, readFileSync, readdirSync, rmSync, writeFileSync } from "node:fs";
+import {
+  existsSync,
+  lstatSync,
+  mkdirSync,
+  readFileSync,
+  readdirSync,
+  realpathSync,
+  rmSync,
+  writeFileSync,
+} from "node:fs";
 import { dirname, join } from "node:path";
-import { pathToFileURL } from "node:url";
+import { fileURLToPath } from "node:url";
 
 export const KIT = "unset-sh/agent-kit";
 export const LOCK_PATH = ".claude/agent-kit/lock.json";
 export const SYNC_PATH = ".claude/agent-kit/sync.mjs";
 
 const SEGMENT = /^[A-Za-z0-9][A-Za-z0-9._-]*$/;
+// Names Windows reserves, with or without an extension ("NUL.txt and NUL.tar.gz are both equivalent to NUL"), and
+// it says no name may end in a period. Read 2026-11-22: https://learn.microsoft.com/en-us/windows/win32/fileio/naming-a-file
+// COM0 and LPT0 are not on its list; refusing them too costs nothing. Superscript digits never pass SEGMENT.
+const RESERVED = /^(con|prn|aux|nul|com[0-9]|lpt[0-9])(\.|$)/i;
 const ORG_NAME = /^org-[a-z0-9]+(-[a-z0-9]+)*$/;
 const VERSION = /^(0|[1-9]\d*)\.(0|[1-9]\d*)\.(0|[1-9]\d*)$/;
 const COMMIT = /^[0-9a-f]{40}$/;
@@ -38,6 +51,11 @@ export function sha256(bytes) {
   return createHash("sha256").update(bytes).digest("hex");
 }
 
+/** A path segment every file system the organisation uses can hold: no "..", no trailing dot, no reserved name. */
+function portableSegment(part) {
+  return SEGMENT.test(part) && !part.endsWith(".") && !RESERVED.test(part);
+}
+
 /**
  * Where a kit file lands in a repository, or null when the kit may not ship that path. The destination is
  * computed here from fixed rules and never read from a release, so a release cannot choose where it writes.
@@ -45,7 +63,7 @@ export function sha256(bytes) {
 export function destinationOf(path) {
   if (typeof path !== "string" || path.length === 0 || path.length > MAX_PATH) return null;
   const parts = path.split("/");
-  if (!parts.every((part) => SEGMENT.test(part))) return null;
+  if (!parts.every(portableSegment)) return null;
   if (path === "sync.mjs") return SYNC_PATH;
   const [area, second] = parts;
   const leaf = parts.at(-1);
@@ -59,22 +77,52 @@ export function destinationOf(path) {
   return null;
 }
 
-/** True for a repository path the kit owns. The lock is owned too, but is written here, never copied. */
-export function isOwned(dest) {
+/**
+ * True only for a repository path that destinationOf can produce, so a lock cannot name any other file. The
+ * lock itself is written by this script, never copied from a release, and is not a kit destination.
+ */
+export function isKitDestination(dest) {
   if (typeof dest !== "string" || dest.length > MAX_DEST) return false;
-  const parts = dest.split("/");
-  if (parts[0] !== ".claude" || parts.length < 3 || !parts.slice(1).every((part) => SEGMENT.test(part))) return false;
-  if (parts[1] === "agent-kit") return true;
-  if (parts[1] === "rules") return parts[2] === "org" && parts.length >= 4;
-  if (parts[1] === "skills") return ORG_NAME.test(parts[2]) && parts.length >= 4;
-  if (parts[1] === "agents") return parts.length === 3 && parts[2].startsWith("org-");
-  return false;
+  if (dest === SYNC_PATH) return true;
+  const source = [
+    [".claude/rules/org/", "rules/"],
+    [".claude/agents/", "agents/"],
+    [".claude/skills/", "skills/"],
+  ].find(([prefix]) => dest.startsWith(prefix));
+  if (source === undefined) return false;
+  return destinationOf(source[1] + dest.slice(source[0].length)) === dest;
+}
+
+/**
+ * Refuse a set of destinations that would collide on a file system that ignores letter case (macOS, Windows):
+ * the same file twice, the same folder spelt two ways, or a file where another file needs a folder.
+ */
+function assertNoCollision(destinations) {
+  const files = new Set();
+  const folders = new Map();
+  for (const dest of destinations) {
+    const lower = dest.toLowerCase();
+    if (files.has(lower)) throw new SyncError(`the release bundle lists ${dest} twice`);
+    files.add(lower);
+    const parts = dest.split("/");
+    for (let depth = 1; depth < parts.length; depth += 1) {
+      const folder = parts.slice(0, depth).join("/");
+      const spelt = folders.get(folder.toLowerCase());
+      if (spelt !== undefined && spelt !== folder) {
+        throw new SyncError(`the release bundle spells one folder two ways: ${spelt} and ${folder}`);
+      }
+      folders.set(folder.toLowerCase(), folder);
+    }
+  }
+  for (const lower of files) {
+    if (folders.has(lower)) throw new SyncError(`the release bundle needs ${folders.get(lower)} as both a file and a folder`);
+  }
 }
 
 /**
  * Read and validate a release bundle. Checks, in order: shape, kit name, version, commit, then for each file
- * its path, its destination, that the destination is not repeated, and that its content has the sha256 the
- * bundle states. Returns only validated values.
+ * its path, its destination, and that its content has the sha256 the bundle states; then that no two
+ * destinations collide, and that sync.mjs is among them. Returns only validated values.
  */
 export function parseBundle(text, wantedVersion) {
   let bundle;
@@ -100,15 +148,12 @@ export function parseBundle(text, wantedVersion) {
     throw new SyncError("the release bundle has no valid file list");
   }
   const files = new Map();
-  const seen = new Set();
   for (const file of bundle.files) {
     if (file === null || typeof file !== "object") throw new SyncError("the release bundle lists a file that is not an object");
     const { path, sha256: stated, content } = file;
     const dest = destinationOf(path);
     if (dest === null) throw new SyncError(`the release bundle lists a path the kit may not ship: ${JSON.stringify(path)}`);
-    // Compared without case, so two files cannot collide on a file system that ignores case.
-    if (seen.has(dest.toLowerCase())) throw new SyncError(`the release bundle lists ${path} twice`);
-    seen.add(dest.toLowerCase());
+    if (files.has(dest)) throw new SyncError(`the release bundle lists ${dest} twice`);
     if (typeof stated !== "string" || !SHA256.test(stated)) throw new SyncError(`${path} has no valid sha256`);
     if (typeof content !== "string") throw new SyncError(`${path} has no content`);
     const bytes = Buffer.from(content, "utf8");
@@ -116,6 +161,7 @@ export function parseBundle(text, wantedVersion) {
     if (sha256(bytes) !== stated) throw new SyncError(`${path} does not match its sha256`);
     files.set(dest, { sha256: stated, bytes });
   }
+  assertNoCollision(files.keys());
   if (!files.has(SYNC_PATH)) throw new SyncError("the release bundle does not contain sync.mjs");
   return { version: bundle.version, commit: bundle.commit, files };
 }
@@ -141,6 +187,18 @@ function symlinkOnPath(root, dest) {
 function assertNoSymlink(root, dest) {
   const link = symlinkOnPath(root, dest);
   if (link !== null) throw new SyncError(`${link} is a symbolic link; the kit does not write through links`);
+}
+
+/** The folders that hold the kit's names. Each must be a real folder, or absent, before anything is walked. */
+const KIT_FOLDERS = [".claude", ".claude/rules", ".claude/rules/org", ".claude/skills", ".claude/agents", ".claude/agent-kit"];
+
+function assertRealKitFolders(root) {
+  for (const folder of KIT_FOLDERS) {
+    const stat = lstatSync(join(root, ...folder.split("/")), { throwIfNoEntry: false });
+    if (stat === undefined) continue;
+    if (stat.isSymbolicLink()) throw new SyncError(`${folder} is a symbolic link; the kit does not read or write through links`);
+    if (!stat.isDirectory()) throw new SyncError(`${folder} is not a folder`);
+  }
 }
 
 function walk(root, folder, found) {
@@ -203,7 +261,7 @@ function readLock(root) {
     !Array.isArray(lock.files);
   if (!valid) throw new SyncError(`${LOCK_PATH} does not have the shape this script writes`);
   for (const [dest, hash] of Object.entries(lock.files)) {
-    if (!isOwned(dest) || dest === LOCK_PATH) throw new SyncError(`${LOCK_PATH} lists a path the kit does not own: ${dest}`);
+    if (!isKitDestination(dest)) throw new SyncError(`${LOCK_PATH} lists a path the kit does not own: ${dest}`);
     if (typeof hash !== "string" || !SHA256.test(hash)) throw new SyncError(`${LOCK_PATH} has no valid sha256 for ${dest}`);
   }
   if (!Object.hasOwn(lock.files, SYNC_PATH)) throw new SyncError(`${LOCK_PATH} does not list ${SYNC_PATH}`);
@@ -216,6 +274,7 @@ function readLock(root) {
  */
 export function check(root) {
   assertRepositoryRoot(root);
+  assertRealKitFolders(root);
   assertNoSymlink(root, LOCK_PATH);
   const lock = readLock(root);
   const problems = [];
@@ -233,13 +292,22 @@ export function check(root) {
   return { version: lock.version, problems };
 }
 
-/** Replace the kit's files in a repository with those of a validated bundle, then write the lock. */
+/**
+ * Replace the kit's files in a repository with those of a validated bundle, then write the lock. Returns the
+ * lock and the paths it removed. A first install, with no lock yet, refuses to touch anything already under the
+ * kit's names, because those files are the repository's and not an earlier release's.
+ */
 export function install(root, bundle, bundleSha256) {
   assertRepositoryRoot(root);
+  assertRealKitFolders(root);
   for (const dest of [...bundle.files.keys(), LOCK_PATH]) assertNoSymlink(root, dest);
-  for (const path of ownedEntries(root)) {
-    if (!bundle.files.has(path)) rmSync(join(root, ...path.split("/")), { force: true });
+  const present = ownedEntries(root);
+  const hasLock = lstatSync(join(root, ...LOCK_PATH.split("/")), { throwIfNoEntry: false }) !== undefined;
+  if (!hasLock && present.length > 0) {
+    throw new SyncError(`no lock yet, but files already use the kit's names; rename or remove them first: ${present.join(", ")}`);
   }
+  const removed = present.filter((path) => !bundle.files.has(path));
+  for (const path of removed) rmSync(join(root, ...path.split("/")), { force: true });
   const locked = {};
   for (const dest of [...bundle.files.keys()].sort()) {
     const { sha256: hash, bytes } = bundle.files.get(dest);
@@ -251,7 +319,7 @@ export function install(root, bundle, bundleSha256) {
   const lock = { kit: KIT, version: bundle.version, commit: bundle.commit, bundleSha256, files: locked };
   mkdirSync(dirname(join(root, ...LOCK_PATH.split("/"))), { recursive: true });
   writeFileSync(join(root, ...LOCK_PATH.split("/")), `${JSON.stringify(lock, null, 2)}\n`);
-  return lock;
+  return { lock, removed };
 }
 
 export function releaseUrl(version) {
@@ -267,7 +335,12 @@ async function download(version) {
     throw new SyncError(`could not download ${url} (${error.message}). Download it another way and pass --from <file>.`);
   }
   if (!response.ok) throw new SyncError(`${url} answered ${response.status}. Is v${version} a published release?`);
-  const bytes = Buffer.from(await response.arrayBuffer());
+  let bytes;
+  try {
+    bytes = Buffer.from(await response.arrayBuffer());
+  } catch (error) {
+    throw new SyncError(`the download of ${url} broke off (${error.message}). Try again, or pass --from <file>.`);
+  }
   if (bytes.length > MAX_BUNDLE_BYTES) throw new SyncError("the release bundle is larger than the kit allows");
   return bytes;
 }
@@ -317,12 +390,27 @@ export async function main(argv, print = console.log) {
   const bytes = options.from === null ? await download(options.version) : readLocalBundle(options.from);
   if (bytes.length > MAX_BUNDLE_BYTES) throw new SyncError("the release bundle is larger than the kit allows");
   const bundle = parseBundle(bytes.toString("utf8"), options.version);
-  const lock = install(options.root, bundle, sha256(bytes));
+  const { lock, removed } = install(options.root, bundle, sha256(bytes));
   print(`agent-kit ${lock.version} (${lock.commit.slice(0, 7)}): ${Object.keys(lock.files).length} files written.`);
+  for (const path of removed) print(`  removed, no longer in the kit: ${path}`);
   return 0;
 }
 
-if (process.argv[1] !== undefined && import.meta.url === pathToFileURL(process.argv[1]).href) {
+/**
+ * True when Node was started on this file, by any path that leads to it. Both sides are resolved, because a
+ * repository may be reached through a linked folder, and a script that silently did nothing would let a broken
+ * copy pass its check.
+ */
+function startedAsScript() {
+  if (process.argv[1] === undefined) return false;
+  try {
+    return realpathSync(process.argv[1]) === realpathSync(fileURLToPath(import.meta.url));
+  } catch {
+    return false;
+  }
+}
+
+if (startedAsScript()) {
   try {
     process.exitCode = await main(process.argv.slice(2));
   } catch (error) {

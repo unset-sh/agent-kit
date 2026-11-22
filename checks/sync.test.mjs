@@ -1,8 +1,10 @@
 // sync.mjs is the one piece of code every repository runs, so each refusal has a test that shows it refusing.
 import assert from "node:assert/strict";
+import { execFileSync, spawnSync } from "node:child_process";
 import { mkdirSync, mkdtempSync, readFileSync, rmSync, symlinkSync, writeFileSync } from "node:fs";
 import { tmpdir } from "node:os";
 import { join } from "node:path";
+import { fileURLToPath } from "node:url";
 import { test } from "node:test";
 import {
   LOCK_PATH,
@@ -11,7 +13,7 @@ import {
   check,
   destinationOf,
   install,
-  isOwned,
+  isKitDestination,
   main,
   parseBundle,
   releaseUrl,
@@ -87,6 +89,11 @@ test("a path outside those names, or one that could leave them, has no destinati
     "settings.json",
     ".claude/settings.json",
     "hooks/hooks.json",
+    "rules/con.md",
+    "rules/NUL.md",
+    "skills/org-release/aux",
+    "skills/org-release/com1.txt.md",
+    "skills/org-release/notes./more.md",
     `rules/${"a".repeat(200)}.md`,
     null,
     42,
@@ -95,11 +102,18 @@ test("a path outside those names, or one that could leave them, has no destinati
   }
 });
 
-test("the kit owns its own names and nothing else under .claude", () => {
-  for (const path of [SYNC_PATH, LOCK_PATH, ".claude/rules/org/org.md", ".claude/skills/org-x/SKILL.md", ".claude/agents/org-x.md"]) {
-    assert.equal(isOwned(path), true, path);
+test("a lock may name only paths a release can produce", () => {
+  for (const path of [SYNC_PATH, ".claude/rules/org/org.md", ".claude/skills/org-x/SKILL.md", ".claude/agents/org-x.md"]) {
+    assert.equal(isKitDestination(path), true, path);
   }
   for (const path of [
+    LOCK_PATH,
+    ".claude/agent-kit/other.mjs",
+    ".claude/rules/org/sub/x.md",
+    ".claude/rules/org/x.txt",
+    ".claude/agents/org-x/y.md",
+    ".claude/skills/org-x/run.sh",
+    ".claude/rules/org/con.md",
     ".claude/settings.json",
     ".claude/rules/local.md",
     ".claude/skills/deploy/SKILL.md",
@@ -107,7 +121,7 @@ test("the kit owns its own names and nothing else under .claude", () => {
     ".claude/rules/org/../x.md",
     "CLAUDE.md",
   ]) {
-    assert.equal(isOwned(path), false, path);
+    assert.equal(isKitDestination(path), false, path);
   }
 });
 
@@ -151,6 +165,23 @@ test("a bundle that lists one destination twice is refused, whatever the letter 
   refuses(() => parseBundle(bundleText({}, twice), "1.2.3"), /twice/);
   const byCase = [file("rules/org.md", "a\n"), file("rules/ORG.md", "b\n"), file("sync.mjs", "// s\n")];
   refuses(() => parseBundle(bundleText({}, byCase), "1.2.3"), /twice/);
+});
+
+test("a bundle whose paths would collide on a file system that ignores case is refused", () => {
+  const fileAndFolder = [file("skills/org-x/a.md", "a\n"), file("skills/org-x/a.md/b.md", "b\n"), file("sync.mjs", "// s\n")];
+  refuses(() => parseBundle(bundleText({}, fileAndFolder), "1.2.3"), /both a file and a folder/);
+  const folderByCase = [file("skills/org-x/Notes/a.md", "a\n"), file("skills/org-x/notes/b.md", "b\n"), file("sync.mjs", "// s\n")];
+  refuses(() => parseBundle(bundleText({}, folderByCase), "1.2.3"), /spells one folder two ways/);
+});
+
+test("a bundle file that is malformed, unsigned or too large is refused", () => {
+  const sync = file("sync.mjs", "// s\n");
+  refuses(() => parseBundle(bundleText({}, [null, sync]), "1.2.3"), /not an object/);
+  refuses(() => parseBundle(bundleText({}, [{ ...file("rules/org.md", "x\n"), sha256: "abc" }, sync]), "1.2.3"), /no valid sha256/);
+  refuses(() => parseBundle(bundleText({}, [{ ...file("rules/org.md", "x\n"), content: 7 }, sync]), "1.2.3"), /no content/);
+  refuses(() => parseBundle(bundleText({}, [file("rules/org.md", "x".repeat(1024 * 1024 + 1)), sync]), "1.2.3"), /larger/);
+  const many = Array.from({ length: 501 }, (_, index) => file(`rules/r${index}.md`, "x\n"));
+  refuses(() => parseBundle(bundleText({}, many), "1.2.3"), /no valid file list/);
 });
 
 test("installing writes the files and a lock, and the check then passes", (t) => {
@@ -210,12 +241,44 @@ test("the check names a kit file replaced by a symbolic link", (t) => {
   ]);
 });
 
+test("the check names a kit file replaced by a folder", (t) => {
+  const root = installed(t);
+  rmSync(join(root, ".claude/rules/org/org.md"));
+  mkdirSync(join(root, ".claude/rules/org/org.md"));
+  assert.deepEqual(check(root).problems, ["not a regular file: .claude/rules/org/org.md"]);
+});
+
+test("the check and the install refuse a kit folder that is a link or a file", (t) => {
+  for (const [folder, make] of [
+    [".claude/rules/org", "link"],
+    [".claude/skills", "link"],
+    [".claude/agent-kit", "link"],
+    [".claude/agents", "file"],
+  ]) {
+    const root = installed(t);
+    const target = join(root, ...folder.split("/"));
+    const elsewhere = mkdtempSync(join(tmpdir(), "agent-kit-elsewhere-"));
+    t.after(() => rmSync(elsewhere, { recursive: true, force: true }));
+    rmSync(target, { recursive: true, force: true });
+    if (make === "link") symlinkSync(elsewhere, target);
+    else writeFileSync(target, "not a folder\n");
+    const pattern = make === "link" ? /is a symbolic link/ : /is not a folder/;
+    refuses(() => check(root), pattern);
+    const text = bundleText();
+    refuses(() => install(root, parseBundle(text, "1.2.3"), sha256(Buffer.from(text, "utf8"))), pattern);
+  }
+});
+
 test("the check refuses a lock that is missing, broken or lists a path the kit does not own", (t) => {
   const root = installed(t);
   const lockFile = join(root, LOCK_PATH);
   const lock = JSON.parse(readFileSync(lockFile, "utf8"));
   writeFileSync(lockFile, JSON.stringify({ ...lock, files: { ...lock.files, ".claude/settings.json": "0".repeat(64) } }));
   refuses(() => check(root), /does not own/);
+  writeFileSync(lockFile, JSON.stringify({ ...lock, files: { ...lock.files, ".claude/agent-kit/extra.mjs": "0".repeat(64) } }));
+  refuses(() => check(root), /does not own/);
+  writeFileSync(lockFile, JSON.stringify({ ...lock, files: { ...lock.files, [SYNC_PATH]: "0" } }));
+  refuses(() => check(root), /no valid sha256/);
   writeFileSync(lockFile, JSON.stringify({ ...lock, version: "latest" }));
   refuses(() => check(root), /does not have the shape/);
   const { [SYNC_PATH]: _dropped, ...withoutSync } = lock.files;
@@ -225,6 +288,8 @@ test("the check refuses a lock that is missing, broken or lists a path the kit d
   refuses(() => check(root), /not valid JSON/);
   rmSync(lockFile);
   refuses(() => check(root), /is missing/);
+  mkdirSync(lockFile);
+  refuses(() => check(root), /not a regular file/);
 });
 
 test("installing a newer release removes kit files the release no longer has, and nothing else", (t) => {
@@ -237,6 +302,16 @@ test("installing a newer release removes kit files the release no longer has, an
   assert.throws(() => readFileSync(join(root, ".claude/skills/org-release/SKILL.md")), /ENOENT/);
   assert.equal(readFileSync(join(root, ".claude/rules/local.md"), "utf8"), "# Ours\n");
   assert.equal(readFileSync(join(root, SYNC_PATH), "utf8"), "// newer\n");
+});
+
+test("a first install refuses files that already use the kit's names, and writes nothing", (t) => {
+  const root = repository(t);
+  mkdirSync(join(root, ".claude/rules/org"), { recursive: true });
+  writeFileSync(join(root, ".claude/rules/org/ours.md"), "# Ours\n");
+  const text = bundleText();
+  refuses(() => install(root, parseBundle(text, "1.2.3"), sha256(Buffer.from(text, "utf8"))), /no lock yet.*ours\.md/);
+  assert.equal(readFileSync(join(root, ".claude/rules/org/ours.md"), "utf8"), "# Ours\n");
+  assert.throws(() => readFileSync(join(root, LOCK_PATH)), /ENOENT/);
 });
 
 test("installing refuses to write through a symbolic link", (t) => {
@@ -268,6 +343,31 @@ test("the command installs from a file, reports a clean copy as 0 and a changed 
   writeFileSync(join(root, ".claude/rules/org/org.md"), "changed\n");
   assert.equal(await main(["--check", "--root", root], print), 1);
   assert.match(printed.join("\n"), /changed: \.claude\/rules\/org\/org\.md/);
+  writeFileSync(from, bundleText({ version: "1.3.0" }, [file("rules/org.md", "# Rules\n"), file("sync.mjs", "// newer\n")]));
+  assert.equal(await main(["1.3.0", "--from", from, "--root", root], print), 0);
+  assert.match(printed.join("\n"), /removed, no longer in the kit: \.claude\/skills\/org-release\/SKILL\.md/);
+});
+
+test("the copied script runs its check when started by any path, and fails on a changed copy", (t) => {
+  // Started as a child process, the way a repository's CI runs it, so a script that silently did nothing
+  // (because it did not recognise itself as the entry point) would show here as exit 0.
+  const script = readFileSync(fileURLToPath(new URL("../sync.mjs", import.meta.url)), "utf8");
+  const root = repository(t);
+  const text = bundleText({}, [file("rules/org.md", "# Rules\n"), file("sync.mjs", script)]);
+  install(root, parseBundle(text, "1.2.3"), sha256(Buffer.from(text, "utf8")));
+  const linked = join(mkdtempSync(join(tmpdir(), "agent-kit-link-")), "repository");
+  t.after(() => rmSync(join(linked, ".."), { recursive: true, force: true }));
+  symlinkSync(root, linked);
+  const run = (base) =>
+    spawnSync(process.execPath, [join(base, ...SYNC_PATH.split("/")), "--check", "--root", root], { encoding: "utf8" });
+  for (const base of [root, linked]) assert.equal(run(base).status, 0, base);
+  writeFileSync(join(root, ".claude/rules/org/org.md"), "# Rules, loosened\n");
+  for (const base of [root, linked]) {
+    const result = run(base);
+    assert.equal(result.status, 1, base);
+    assert.match(result.stdout, /changed: \.claude\/rules\/org\/org\.md/);
+  }
+  assert.equal(execFileSync(process.execPath, ["--check", join(root, ...SYNC_PATH.split("/"))], { encoding: "utf8" }), "");
 });
 
 test("the command refuses arguments it does not understand", async () => {
