@@ -41,5 +41,6 @@ The guiding rule: choose the simplest design that keeps responsibilities clear a
   proportion to the risk.
 - Measure before optimising, and measure again after.
 - Document why, where the reason is not obvious. Record important decisions lightly.
+- For human documentation, read `org-documentation`; write and check pages in the repository that owns them.
 - When a small problem repeats, refactor. When it reveals a boundary problem, reconsider the design. A major
   change to boundaries, contracts or data models is surfaced for human review first.

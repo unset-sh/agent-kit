@@ -74,6 +74,10 @@ owner's on the release, and a reviewed pull request in the repository that takes
 
 ## Working on this repository
 
+For human documentation, follow the shared [documentation standard](skills/org-documentation/standard.md)
+and [page templates](skills/org-documentation/templates.md). Contributors and assistants use the same text.
+Repositories adopting it fill in only their [local documentation facts](skills/org-documentation/repository-rules.md).
+
 ```sh
 npm run check
 ```

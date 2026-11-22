@@ -3,6 +3,15 @@
 Each entry says what changes for a repository that takes the release, in plain words. The release page shows
 the entry of its version.
 
+## v0.2.0
+
+Adds `org-documentation`, the shared standard for human documentation. Repositories that take this release
+gain page templates, guidance for explaining architecture and code with worked examples, and an adoption
+checklist for their own source paths and checks. A short engineering-rule pointer loads the skill when needed.
+
+The writing rules give Learn and use and Understand and contribute equal care. Renderer metadata remains
+proposed, and this release does not enable new site checks, enroll source repositories, or publish app docs.
+
 ## v0.1.0
 
 The first release. A repository that takes it gains:
