@@ -1,0 +1,33 @@
+{
+  "schemaVersion": 1,
+  "repository": "unset-sh/.github",
+  "revision": "0e49c58b61370a33429c802064c205589f0619ce",
+  "directory": "docs/site",
+  "section": "github",
+  "files": [
+    {
+      "path": "LICENSE",
+      "sha256": "d8a6cc31abc16b6748c7a21f21611f5a1ec33f67d22ca23d7da1c19b95496bee"
+    },
+    {
+      "path": "_index.md",
+      "sha256": "ae9da7786e3a97e628de59d26b3fa0f22098bff3052e68bc08fb010951b93f71"
+    },
+    {
+      "path": "export-docs.md",
+      "sha256": "97a87de6aedd00d24714efc2198c9d4eba53681125a34f7aaef59cd8de3f5113"
+    },
+    {
+      "path": "manage-docs-publishing-key.md",
+      "sha256": "302759f3fe6f4c5517ef4bedc414d32292f395481ba4a4a1877b17ac3aa28dec"
+    },
+    {
+      "path": "organisation-defaults.md",
+      "sha256": "463731fc01ec0f0d0dbd87665f7b398ad59927872693ce0f7f336a67611187b1"
+    },
+    {
+      "path": "workflow-templates.md",
+      "sha256": "dfff59f1457f18ee9ae1e2bf8ff2c0817e2b629b0ebc31e6c290dabc3f54a01b"
+    }
+  ]
+}
