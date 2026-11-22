@@ -70,3 +70,14 @@ test("every workflow drops all permissions at the top and pins each action to a 
     }
   }
 });
+
+test("a release starts only from main, is gated on the environment, and creates its own tag", () => {
+  const text = readText(".github/workflows/release.yml");
+  const trigger = text.slice(text.indexOf("\non:"), text.indexOf("\npermissions:"));
+  assert.match(trigger, /push:\n\s+branches: \[main\]/);
+  assert.doesNotMatch(trigger, /tags|workflow_dispatch|pull_request|workflow_run/, "a release may start only from a push to main");
+  assert.match(text, /node scripts\/release-gate\.mjs/);
+  assert.match(text, /environment: release/);
+  assert.match(text, /gh release create "v\$VERSION"[^\n]*\\\n\s+--target "\$GITHUB_SHA"/);
+  assert.doesNotMatch(text, /--verify-tag/);
+});
