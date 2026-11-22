@@ -16,6 +16,7 @@ for organisation work.
 | --- | --- |
 | [org-0001](records/org-0001-decision-records-live-in-agent-kit.md) | Decision records live in agent-kit and ship with each kit release |
 | [org-0002](records/org-0002-docs-site-shows-only-organisation-docs.md) | docs.unset.sh shows only docs from `unset-sh` repositories; the current site stays up until replaced |
+| [org-0003](records/org-0003-shared-workflows-live-in-workflows.md) | The CI check and the release workflow live in `unset-sh/workflows`, called by each repository at a pinned commit |
 
 ## Before you decide something
 

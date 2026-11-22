@@ -10,7 +10,7 @@ released as one version and copied into each repository.
   repositories, the `CLAUDE.md` and `AGENTS.md` templates, the text of the Claude project
   instructions, and `sync.mjs`, which installs a release in a repository and checks the copy.
 - **Does not belong here:** a repository's own rules (its `CLAUDE.md`); the map of repositories (that is
-  `unset-sh/.github`); a repository's own decision records; CI workflows other repositories run; anything written for members' assistants (that is `unset-sh/profile-recipes`).
+  `unset-sh/.github`); a repository's own decision records; CI workflows other repositories run (that is `unset-sh/workflows`); anything written for members' assistants (that is `unset-sh/profile-recipes`).
 - **Uses:** nothing. **Used by:** every organisation repository, as a committed copy under `.claude/` pinned by
   `.claude/agent-kit/lock.json`.
 - **Licence:** follows the organisation rule.
