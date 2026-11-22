@@ -76,3 +76,6 @@ of GitHub's starter-workflows service.
 - Agent-kit records accepted org-0004 and org-0005. Reconcile its org-documentation skill PR #7 before releasing the kit; no version bump or kit release is included.
 
 The export job produces a read-only artifact, not automatic cross-repository publication. Consumer migrations require their own reviewed calls to a released central commit; the initial shared implementation has no approved release yet.
+
+- Final workflow/map head: c2139e34a818e18e6a45406af7af32fb31f1cd42. Hosted CI, organisation-map and documentation-export runs passed (45007716194, 45007716197 and 45007716191).
+- Companion rules/notes PR: https://github.com/unset-sh/agent-kit/pull/8.

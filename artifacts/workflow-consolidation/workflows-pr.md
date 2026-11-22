@@ -21,7 +21,7 @@ No live release or cross-repository adoption is claimed. First-release settings 
 
 ## Reconciliation
 
-Keep this ownership change when reconciling map PRs #3 and #5. The agent-kit companion preserves accepted decisions and supersedes the old workflow hosting choice; the documentation standard remains in agent-kit #7. The old workflows repo had no releases or default-branch callers. It is now archived after this replacement became accessible, preserving its original PR and history. The map records the confirmed archived state. The documentation import is [docs #2](https://github.com/unset-sh/docs/pull/2).
+Keep this ownership change when reconciling map PRs #3 and #5. [Agent-kit #8](https://github.com/unset-sh/agent-kit/pull/8) preserves accepted decisions and supersedes the old workflow hosting choice; the documentation standard remains in agent-kit #7. The old workflows repo had no releases or default-branch callers. It is now archived after this replacement became accessible, preserving its original PR and history. The map records the confirmed archived state. The documentation import is [docs #2](https://github.com/unset-sh/docs/pull/2).
 
 ## Checklist
 
@@ -32,3 +32,5 @@ Keep this ownership change when reconciling map PRs #3 and #5. The agent-kit com
 - [x] Generated output, map and human documentation updated together
 
 Merging and first-release approval remain the owner's actions.
+
+Hosted checks on `c2139e34a818e18e6a45406af7af32fb31f1cd42` completed successfully: [CI](https://github.com/unset-sh/.github/actions/runs/45007716194), [org map](https://github.com/unset-sh/.github/actions/runs/45007716197), and [documentation export](https://github.com/unset-sh/.github/actions/runs/45007716191). The export run produced its downloadable artifact.
