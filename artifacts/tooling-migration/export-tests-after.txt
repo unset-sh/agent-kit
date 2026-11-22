@@ -1,0 +1,25 @@
+✔ export uses the exact requested commit, ignoring later commits, dirty and staged files (156.863958ms)
+✔ provenance names the source revision and hashes every exported source file (103.516833ms)
+✔ a caller repository selects its own section and provenance (199.176125ms)
+✔ unsupported or unsafe repository names are refused without mutation (81.424083ms)
+✔ framework and generated documentation sections are reserved (54.56525ms)
+✔ two exports of one commit have identical bytes and no timestamps or output paths (146.212041ms)
+✔ only a full commit object is accepted as a revision (97.783208ms)
+✔ local replace refs cannot change the committed tree being exported (141.975166ms)
+✔ missing index or licence fails before creating output (257.110708ms)
+✔ committed symlinks and submodules are refused before any writes (353.128417ms)
+✔ unsafe committed filenames and reserved provenance paths are refused (1077.758334ms)
+✔ case-folded file and ancestor collisions are refused (279.521916ms)
+✔ a source licence matching the root is kept, and a conflicting one is refused (223.863542ms)
+✔ existing output directories, files and links are never overwritten (163.040291ms)
+✔ output symlink ancestors, traversal and missing parents are refused (51.34975ms)
+✔ output must be an absolute path (50.8055ms)
+✔ CLI exports and rejects missing, unknown and duplicate arguments (226.029708ms)
+ℹ tests 17
+ℹ suites 0
+ℹ pass 17
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 3717.043375
