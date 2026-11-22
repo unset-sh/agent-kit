@@ -3,6 +3,14 @@
 Each entry says what changes for a repository that takes the release, in plain words. The release page shows
 the entry of its version.
 
+## v0.2.0
+
+- Add `org-experience-review` and seven specialist perspectives for reviewing how design supports clarity,
+  competence, autonomy, trust, expression, comfort and satisfaction. Reports separate observed behaviour
+  from emotional hypotheses and questions for later human testing.
+- Add source-owned human guides in `docs/`, prepared for export to the documentation site's `agent-kit/`
+  section. They are not installed under `.claude/`; an automatic docs export caller is not configured.
+
 ## v0.1.0
 
 The first release. A repository that takes it gains:

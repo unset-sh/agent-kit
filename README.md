@@ -11,11 +11,35 @@ whatever repository they are in, and gets it to them in a way that cannot drift 
 | --- | --- | --- |
 | [`rules/`](rules/) | The organisation's rules, how to work, and the engineering principles in short. Loaded at the start of every session, so kept to 150 lines in total | `.claude/rules/org/` |
 | [`skills/`](skills/) | Procedures for jobs that repeat across repositories, read only when the job comes up | `.claude/skills/org-*/` |
+| [`agents/`](agents/) | Seven specialist perspectives used by the experience review | `.claude/agents/org-*.md` |
+| [`docs/`](docs/) | Human guides maintained here for export to the documentation website | The `agent-kit/` website section; not part of the installed kit |
 | [`sync.mjs`](sync.mjs) | Installs a release in a repository and checks the copy. Node built-ins only | `.claude/agent-kit/sync.mjs` |
 | [`templates/`](templates/) | The `CLAUDE.md` and `AGENTS.md` a new repository starts from | Copied once, then owned by the repository |
 | [`projects/`](projects/) | The text of the instructions for Claude projects | Pasted into a project's settings by hand |
 
 What belongs here and what does not is in [`CLAUDE.md`](CLAUDE.md).
+
+## Review an experience
+
+[`org-experience-review`](skills/org-experience-review/SKILL.md) coordinates seven independent perspectives
+on clarity, competence, autonomy, trust, expression, comfort and satisfaction. The coordinator combines
+observed strengths and gaps with separately labelled questions for later human testing. Smaller models
+may be used after capability checks; model comparisons keep tasks and conditions matched.
+
+Start with the [human overview](docs/experience-review.md) or the [run guide](docs/running-an-experience-review.md).
+The skill and agent prompts ship through the existing release and sync process. Their presence in this
+source tree does not update repositories that have already adopted a release.
+
+## Human documentation
+
+The public source is [`docs/`](docs/); its export destination is `agent-kit/` in `unset-sh/docs`.
+Pages use the documentation site's source format and keep local links inside that exported tree.
+The docs are AGPL-3.0-only, like this repository, and are excluded from the assistant installation bundle.
+
+The documentation site discovers the section from `_index.md`. Agent-kit has no automatic documentation
+export caller yet. Export must preserve the source revision, page provenance and licence notices, and
+publication is separate from an approved assistant-kit release. Organisation workflow implementations
+belong in `unset-sh/.github`; this change does not add a publisher or credentials.
 
 ## How a repository uses it
 

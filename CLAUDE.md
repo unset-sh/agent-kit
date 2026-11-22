@@ -8,11 +8,12 @@ released as one version and copied into each repository.
 - **Belongs here:** the organisation's rules, the engineering principles, skills and subagents for jobs that
   repeat across repositories, the `CLAUDE.md` and `AGENTS.md` templates, the text of the Claude project
   instructions, and `sync.mjs`, which installs a release in a repository and checks the copy.
+  This repository also owns its public human guides in `docs/`, prepared for export to the documentation site.
 - **Does not belong here:** a repository's own rules (its `CLAUDE.md`); the map of repositories (that is
   `unset-sh/.github`); decision records (the organisation's decision set); CI workflows other repositories
   run; anything written for members' assistants (that is `unset-sh/profile-recipes`).
 - **Uses:** nothing. **Used by:** every organisation repository, as a committed copy under `.claude/` pinned by
-  `.claude/agent-kit/lock.json`.
+  `.claude/agent-kit/lock.json`; `unset-sh/docs` will receive this repository's human guides in `agent-kit/`.
 - **Licence:** follows the organisation rule.
 
 The map of every unset.sh repository is <https://github.com/unset-sh/.github/blob/main/MAP.md>. Read it before
@@ -55,6 +56,12 @@ Other repositories load a copy of these. Here they are the source, so they are i
 - Node 26 (`.nvmrc`), no dependencies, `node:test` only. Actions are pinned by full commit SHA.
 
 ## Commands
+
+Human documentation lives in `docs/` and follows the source contract in
+[`unset-sh/docs`](https://github.com/unset-sh/docs/blob/5033b9b7f2d1a3aade4e024c052aca876046254a/.github/CONTRIBUTING.md).
+Keep links within that tree or use absolute source URLs. Changes to review behaviour update the human
+guides in the same pull request. Review stays with this repository's owner and normal PR process.
+The docs are excluded from the kit bundle; no automatic docs exporter is configured here yet.
 
 ```sh
 npm run check                                              # every check and test
