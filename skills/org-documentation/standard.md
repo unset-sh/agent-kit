@@ -114,6 +114,14 @@ Code walkthroughs link to the exact commit and relevant file or symbol they desc
 
 Current and planned architecture must have separate, explicit labels. Accepted decisions explain intent and trade-offs; they do not prove the implementation already matches. Document a material discrepancy rather than drawing the desired architecture as though it exists.
 
+## Workflow explanations
+
+Explain workflows as observable processes, not lists of configuration keys. Name the trigger, responsible repository and owner, inputs and prerequisites, ordered steps, outputs and destinations, and meaningful failure and recovery paths. Distinguish who owns the process from the identity that executes it.
+
+Link the workflow files and supporting scripts at the checked revision. State which behaviour is running today and put proposed changes in a separate section. Explain permissions, approvals, and trust boundaries where they affect what the workflow can do; never include secret values.
+
+Follow one concrete run from trigger to result, then a useful failure case. Identify the evidence used to check the explanation: code review, a test, or an observed run. A successful run alone does not prove every recovery path works. Use the [workflow template](templates.md) when helpful.
+
 ## Source format
 
 Use UTF-8 Markdown with YAML front matter. Keep the body readable on GitHub as well as the website. Use one title from front matter; body headings begin at level two. Do not skip levels. Use lowercase hyphenated paths and keep published paths stable.
@@ -126,8 +134,12 @@ Use standard Markdown first. No raw HTML, inline styles/scripts, remote resource
 
 ## Maintenance and review
 
-Change documentation with the behaviour it describes. Reviewers check understanding as well as factual accuracy: can a new reader explain the responsibility, follow the example, and find the source?
+When code, behaviour, workflows, or ownership changes, include the related documentation update in the same pull request, or record an explicit reason for review that the existing documentation remains correct. Identify the affected pages and how they were checked. An ownership move also updates the canonical `repos.json` in `unset-sh/.github` and its generated map, rather than only a downstream explanation.
+
+Reviewers check understanding as well as factual accuracy: can a new reader explain the responsibility, follow the example, and find the source? Automated impact and drift checks can flag missing updates or changed inputs; they cannot establish that an explanation still means the right thing.
 
 Never edit generated reference or mirrored documentation by hand. Edit the source or generator and regenerate. Export only the repository's selected public documentation and its own section. Do not infer that every Markdown file should be published.
+
+Keep the checked source revision and export provenance with the documentation or generation metadata. A new export timestamp alone is not evidence of a content review. The owning repository sets a review interval and responsible maintainer in its local contribution instructions; at that interval, recheck examples, source links, workflow behaviour, and ownership against current sources, and record the result. Report unavailable verification rather than updating freshness claims blindly.
 
 Before publication, check the page's purpose, correctness, example, source links, diagram readability, heading structure, and relevant version. Mechanical checks can enforce paths, links, metadata, and rendering. A word count or a readability score cannot establish that a technical explanation is good.

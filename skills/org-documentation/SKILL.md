@@ -1,6 +1,6 @@
 ---
 name: org-documentation
-description: Use when creating, materially changing, or reviewing human documentation in an unset.sh repository, including tutorials, task guides, reference pages, architecture explanations, code walkthroughs, and documentation adoption.
+description: Use when creating, materially changing, or reviewing human documentation in an unset.sh repository, including tutorials, task guides, reference pages, architecture and workflow explanations, code walkthroughs, and documentation adoption.
 ---
 
 # Human documentation
@@ -14,6 +14,7 @@ reader needs. Write in the repository that owns the behaviour; the website rende
 | --- | --- |
 | Write or review a public page | [Standard](standard.md) and the relevant [page template](templates.md) |
 | Explain architecture, modularity, or a code path | [Architecture](architecture.md), then its template |
+| Explain a workflow or review documentation freshness | [Standard](standard.md), then the workflow template or repository facts |
 | Adopt the standard or configure a source repository | [Repository facts and adoption](repository-rules.md) |
 
 Apply the standard to the page's actual reader goal. Keep explanation, worked example, and observed result

@@ -12,6 +12,11 @@ checklist for their own source paths and checks. A short engineering-rule pointe
 The writing rules give Learn and use and Understand and contribute equal care. Renderer metadata remains
 proposed, and this release does not enable new site checks, enroll source repositories, or publish app docs.
 
+Code, workflow and ownership changes require related documentation or a reviewed reason that it remains
+correct. Workflow explanations connect triggers, owners, inputs, steps, outputs and recovery to verified
+source. Repositories record provenance and periodic verification; automated drift checks do not replace
+reviewing meaning, and executable checks still require explicit adoption in their owning repositories.
+
 ## v0.1.0
 
 The first release. A repository that takes it gains:

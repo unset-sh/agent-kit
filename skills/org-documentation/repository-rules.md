@@ -25,7 +25,10 @@ Each participating repository documents these facts in its existing `CLAUDE.md`,
 | Local verification | Actual commands for examples, generated reference, and content checks |
 | Site preview | The supported central preview command and required versions, once implemented |
 | Source truth | Schemas, public entry points, generators, tests, and relevant accepted decisions |
+| Source provenance | Where checked revisions and exported source revisions are recorded |
 | Review ownership | The repository's existing review process, not an invented team |
+| Periodic verification | Responsible maintainer, review interval, and where results are recorded |
+| Documentation impact check | Actual configured check and reviewed no-change reason process, if adopted |
 | Licence | The source documentation and any separate asset licences |
 
 Until these facts are supplied, do not guess paths, commands, owners, or a source revision. Adoption does not replace stricter security, protocol, or contribution rules.
@@ -37,7 +40,14 @@ Until these facts are supplied, do not guess paths, commands, owners, or a sourc
   `.claude/skills/org-documentation/standard.md` and its templates, so readers and assistants use the same version.
 - Pick one useful learning page and one architecture or conceptual page as the first examples of the standard.
 - Add only the categories those pages need; link both reader routes to shared reference.
+- Apply the standard's change-review and periodic-verification rules to the repository's code, workflows and ownership. Explain important workflows using their actual source files and checked revisions.
 - Check the export and rendered result before enabling publication.
 
 Publishing this skill does not enroll repositories, configure export jobs, or enable publication. Each source
 adopts the approved kit release through its own reviewed update.
+
+Workflow automation and executable checks belong in their implementing repositories, not this text-only kit.
+The reusable documentation-impact check planned in `unset-sh/docs` remains proposed until its framework
+change lands. Each repository must explicitly adopt and configure an available check before claiming it is
+enforced. Keep any reviewed no-change reason with the source pull request; do not treat a passing check as a
+substitute for reviewing meaning, examples, and current behaviour.

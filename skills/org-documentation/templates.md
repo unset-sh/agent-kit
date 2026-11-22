@@ -193,3 +193,35 @@ TODO: Explain where a realistic change belongs and how to verify it.
 
 TODO: Link governing specifications, relevant decisions, contracts, and checks.
 ```
+
+## Workflow explanation body
+
+```markdown
+TODO: State the workflow's purpose and the source revision checked.
+TODO: Label current behaviour; separate any proposed changes from it.
+
+## Trigger and ownership
+
+TODO: Name the event or schedule, responsible repository and maintainer, and executing identity.
+
+## Inputs and boundaries
+
+TODO: State inputs, prerequisites, permissions and approvals that affect the run.
+TODO: Name secret requirements without giving their values.
+
+## Example: TODO one run
+
+TODO: Follow one concrete input through ordered steps to its observable outputs and destinations.
+TODO: Use a sequence diagram where useful, with the same names as the prose and source.
+
+## Failure and recovery
+
+TODO: Show a meaningful failure, who can act, and the supported recovery or retry.
+TODO: State any recovery behaviour that has not been verified.
+
+## Source and verification
+
+TODO: Link the workflow files and supporting scripts at the checked revision.
+TODO: Identify the tests, source review or observed run used to verify this explanation.
+TODO: Link the owning repository's documentation-review responsibility and interval.
+```
