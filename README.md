@@ -10,7 +10,7 @@ whatever repository they are in, and gets it to them as a pinned copy that each 
 | Folder | What it holds | In a repository it becomes |
 | --- | --- | --- |
 | [`rules/`](rules/) | The organisation's rules, how to work, and the engineering principles in short. Loaded at the start of every session, so kept to 150 lines in total | `.claude/rules/org/` |
-| [`skills/`](skills/) | Procedures for jobs that repeat across repositories, read only when the job comes up | `.claude/skills/org-*/` |
+| [`skills/`](skills/) | Procedures for jobs that repeat across repositories, read only when the job comes up. The organisation's decision records are the skill [`org-decisions`](skills/org-decisions/SKILL.md) | `.claude/skills/org-*/` |
 | [`sync.mjs`](sync.mjs) | Installs a release in a repository and checks the copy. Node built-ins only | `.claude/agent-kit/sync.mjs` |
 | [`templates/`](templates/) | The `CLAUDE.md` and `AGENTS.md` a new repository starts from | Copied once, then owned by the repository |
 | [`projects/`](projects/) | The text of the instructions for Claude projects | Pasted into a project's settings by hand |

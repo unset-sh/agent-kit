@@ -36,8 +36,8 @@ them there, never in this copy. A repository's own `CLAUDE.md` adds its own rule
 
 ## Decisions
 
-- Organisation decisions go in the organisation's own decision records, never in the app repository's ADRs.
-  Until those records have a home, ask the owner where a decision goes.
+- Organisation decisions are records in `unset-sh/agent-kit`, carried here as the skill `org-decisions`. Read
+  it before deciding anything organisation-wide. Never use the app repository's ADRs for organisation work.
 - An accepted decision record is never edited, only superseded by a new one.
 
 ## Releases

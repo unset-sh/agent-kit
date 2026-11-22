@@ -13,8 +13,9 @@ The first release. A repository that takes it gains:
   decision with evidence, no security shortcuts, branch and pull request habits, and when to stop and ask.
 - **Engineering principles, in short** (`.claude/rules/org/principles.md`), with the three full documents in
   the skill `org-principles`.
-- **Skills**: `org-new-repo` (set up a repository), `org-release` (prepare a release for approval) and
-  `org-kit-update` (take a newer kit release).
+- **Skills**: `org-new-repo` (set up a repository), `org-release` (prepare a release for approval),
+  `org-kit-update` (take a newer kit release) and `org-decisions` (the organisation's decision records, starting
+  with org-0001: they live in agent-kit).
 - **`sync.mjs`** and its lock file under `.claude/agent-kit/`, which install a release and check the copy.
 
 Remove from the repository's own `CLAUDE.md` any rule these files now state.
