@@ -5,7 +5,20 @@ the entry of its version.
 
 ## Unreleased
 
-Combine this entry with the other pending changes and choose the version when preparing the release.
+The pending changes below are prepared as version 0.2.0. No release is published by preparing these notes.
+Org-0007 adds the owner-approved backend, web and deployment direction and records this architecture chat.
+
+## v0.2.0
+
+Prepared, not published. A repository that takes this release gains the following changes:
+
+- Add org-0007: separate backend, web and deployment through small capability contracts and
+  runtime-appropriate adapters. Replace the proposed server-kit entry with backend and remove the
+  standalone messaging proposal; neither proposal was an existing repository to rename or delete.
+  Preserve tooling ownership under org-0006 and existing release controls. Product migrations, API
+  implementations, consumer adoption and production delivery remain separate work.
+- Preserve the architecture chat synthesis, plan, status ledger and dated research under notes and
+  artifacts. These task-specific files stay outside the distributed kit; the accepted decision ships.
 
 - Add the `org-decisions` skill and preserve the accepted history in org-0001 to org-0004. Org-0003's
   separate workflows repository was superseded by org-0004's `.github` ownership; org-0006 now supersedes
