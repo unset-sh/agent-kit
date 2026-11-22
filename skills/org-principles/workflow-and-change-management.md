@@ -17,6 +17,37 @@ Before considering work complete:
 
 Do not make broad refactors merely because you are touching an area of code. Separate necessary improvements from unrelated cleanup unless the cleanup is small and clearly beneficial.
 
+### Pull request readiness
+
+Each PR has one coherent, reviewable purpose and declares its readiness in the description.
+
+Line counts are advisory. This organisation guidance has no fixed PR line limit or PR-count quota.
+Split work when it improves review or provides a useful integration step, not to satisfy a size counter.
+
+- **Independent:** it can merge and, where applicable, release or deploy on the current target branch once
+  its required checks and review pass, without another unmerged change or unavailable artifact. Documentation
+  or other changes without a deliverable need their applicable checks, not an artificial release or deployment.
+- **Dependent:** it links the prerequisite PRs and states the exact condition that makes it ready. Across
+  repositories, name the required published version or artifact as well; a producer PR merging does not
+  make an unreleased dependency available. It may be reviewed early, but must not merge while blocked.
+
+Every merge into staging must leave a working, releasable state. A dependency declaration does not permit
+merging broken intermediate code while waiting for a later PR to repair it. A partial capability may land
+when its current behavior is deliberately valid and compatible, without depending on unfinished follow-up work.
+
+When prerequisites become available, update the PR against its actual target and exact dependency pins,
+rerun the relevant checks, and obtain any review needed for the changed result before merging. A green
+check against an earlier stack or a different dependency selection is not evidence for the new result.
+
+Stacked PRs are optional when they make review clearer. Land them in dependency order; update only branches
+you own and are authorised to rewrite, then recheck each resulting PR. Do not force a stack into arbitrary
+folder or architectural-layer slices. Keep necessary implementation, tests and documentation together when
+they are one reviewable change. Refactoring and behavior changes remain separate commits.
+
+Apply the canonical [PR labels](https://github.com/unset-sh/.github/blob/main/docs/site/pull-request-labels.md)
+from `unset-sh/.github`, choosing one primary kind by the intended outcome. Keep readiness and dependency
+links in the PR description; a label is not proof that a dependency is satisfied or permission to merge.
+
 
 ## 2. Git Discipline
 
@@ -54,18 +85,50 @@ Do not create a second mechanism for something the project already handles well 
 
 ## 4. API and Contract Design
 
-When designing APIs or external contracts:
+When designing, changing, or reviewing APIs, published schemas, SDK surfaces, or cross-repository contracts,
+identify their consumers, governing protocol, supported versions, and existing compatibility commitments.
+
+Use applicable, approved [Google AIPs](https://google.aip.dev/1) as the default API design and review reference.
+Check each AIP's scope and replacement status. The governing protocol takes precedence: apply AT Protocol's
+Lexicon and XRPC rules to AT Protocol interfaces, and the supported Matrix specification to Matrix interfaces.
+Do not substitute Google's resource naming, REST mappings, protobuf/gRPC conventions, or internal approval
+process for a protocol's requirements. Explain material deviations from applicable guidance.
+
+In the design note or pull request, cite the AIP numbers and URLs, relevant protocol sections and supported
+protocol/SDK versions, and the source revision or consultation date. Cite the source actually read; AIPs do
+not all have independently numbered releases.
+
+For each contract:
 
 - Keep contracts clear, minimal, and intentional.
 - Validate inputs at trust boundaries.
 - Use consistent error behavior.
 - Avoid exposing internal implementation details unnecessarily.
-- Prefer backwards-compatible evolution when practical.
+- Respect published compatibility commitments and plan migrations deliberately.
 - Consider idempotency where operations may be retried.
 - Design pagination, filtering, and resource boundaries deliberately where applicable.
 - Translate external API concepts into internal domain concepts at appropriate boundaries rather than allowing external models to spread throughout the system.
 
-Do not design elaborate versioning or compatibility machinery without a real requirement.
+Review compatibility using [AIP-180](https://google.aip.dev/180):
+
+- **Source:** existing consumer code still compiles and runs against the changed library.
+- **Wire:** existing consumers and providers can still exchange and interpret data correctly.
+- **Semantic:** existing consumers continue to receive the behavior they reasonably rely on.
+
+Additions are not inherently safe. New required fields, changed defaults, response enum values, or pagination
+added to a previously unpaginated response can break consumers. Check supported consumer/provider combinations
+with meaningful tests; passing generated types or schema validation alone does not establish compatibility.
+
+Follow the owning protocol's evolution rules. [Lexicon evolution](https://atproto.com/specs/lexicon#lexicon-evolution)
+requires compatibility between old and new schemas and data; incompatible changes need a new Lexicon name.
+[Matrix versioning](https://spec.matrix.org/v1.19/#specification-versions) has its own endpoint and deprecation
+rules. Use the version the implementation supports; this reference does not mandate a protocol upgrade.
+
+Private ports and other internal interfaces may evolve with their consumers. Do not impose permanent public
+compatibility on every function, or design elaborate versioning machinery without a real requirement.
+
+References checked on 2026-11-22: AIP-1 and AIP-180 (approved), AT Protocol Lexicon language version 1, and
+Matrix specification v1.19. Recheck the relevant source for each API change.
 
 
 ## 5. Database and Data Modeling

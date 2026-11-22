@@ -82,11 +82,16 @@ To change a rule or a skill, change it here. The copy in a repository is never e
 
 ## Releases
 
-A release is a tag `v<version>` on a commit of `main`. The workflow builds `agent-kit.json` once, waits for
-the owner's approval in the `release` environment, attests the files and publishes them on the release page
-with the changelog entry of that version. Whoever can change this repository can steer every assistant in
-every unset.sh repository, so a release goes through two approvals before it reaches a repository: the
-owner's on the release, and a reviewed pull request in the repository that takes it.
+[Org-0009](skills/org-decisions/records/org-0009-staging-and-production-delivery.md) defines the accepted target:
+automatic prereleases from `staging`, and stable publication after a human merges staging into `master`.
+Release and deployment then proceed automatically after successful checks, without a second environment
+approval. Agents may prepare and review a promotion but never merge it, including when using the owner's account.
+
+**Operational cutover is pending.** Existing workflows and their release-environment gate remain in place
+until their coordinated reviewed migration. Changing these instructions does not change branch defaults,
+publish a version or install the new kit in consumers. The [delivery guide](docs/site/delivery-policy.md)
+explains the model; the [release skill](skills/org-release/SKILL.md) includes transition and verification rules.
+Consumers continue to take an exact kit release through their own reviewed update PRs.
 
 ## Working on this repository
 

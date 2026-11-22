@@ -27,13 +27,13 @@ A copy of `rules/working.md` in `unset-sh/agent-kit`: change it there, never in 
 
 ## Branches and pull requests
 
-- Never commit on `main`, a shared branch or a detached HEAD. Work on your own branch (`claude/<task>`,
-  `cursor/<task>`) cut from a freshly fetched `origin/main`.
+- Work on your own branch (`claude/<task>`, `cursor/<task>`) from freshly fetched `origin/staging`; never commit
+  on shared branches or detached HEAD. Until coordinated cutover, use the existing default under `org-release`.
 - Never checkout, reset, rebase or force-push a branch you did not create.
-- Every change lands through a pull request. Who merges is the repository's rule; where it has none, the owner
-  merges.
-- One purpose per pull request, small enough to review in one sitting. Refactoring and behaviour changes go in
-  separate commits.
+- Every change lands by PR. A separate AI may review and merge eligible staging PRs after required checks pass.
+- Only a human merges into `master`, from same-repo `staging`. Agents never merge, auto-merge or enqueue production.
+- One coherent purpose per PR; declare independent/dependent readiness using `org-principles` workflow section 1.
+  Separate refactoring/behaviour commits; use labels from `unset-sh/.github:docs/site/pull-request-labels.md`.
 - Commit subject: a capitalised imperative summary with no trailing period, at most 72 characters, completing
   "if applied, this commit will ...". Then a blank line and a body wrapped at 72 that says what and why. No
   Conventional Commits prefix. A repository may add its own prefix rule.

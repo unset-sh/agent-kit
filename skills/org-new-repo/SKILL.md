@@ -27,7 +27,7 @@ Keep it to what the repository needs on day one. Folders appear with their first
 | `AGENTS.md` | From the kit's `templates/AGENTS.md` |
 | `.claude/` | The kit's copy, installed with the skill `org-kit-update` (first adoption) |
 | Manifest | The licence field, exact dependency versions, and one `check` command that runs every check |
-| `.github/workflows/ci.yml` | Runs the `check` command and `node .claude/agent-kit/sync.mjs --check` on every pull request and on `main` |
+| `.github/workflows/ci.yml` | Runs the `check` command and the kit-copy check on PRs and on `staging` and `master` |
 | `.github/pull_request_template.md` | What changed, where it came from, a short checklist |
 
 Workflow rules: `permissions: {}` at the top and the least each job needs; every action pinned to a full
@@ -36,10 +36,14 @@ Copy pins from a repository whose CI is green, and read the action's release not
 
 ## After the first merge
 
-4. Ask the owner to protect `main` with a ruleset: pull requests only, squash merges, no force pushes or
-   deletion, and the CI check required. Assistants do not change repository settings.
-5. If the repository releases anything, ask the owner for the `release` environment, then follow the skill
-   `org-release`.
+4. Through the authorised setup, establish `staging` as the default development branch and `master` as the
+   stable branch. Protect both against direct work, force pushes and deletion, and require applicable PR
+   checks. Ordinary feature PRs can squash into staging; promotion uses a merge commit from same-repository
+   staging to master. Only a human performs that promotion. Empty repositories need an explicit initial
+   commit before these branches can exist. For existing repositories, follow `org-release`'s cutover rules.
+5. If the repository ships deliverables, adopt `org-release`: separate automatic staging prereleases and
+   stable releases after human promotion. Restrict environment access to the matching branch; do not add a
+   second manual release/deployment approval. This setup does not authorise assistants to create secrets.
 6. Human docs live in the repository's `docs/` folder. Wiring it to docs.unset.sh needs a deploy key, which
    the owner places.
 7. Update the map entry from planned or proposed to active, and check its description matches GitHub's.

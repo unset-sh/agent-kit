@@ -20,6 +20,7 @@ for organisation work.
 | [org-0004](records/org-0004-workflows-live-in-github.md) | Superseded by org-0006; originally placed organisation workflow implementations in `unset-sh/.github` |
 | [org-0005](records/org-0005-ai-working-material-lives-in-agent-kit.md) | AI working notes and artifacts live in agent-kit, grouped by task and excluded from the kit |
 | [org-0006](records/org-0006-developer-tooling-lives-in-tooling.md) | Shared developer tooling lives in public `unset-sh/tooling`; `.github` retains organisation metadata and community defaults |
+| [org-0009](records/org-0009-staging-and-production-delivery.md) | Staging is the default development and automated prerelease branch; human promotion to master is the sole production approval |
 
 ## Before you decide something
 

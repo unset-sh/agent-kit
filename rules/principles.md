@@ -10,7 +10,7 @@ The guiding rule: choose the simplest design that keeps responsibilities clear a
 ## Design
 
 - Model the application's concepts first. External technology sits behind small contracts, in adapters.
-- Define the smallest contract the application needs. Do not mirror an external API.
+- Define minimal contracts; do not mirror external APIs. For API work, use `org-principles` workflow section 4.
 - Dependencies point toward stable application concepts, never toward implementation details.
 - Wire known dependencies in a composition root. Use a registry or a plugin only when something truly is dynamic.
 - No layer, abstraction or file without a responsibility that needs it now. Clarity comes before reuse: extract
