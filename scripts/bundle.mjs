@@ -5,9 +5,9 @@
 // The bundle is the same for the same commit: files are sorted and nothing but their content, the version in
 // package.json and the commit goes in. sync.mjs reads it; see parseBundle there for what it must satisfy.
 
-import { mkdirSync, readFileSync, readdirSync, statSync, writeFileSync } from "node:fs";
+import { lstatSync, mkdirSync, readFileSync, readdirSync, realpathSync, writeFileSync } from "node:fs";
 import { dirname } from "node:path";
-import { fileURLToPath, pathToFileURL } from "node:url";
+import { fileURLToPath } from "node:url";
 import { KIT, destinationOf, sha256 } from "../sync.mjs";
 
 /** Folders whose every file is shipped, plus sync.mjs itself. A folder that does not exist yet ships nothing. */
@@ -15,15 +15,23 @@ export const SHIPPED_FOLDERS = ["rules", "skills", "agents"];
 
 const root = new URL("../", import.meta.url);
 
-/** Repository-relative paths of every file the kit ships, sorted. */
+/**
+ * Repository-relative paths of every file the kit ships, sorted. A symbolic link is refused: what it points to
+ * could change after review, and sync.mjs never writes one.
+ */
 export function shippedPaths(base = root) {
   const paths = ["sync.mjs"];
   for (const folder of SHIPPED_FOLDERS) {
     const url = new URL(`${folder}/`, base);
-    if (statSync(url, { throwIfNoEntry: false }) === undefined) continue;
+    // Without the trailing slash, so lstat sees a link itself rather than the folder it points to.
+    const folderStat = lstatSync(new URL(folder, base), { throwIfNoEntry: false });
+    if (folderStat === undefined) continue;
+    if (!folderStat.isDirectory()) throw new Error(`${folder} must be a folder, not a link or a file`);
     for (const name of readdirSync(url, { recursive: true })) {
       const path = `${folder}/${String(name).replaceAll("\\", "/")}`;
-      if (statSync(new URL(path, base)).isFile()) paths.push(path);
+      const stat = lstatSync(new URL(path, base));
+      if (stat.isSymbolicLink()) throw new Error(`${path} is a symbolic link; the kit ships only regular files`);
+      if (stat.isFile()) paths.push(path);
     }
   }
   return paths.sort();
@@ -57,7 +65,16 @@ export function serialise(bundle) {
   return `${JSON.stringify(bundle, null, 2)}\n`;
 }
 
-if (process.argv[1] !== undefined && import.meta.url === pathToFileURL(process.argv[1]).href) {
+function startedAsScript() {
+  if (process.argv[1] === undefined) return false;
+  try {
+    return realpathSync(process.argv[1]) === realpathSync(fileURLToPath(import.meta.url));
+  } catch {
+    return false;
+  }
+}
+
+if (startedAsScript()) {
   const args = process.argv.slice(2);
   const value = (flag) => (args.includes(flag) ? args[args.indexOf(flag) + 1] : undefined);
   const out = value("--out") ?? fileURLToPath(new URL("dist/agent-kit.json", root));
