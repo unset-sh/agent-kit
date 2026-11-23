@@ -18,8 +18,9 @@ before he merges `staging` into `main`. Asked whether that covers the main-only 
 1. **Staged repositories.** An assistant merges its pull request into `staging` once it has checked it: it
    reads the full diff on GitHub, confirms the required checks pass, and confirms the pull request does only
    what its description says. No separate review thread is needed.
-2. **Main-only repositories** (tooling, `.github`, docs). The same check lets an assistant merge a pull request
-   into `main`. agent-kit keeps org-0013: a thread other than the author reviews and merges.
+2. **Main-only repositories** (tooling, `.github`, docs; docs: see the open question below). The same check
+   lets an assistant merge a pull request into `main`. agent-kit keeps org-0013: a thread other than the author
+   reviews and merges.
 3. **Promotions stay Alex's.** Only Alex merges `staging` into `main` in a staged repository. That merge is his
    review and his release decision, as org-0010 says.
 4. **Unchanged gates.** org-0012 still applies: no agent approves, triggers or merges toward a production deploy
