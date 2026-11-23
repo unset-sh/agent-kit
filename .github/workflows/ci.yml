@@ -1,5 +1,8 @@
 name: ci
 
+# Calls tooling's shared check, the single source of truth for how organisation repositories run CI.
+# Pinned to a full tooling commit; docs/use-workflows.md in unset-sh/tooling describes the inputs.
+
 on:
   pull_request:
     branches: [main]
@@ -15,22 +18,9 @@ concurrency:
 jobs:
   check:
     name: Check rules, skills, sync and bundle
-    runs-on: ubuntu-24.04
-    timeout-minutes: 5
+    uses: unset-sh/tooling/.github/workflows/ci-check.yml@3fe3db56a710da477877f1e1e3fe37abf4d3b71c
     permissions:
       contents: read
-    steps:
-      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
-        with:
-          persist-credentials: false
-      - uses: oven-sh/setup-bun@0c5077e51419868618aeaa5fe8019c62421857d6 # v2.2.0
-        with:
-          bun-version-file: .bun-version
-          no-cache: true # never restore a runner from a cache another run wrote
-          token: "" # an exact version needs no API call, so the action gets no token
-      - name: Bun is the exact version .bun-version names
-        env:
-          BUN_VERSION_FILE: .bun-version
-        # setup-bun falls back to the latest release when the file is missing or unreadable; this refuses that.
-        run: test "$(bun --version)" = "$(cat "$BUN_VERSION_FILE")"
-      - run: bun run check
+      packages: read # required by the shared check; the kit installs nothing
+    with:
+      timeout-minutes: 5

@@ -10,6 +10,6 @@ jobs:
   policy:
     permissions:
       contents: read
-    uses: unset-sh/tooling/.github/workflows/ci-branch-policy.yml@a73f1437b733b26779f969d2c2c142a1acf0e569
+    uses: unset-sh/tooling/.github/workflows/ci-branch-policy.yml@3fe3db56a710da477877f1e1e3fe37abf4d3b71c
     with:
       flow: main
