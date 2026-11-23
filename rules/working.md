@@ -29,8 +29,8 @@ A copy of `rules/working.md` in `unset-sh/agent-kit`: change it there, never in 
 - Never commit on `main`, `staging`, another shared branch or a detached HEAD. Work on your own branch
   (`claude/<task>`, `cursor/<task>`) cut from the freshly fetched default branch.
 - Never checkout, reset, rebase or force-push a branch you did not create.
-- Every change lands through a pull request. Only the owner merges into `main`: never merge, auto-merge or
-  queue that pull request. Elsewhere the repository's rule says who merges; with none, only on his say-so.
+- Every change lands through a pull request. Check yours (full diff, required checks green), then merge it into
+  `staging`, or into `main` in tooling, `.github` and docs (org-0014). Never merge a promotion into `main`.
 - One purpose per pull request, small enough to review in one sitting. Refactoring and behaviour changes go in
   separate commits.
 - Commit subject: a capitalised imperative summary with no trailing period, at most 72 characters, completing
