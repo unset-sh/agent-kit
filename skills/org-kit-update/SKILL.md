@@ -28,7 +28,9 @@ once the owner merges it into the kit's `main` and each repository takes that co
    request and do not resolve it silently.
 5. Open a pull request titled `Update agent-kit to <first 7 characters of the commit>`. Say which rules and
    skills changed, in one line each, and give the full commit. It is reviewed and merged like code and never
-   qualifies for a docs-only merge.
+   qualifies for a docs-only merge. `--check` proves only that the copy matches its lock, not that the lock
+   matches the kit, so this pull request is the control: its reviewer runs `node .claude/agent-kit/sync.mjs
+   <commit>` on the branch and expects no diff.
 
 ## First adoption
 

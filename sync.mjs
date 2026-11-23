@@ -319,17 +319,30 @@ const REPOSITORY_VARIABLES = [
   "GIT_NAMESPACE",
 ];
 
-// git already refuses ext:: by default, but a user's config can loosen that (protocol.allow, read 2026-11-23 at
-// https://github.com/git/git/blob/v2.43.0/Documentation/config/protocol.txt), so the call says never itself.
+// Which transports git may use. GIT_ALLOW_PROTOCOL overrides every protocol.*.allow setting, including one given
+// with -c, so it is set here rather than inherited (read 2026-11-23: https://github.com/git/git/blob/v2.43.0/
+// Documentation/git.txt and Documentation/config/protocol.txt). https reaches GitHub, file a local --from; ext::,
+// ssh and any git-remote-<name> helper on PATH are refused.
+const ALLOWED_PROTOCOLS = "https:file";
+// No hook from the user's template or config runs in the temporary repository (fetch fires reference-transaction),
+// and every fetched object is checked as it arrives.
+const GIT_SETTINGS = ["-c", "core.hooksPath=/dev/null", "-c", "fetch.fsckObjects=true"];
+
+/** Text from git with any password or token in a URL taken out, so it can be printed in a CI log. */
+function withoutCredentials(text, source) {
+  return text.replaceAll(source, "the --from repository").replace(/\/\/[^/@\s]*@/g, "//");
+}
+
 /**
- * Run git in the temporary repository: never prompting for credentials, never through the ext:: transport,
- * and never pointed elsewhere by the caller's environment. A failure becomes a refusal that names the step.
+ * Run git in the temporary repository: never prompting for credentials, only over https or a local path, never
+ * running a hook, and never pointed elsewhere by the caller's environment. A failure becomes a refusal that
+ * names the step.
  */
-function git(cwd, args, step) {
-  const env = { ...process.env, GIT_TERMINAL_PROMPT: "0" };
+function git(cwd, args, step, source = SOURCE) {
+  const env = { ...process.env, GIT_TERMINAL_PROMPT: "0", GIT_ALLOW_PROTOCOL: ALLOWED_PROTOCOLS };
   for (const name of REPOSITORY_VARIABLES) delete env[name];
   try {
-    return execFileSync("git", ["-c", "protocol.ext.allow=never", ...args], {
+    return execFileSync("git", [...GIT_SETTINGS, ...args], {
       cwd,
       env,
       maxBuffer: MAX_FILE_BYTES * 2,
@@ -337,7 +350,7 @@ function git(cwd, args, step) {
       timeout: GIT_TIMEOUT_MS,
     });
   } catch (error) {
-    const said = String(error.stderr ?? "").trim().split("\n").at(-1) || error.message;
+    const said = withoutCredentials(String(error.stderr ?? "").trim().split("\n").at(-1) || error.message, source);
     throw new SyncError(`${step} failed (${said})`);
   }
 }
@@ -371,7 +384,8 @@ export function fetchKit(commit, source = SOURCE) {
   const folder = mkdtempSync(join(tmpdir(), "agent-kit-"));
   try {
     git(folder, ["init", "--quiet"], "preparing a temporary repository");
-    git(folder, ["fetch", "--quiet", "--no-tags", source, "+refs/heads/main:refs/kit/main"], `fetching main from ${source}`);
+    const from = source === SOURCE ? SOURCE : "the --from repository";
+    git(folder, ["fetch", "--quiet", "--no-tags", source, "+refs/heads/main:refs/kit/main"], `fetching main from ${from}`, source);
     const onMain = `${commit} is not a commit on the kit's main branch`;
     let type;
     try {

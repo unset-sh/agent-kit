@@ -100,7 +100,8 @@ To change a rule or a skill, change it here. The copy in a repository is never e
 - It writes only under `.claude/rules/org/`, `.claude/skills/org-*/`, `.claude/agents/org-*.md` and
   `.claude/agent-kit/`. Where a file lands is decided by fixed rules in the script, never by what it fetches.
 - It takes only a full 40-character commit id, fetches `main` from `https://github.com/unset-sh/agent-kit.git`
-  with git (another git repository only with `--from`), and refuses a commit that is not on that `main`. A full
+  with git (another repository, over https or a local path, only with `--from`), and refuses a commit that is
+  not on that `main`. git runs with no prompts, no hooks, object checks on, and no other transport. A full
   commit id names exactly one tree, so the pin is the content, and an unmerged branch cannot be installed.
 - It copies only regular files from that tree, and refuses a link, a submodule or any path in a shipped folder
   that the kit may not ship.

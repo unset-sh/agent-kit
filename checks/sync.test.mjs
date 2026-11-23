@@ -1,7 +1,7 @@
 // sync.mjs is the one piece of code every repository runs, so each refusal has a test that shows it refusing.
 import assert from "node:assert/strict";
 import { execFileSync, spawnSync } from "node:child_process";
-import { mkdirSync, mkdtempSync, readFileSync, rmSync, symlinkSync, writeFileSync } from "node:fs";
+import { existsSync, mkdirSync, mkdtempSync, readFileSync, rmSync, symlinkSync, writeFileSync } from "node:fs";
 import { tmpdir } from "node:os";
 import { join } from "node:path";
 import { fileURLToPath } from "node:url";
@@ -371,6 +371,24 @@ test("a source that git cannot fetch, or that looks like an option, is a plain r
   refuses(() => fetchKit(COMMIT, ""), /must name a git repository/);
   const empty = repository(t);
   refuses(() => fetchKit(COMMIT, empty), /fetching main from .* failed/);
+});
+
+test("git may fetch only over https or from a local path, whatever the environment allows", (t) => {
+  const marker = join(mkdtempSync(join(tmpdir(), "agent-kit-ext-")), "ran");
+  t.after(() => rmSync(join(marker, ".."), { recursive: true, force: true }));
+  const before = process.env.GIT_ALLOW_PROTOCOL;
+  process.env.GIT_ALLOW_PROTOCOL = "ext:ssh:file:https";
+  t.after(() => (before === undefined ? delete process.env.GIT_ALLOW_PROTOCOL : (process.env.GIT_ALLOW_PROTOCOL = before)));
+  refuses(() => fetchKit(COMMIT, `ext::sh -c touch% ${marker}`), /fetching main from the --from repository failed/);
+  assert.ok(!existsSync(marker), "the ext:: transport ran a command");
+  refuses(() => fetchKit(COMMIT, "ssh://git@127.0.0.1:1/kit.git"), /fetching main from the --from repository failed/);
+});
+
+test("a token in a --from URL is not printed", () => {
+  refuses(
+    () => fetchKit(COMMIT, "https://user:secret-token@127.0.0.1:1/kit.git"),
+    /^(?![\s\S]*secret-token)[\s\S]*fetching main from the --from repository failed/,
+  );
 });
 
 test("the kit is fetched from this repository on GitHub and nowhere else by default", () => {
