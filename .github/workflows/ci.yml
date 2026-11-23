@@ -2,8 +2,9 @@ name: ci
 
 on:
   pull_request:
+    branches: [staging, main]
   push:
-    branches: [main]
+    branches: [staging, main]
 
 permissions: {}
 
@@ -27,5 +28,3 @@ jobs:
           node-version-file: .nvmrc
           package-manager-cache: false
       - run: npm run check
-      - name: Build the bundle as a release would
-        run: node scripts/bundle.mjs --commit "$GITHUB_SHA"

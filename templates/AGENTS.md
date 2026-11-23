@@ -20,5 +20,5 @@ Use these installed files as signposts rather than duplicating their instruction
 If a linked procedure is absent from the pinned kit, report the missing version and follow `org-kit-update`;
 do not create a replacement copy in this repository.
 
-Files under `.claude/rules/org/`, `.claude/skills/org-*/` and `.claude/agent-kit/` are copies of a release of
-`unset-sh/agent-kit` and are checked by CI. Never edit them here.
+Files under `.claude/rules/org/`, `.claude/skills/org-*/`, `.claude/agents/org-*` and `.claude/agent-kit/` are
+copies of a release of `unset-sh/agent-kit` and are checked by CI. Never edit them here.

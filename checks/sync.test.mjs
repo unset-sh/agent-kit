@@ -1,43 +1,44 @@
 // sync.mjs is the one piece of code every repository runs, so each refusal has a test that shows it refusing.
 import assert from "node:assert/strict";
-import { mkdirSync, mkdtempSync, readFileSync, rmSync, symlinkSync, writeFileSync } from "node:fs";
+import { execFileSync, spawnSync } from "node:child_process";
+import { existsSync, mkdirSync, mkdtempSync, readFileSync, rmSync, symlinkSync, writeFileSync } from "node:fs";
 import { tmpdir } from "node:os";
 import { join } from "node:path";
+import { fileURLToPath } from "node:url";
 import { test } from "node:test";
 import {
   LOCK_PATH,
+  SOURCE,
   SYNC_PATH,
   SyncError,
   check,
   destinationOf,
+  fetchKit,
   install,
-  isOwned,
+  isKitDestination,
+  kitFromTree,
   main,
-  parseBundle,
-  releaseUrl,
   sha256,
 } from "../sync.mjs";
 
 const COMMIT = "0123456789abcdef0123456789abcdef01234567";
+const NEXT = "89abcdef0123456789abcdef0123456789abcdef";
 
-function file(path, content) {
-  return { path, sha256: sha256(Buffer.from(content, "utf8")), content };
+/** One entry of a commit's tree, as sync.mjs reads it from git. */
+function entry(path, content, mode = "100644") {
+  const bytes = Buffer.from(content, "utf8");
+  return { path, mode, size: bytes.length, read: () => bytes };
 }
 
-function bundleText(overrides = {}, files = undefined) {
-  const bundle = {
-    kit: "unset-sh/agent-kit",
-    version: "1.2.3",
-    commit: COMMIT,
-    files: files ?? [
-      file("rules/org.md", "# Rules\n"),
-      file("skills/org-release/SKILL.md", "---\nname: org-release\n---\n"),
-      file("skills/org-release/notes/more.md", "More.\n"),
-      file("sync.mjs", "// the script\n"),
-    ],
-    ...overrides,
-  };
-  return JSON.stringify(bundle);
+function treeOf(extra = []) {
+  return [
+    entry("README.md", "# Not shipped\n"),
+    entry("rules/org.md", "# Rules\n"),
+    entry("skills/org-release/SKILL.md", "---\nname: org-release\n---\n"),
+    entry("skills/org-release/notes/more.md", "More.\n"),
+    entry("sync.mjs", "// the script\n"),
+    ...extra,
+  ];
 }
 
 /** A throwaway folder that looks like a repository root. Removed when the test ends. */
@@ -50,13 +51,31 @@ function repository(t) {
 
 function installed(t) {
   const root = repository(t);
-  const text = bundleText();
-  install(root, parseBundle(text, "1.2.3"), sha256(Buffer.from(text, "utf8")));
+  install(root, kitFromTree(COMMIT, treeOf()));
   return root;
 }
 
 function refuses(run, pattern) {
   assert.throws(run, (error) => error instanceof SyncError && pattern.test(error.message));
+}
+
+/** A real git repository standing in for agent-kit: `files` committed on main. Returns its path and commit. */
+function kitRepository(t, files) {
+  const folder = mkdtempSync(join(tmpdir(), "agent-kit-source-"));
+  t.after(() => rmSync(folder, { recursive: true, force: true }));
+  const git = (...args) =>
+    execFileSync("git", ["-c", "user.name=Test", "-c", "user.email=test@example.invalid", ...args], {
+      cwd: folder,
+      encoding: "utf8",
+    }).trim();
+  git("init", "--quiet", "--initial-branch=main");
+  for (const [path, content] of Object.entries(files)) {
+    mkdirSync(join(folder, ...path.split("/").slice(0, -1)), { recursive: true });
+    writeFileSync(join(folder, ...path.split("/")), content);
+  }
+  git("add", "--all");
+  git("commit", "--quiet", "--message", "kit");
+  return { folder, git, commit: git("rev-parse", "HEAD") };
 }
 
 test("a kit path lands only under the kit's own names", () => {
@@ -87,6 +106,11 @@ test("a path outside those names, or one that could leave them, has no destinati
     "settings.json",
     ".claude/settings.json",
     "hooks/hooks.json",
+    "rules/con.md",
+    "rules/NUL.md",
+    "skills/org-release/aux",
+    "skills/org-release/com1.txt.md",
+    "skills/org-release/notes./more.md",
     `rules/${"a".repeat(200)}.md`,
     null,
     42,
@@ -95,11 +119,18 @@ test("a path outside those names, or one that could leave them, has no destinati
   }
 });
 
-test("the kit owns its own names and nothing else under .claude", () => {
-  for (const path of [SYNC_PATH, LOCK_PATH, ".claude/rules/org/org.md", ".claude/skills/org-x/SKILL.md", ".claude/agents/org-x.md"]) {
-    assert.equal(isOwned(path), true, path);
+test("a lock may name only paths the kit can produce", () => {
+  for (const path of [SYNC_PATH, ".claude/rules/org/org.md", ".claude/skills/org-x/SKILL.md", ".claude/agents/org-x.md"]) {
+    assert.equal(isKitDestination(path), true, path);
   }
   for (const path of [
+    LOCK_PATH,
+    ".claude/agent-kit/other.mjs",
+    ".claude/rules/org/sub/x.md",
+    ".claude/rules/org/x.txt",
+    ".claude/agents/org-x/y.md",
+    ".claude/skills/org-x/run.sh",
+    ".claude/rules/org/con.md",
     ".claude/settings.json",
     ".claude/rules/local.md",
     ".claude/skills/deploy/SKILL.md",
@@ -107,61 +138,66 @@ test("the kit owns its own names and nothing else under .claude", () => {
     ".claude/rules/org/../x.md",
     "CLAUDE.md",
   ]) {
-    assert.equal(isOwned(path), false, path);
+    assert.equal(isKitDestination(path), false, path);
   }
 });
 
-test("a valid bundle is accepted and keeps its version and commit", () => {
-  const bundle = parseBundle(bundleText(), "1.2.3");
-  assert.equal(bundle.version, "1.2.3");
-  assert.equal(bundle.commit, COMMIT);
-  assert.deepEqual([...bundle.files.keys()].sort(), [
+test("a commit's tree gives the files to install, and what is not the kit's is left out", () => {
+  const kit = kitFromTree(COMMIT, treeOf([entry(".claude/settings.json", "{}"), entry("notes/x/plan.md", "x\n")]));
+  assert.equal(kit.commit, COMMIT);
+  assert.deepEqual([...kit.files.keys()].sort(), [
     ".claude/agent-kit/sync.mjs",
     ".claude/rules/org/org.md",
     ".claude/skills/org-release/SKILL.md",
     ".claude/skills/org-release/notes/more.md",
   ]);
+  assert.equal(kit.files.get(".claude/rules/org/org.md").sha256, sha256(Buffer.from("# Rules\n", "utf8")));
 });
 
-test("a bundle is refused when anything about it is off", () => {
-  refuses(() => parseBundle("not json", "1.2.3"), /not valid JSON/);
-  refuses(() => parseBundle("[]", "1.2.3"), /not a JSON object/);
-  refuses(() => parseBundle(bundleText({ kit: "someone/else" }), "1.2.3"), /not from unset-sh\/agent-kit/);
-  refuses(() => parseBundle(bundleText({ version: "1.2" }), "1.2"), /no valid version/);
-  refuses(() => parseBundle(bundleText(), "1.2.4"), /asked for version 1\.2\.4/);
-  refuses(() => parseBundle(bundleText({ commit: "abc" }), "1.2.3"), /no valid commit/);
-  refuses(() => parseBundle(bundleText({ files: [] }), "1.2.3"), /no valid file list/);
-  refuses(() => parseBundle(bundleText({}, [file("rules/org.md", "x\n")]), "1.2.3"), /does not contain sync\.mjs/);
+test("a commit is refused when it is not a full id or has no sync.mjs", () => {
+  refuses(() => kitFromTree("abc", treeOf()), /full 40-character commit/);
+  refuses(() => kitFromTree(COMMIT.toUpperCase(), treeOf()), /full 40-character commit/);
+  refuses(() => kitFromTree(COMMIT, [entry("rules/org.md", "x\n")]), /does not contain sync\.mjs/);
 });
 
-test("a bundle cannot write outside the kit's names", () => {
-  for (const path of ["../outside.md", ".claude/settings.json", "rules/../../x.md", "skills/deploy/SKILL.md"]) {
-    const files = [file(path, "x\n"), file("sync.mjs", "// s\n")];
-    refuses(() => parseBundle(bundleText({}, files), "1.2.3"), /may not ship/);
+test("a file in a shipped folder that the kit may not ship is refused, not skipped", () => {
+  for (const path of ["rules/sub/org.md", "rules/org.txt", "skills/deploy/SKILL.md", "skills/org-x/run.sh", "agents/reviewer.md"]) {
+    refuses(() => kitFromTree(COMMIT, treeOf([entry(path, "x\n")])), /may not ship/);
   }
 });
 
-test("a bundle whose content does not match its sha256 is refused", () => {
-  const tampered = { ...file("rules/org.md", "# Rules\n"), content: "# Other rules\n" };
-  refuses(() => parseBundle(bundleText({}, [tampered, file("sync.mjs", "// s\n")]), "1.2.3"), /does not match its sha256/);
+test("a link or a submodule in a shipped folder is refused", () => {
+  refuses(() => kitFromTree(COMMIT, treeOf([entry("rules/link.md", "/etc/passwd", "120000")])), /link or not a regular file/);
+  refuses(() => kitFromTree(COMMIT, treeOf([entry("skills/org-x", "", "160000")])), /link or not a regular file/);
+  refuses(() => kitFromTree(COMMIT, [entry("rules/org.md", "x\n"), entry("sync.mjs", "x", "120000")]), /link or not a regular file/);
 });
 
-test("a bundle that lists one destination twice is refused, whatever the letter case", () => {
-  const twice = [file("rules/org.md", "a\n"), file("rules/org.md", "b\n"), file("sync.mjs", "// s\n")];
-  refuses(() => parseBundle(bundleText({}, twice), "1.2.3"), /twice/);
-  const byCase = [file("rules/org.md", "a\n"), file("rules/ORG.md", "b\n"), file("sync.mjs", "// s\n")];
-  refuses(() => parseBundle(bundleText({}, byCase), "1.2.3"), /twice/);
+test("a tree that lists one destination twice is refused, whatever the letter case", () => {
+  refuses(() => kitFromTree(COMMIT, treeOf([entry("rules/org.md", "b\n")])), /twice/);
+  refuses(() => kitFromTree(COMMIT, treeOf([entry("rules/ORG.md", "b\n")])), /twice/);
+});
+
+test("a tree whose paths would collide on a file system that ignores case is refused", () => {
+  refuses(() => kitFromTree(COMMIT, treeOf([entry("skills/org-x/a.md", "a\n"), entry("skills/org-x/a.md/b.md", "b\n")])), /both a file and a folder/);
+  refuses(() => kitFromTree(COMMIT, treeOf([entry("skills/org-x/Notes/a.md", "a\n"), entry("skills/org-x/notes/b.md", "b\n")])), /spells one folder two ways/);
+});
+
+test("a file that is too large, or a tree with too many files, is refused before it is read", () => {
+  const huge = { path: "rules/huge.md", mode: "100644", size: 1024 * 1024 + 1, read: () => assert.fail("read a file that is too large") };
+  refuses(() => kitFromTree(COMMIT, treeOf([huge])), /larger/);
+  const many = Array.from({ length: 501 }, (_, index) => entry(`rules/r${index}.md`, "x\n"));
+  refuses(() => kitFromTree(COMMIT, treeOf(many)), /more files than it allows/);
 });
 
 test("installing writes the files and a lock, and the check then passes", (t) => {
   const root = installed(t);
   assert.equal(readFileSync(join(root, ".claude/rules/org/org.md"), "utf8"), "# Rules\n");
   const lock = JSON.parse(readFileSync(join(root, LOCK_PATH), "utf8"));
+  assert.deepEqual(Object.keys(lock), ["kit", "commit", "files"]);
   assert.equal(lock.kit, "unset-sh/agent-kit");
-  assert.equal(lock.version, "1.2.3");
   assert.equal(lock.commit, COMMIT);
   assert.equal(lock.files[".claude/rules/org/org.md"], sha256(Buffer.from("# Rules\n", "utf8")));
-  assert.deepEqual(check(root), { version: "1.2.3", problems: [] });
+  assert.deepEqual(check(root), { commit: COMMIT, problems: [] });
 });
 
 test("the check names a kit file edited by hand", (t) => {
@@ -184,9 +220,9 @@ test("the check names a file added under the kit's names", (t) => {
   mkdirSync(join(root, ".claude/agents"), { recursive: true });
   writeFileSync(join(root, ".claude/agents/org-mine.md"), "x\n");
   assert.deepEqual(check(root).problems, [
-    "not part of the kit release, but under the kit's names: .claude/agents/org-mine.md",
-    "not part of the kit release, but under the kit's names: .claude/rules/org/extra.md",
-    "not part of the kit release, but under the kit's names: .claude/skills/org-mine/SKILL.md",
+    "not part of the kit, but under the kit's names: .claude/agents/org-mine.md",
+    "not part of the kit, but under the kit's names: .claude/rules/org/extra.md",
+    "not part of the kit, but under the kit's names: .claude/skills/org-mine/SKILL.md",
   ]);
 });
 
@@ -210,13 +246,44 @@ test("the check names a kit file replaced by a symbolic link", (t) => {
   ]);
 });
 
+test("the check names a kit file replaced by a folder", (t) => {
+  const root = installed(t);
+  rmSync(join(root, ".claude/rules/org/org.md"));
+  mkdirSync(join(root, ".claude/rules/org/org.md"));
+  assert.deepEqual(check(root).problems, ["not a regular file: .claude/rules/org/org.md"]);
+});
+
+test("the check and the install refuse a kit folder that is a link or a file", (t) => {
+  for (const [folder, make] of [
+    [".claude/rules/org", "link"],
+    [".claude/skills", "link"],
+    [".claude/agent-kit", "link"],
+    [".claude/agents", "file"],
+  ]) {
+    const root = installed(t);
+    const target = join(root, ...folder.split("/"));
+    const elsewhere = mkdtempSync(join(tmpdir(), "agent-kit-elsewhere-"));
+    t.after(() => rmSync(elsewhere, { recursive: true, force: true }));
+    rmSync(target, { recursive: true, force: true });
+    if (make === "link") symlinkSync(elsewhere, target);
+    else writeFileSync(target, "not a folder\n");
+    const pattern = make === "link" ? /is a symbolic link/ : /is not a folder/;
+    refuses(() => check(root), pattern);
+    refuses(() => install(root, kitFromTree(COMMIT, treeOf())), pattern);
+  }
+});
+
 test("the check refuses a lock that is missing, broken or lists a path the kit does not own", (t) => {
   const root = installed(t);
   const lockFile = join(root, LOCK_PATH);
   const lock = JSON.parse(readFileSync(lockFile, "utf8"));
   writeFileSync(lockFile, JSON.stringify({ ...lock, files: { ...lock.files, ".claude/settings.json": "0".repeat(64) } }));
   refuses(() => check(root), /does not own/);
-  writeFileSync(lockFile, JSON.stringify({ ...lock, version: "latest" }));
+  writeFileSync(lockFile, JSON.stringify({ ...lock, files: { ...lock.files, ".claude/agent-kit/extra.mjs": "0".repeat(64) } }));
+  refuses(() => check(root), /does not own/);
+  writeFileSync(lockFile, JSON.stringify({ ...lock, files: { ...lock.files, [SYNC_PATH]: "0" } }));
+  refuses(() => check(root), /no valid sha256/);
+  writeFileSync(lockFile, JSON.stringify({ ...lock, commit: "main" }));
   refuses(() => check(root), /does not have the shape/);
   const { [SYNC_PATH]: _dropped, ...withoutSync } = lock.files;
   writeFileSync(lockFile, JSON.stringify({ ...lock, files: withoutSync }));
@@ -225,18 +292,28 @@ test("the check refuses a lock that is missing, broken or lists a path the kit d
   refuses(() => check(root), /not valid JSON/);
   rmSync(lockFile);
   refuses(() => check(root), /is missing/);
+  mkdirSync(lockFile);
+  refuses(() => check(root), /not a regular file/);
 });
 
-test("installing a newer release removes kit files the release no longer has, and nothing else", (t) => {
+test("installing a newer commit removes kit files it no longer has, and nothing else", (t) => {
   const root = installed(t);
   writeFileSync(join(root, ".claude/rules/local.md"), "# Ours\n");
-  const next = bundleText({ version: "1.3.0" }, [file("rules/working.md", "# Working\n"), file("sync.mjs", "// newer\n")]);
-  install(root, parseBundle(next, "1.3.0"), sha256(Buffer.from(next, "utf8")));
-  assert.deepEqual(check(root), { version: "1.3.0", problems: [] });
+  install(root, kitFromTree(NEXT, [entry("rules/working.md", "# Working\n"), entry("sync.mjs", "// newer\n")]));
+  assert.deepEqual(check(root), { commit: NEXT, problems: [] });
   assert.throws(() => readFileSync(join(root, ".claude/rules/org/org.md")), /ENOENT/);
   assert.throws(() => readFileSync(join(root, ".claude/skills/org-release/SKILL.md")), /ENOENT/);
   assert.equal(readFileSync(join(root, ".claude/rules/local.md"), "utf8"), "# Ours\n");
   assert.equal(readFileSync(join(root, SYNC_PATH), "utf8"), "// newer\n");
+});
+
+test("a first install refuses files that already use the kit's names, and writes nothing", (t) => {
+  const root = repository(t);
+  mkdirSync(join(root, ".claude/rules/org"), { recursive: true });
+  writeFileSync(join(root, ".claude/rules/org/ours.md"), "# Ours\n");
+  refuses(() => install(root, kitFromTree(COMMIT, treeOf())), /no lock yet.*ours\.md/);
+  assert.equal(readFileSync(join(root, ".claude/rules/org/ours.md"), "utf8"), "# Ours\n");
+  assert.throws(() => readFileSync(join(root, LOCK_PATH)), /ENOENT/);
 });
 
 test("installing refuses to write through a symbolic link", (t) => {
@@ -244,39 +321,103 @@ test("installing refuses to write through a symbolic link", (t) => {
   const elsewhere = mkdtempSync(join(tmpdir(), "agent-kit-elsewhere-"));
   t.after(() => rmSync(elsewhere, { recursive: true, force: true }));
   symlinkSync(elsewhere, join(root, ".claude"));
-  const text = bundleText();
-  refuses(() => install(root, parseBundle(text, "1.2.3"), sha256(Buffer.from(text, "utf8"))), /symbolic link/);
+  refuses(() => install(root, kitFromTree(COMMIT, treeOf())), /symbolic link/);
   assert.throws(() => readFileSync(join(elsewhere, "rules/org/org.md")), /ENOENT/);
 });
 
 test("installing and checking refuse a folder that is not a repository root", (t) => {
   const root = mkdtempSync(join(tmpdir(), "agent-kit-plain-"));
   t.after(() => rmSync(root, { recursive: true, force: true }));
-  const text = bundleText();
-  refuses(() => install(root, parseBundle(text, "1.2.3"), sha256(Buffer.from(text, "utf8"))), /not a repository root/);
+  refuses(() => install(root, kitFromTree(COMMIT, treeOf())), /not a repository root/);
   refuses(() => check(root), /not a repository root/);
 });
 
-test("the command installs from a file, reports a clean copy as 0 and a changed one as 1", async (t) => {
+test("the command installs a commit of main from a git repository, and checks the copy", async (t) => {
+  const source = kitRepository(t, { "rules/org.md": "# Rules\n", "skills/org-x/SKILL.md": "x\n", "sync.mjs": "// s\n", "README.md": "r\n" });
   const root = repository(t);
-  const from = join(root, "agent-kit.json");
-  writeFileSync(from, bundleText());
   const printed = [];
   const print = (line) => printed.push(line);
-  assert.equal(await main(["1.2.3", "--from", from, "--root", root], print), 0);
+  assert.equal(await main([source.commit, "--from", source.folder, "--root", root], print), 0);
+  assert.deepEqual(check(root), { commit: source.commit, problems: [] });
   assert.equal(await main(["--check", "--root", root], print), 0);
   writeFileSync(join(root, ".claude/rules/org/org.md"), "changed\n");
   assert.equal(await main(["--check", "--root", root], print), 1);
   assert.match(printed.join("\n"), /changed: \.claude\/rules\/org\/org\.md/);
+  assert.match(printed.join("\n"), new RegExp(`sync\\.mjs ${source.commit}`));
+  source.git("rm", "--quiet", "skills/org-x/SKILL.md");
+  source.git("commit", "--quiet", "--message", "drop a skill");
+  const next = source.git("rev-parse", "HEAD");
+  assert.equal(await main([next, "--from", source.folder, "--root", root], print), 0);
+  assert.match(printed.join("\n"), /removed, no longer in the kit: \.claude\/skills\/org-x\/SKILL\.md/);
+  assert.deepEqual(check(root), { commit: next, problems: [] });
+});
+
+test("a commit that is not on the kit's main branch is refused, and nothing is written", (t) => {
+  const source = kitRepository(t, { "rules/org.md": "# Rules\n", "sync.mjs": "// s\n" });
+  source.git("switch", "--quiet", "--create", "unreviewed");
+  writeFileSync(join(source.folder, "rules/org.md"), "# Loosened\n");
+  source.git("commit", "--quiet", "--all", "--message", "not on main");
+  const side = source.git("rev-parse", "HEAD");
+  refuses(() => fetchKit(side, source.folder), /not a commit on the kit's main branch/);
+  refuses(() => fetchKit("f".repeat(40), source.folder), /not a commit on the kit's main branch/);
+  const tree = source.git("rev-parse", "HEAD^{tree}");
+  refuses(() => fetchKit(tree, source.folder), /not a commit on the kit's main branch/);
+  assert.equal(fetchKit(source.git("rev-parse", "main"), source.folder).files.size, 2);
+});
+
+test("a source that git cannot fetch, or that looks like an option, is a plain refusal", (t) => {
+  refuses(() => fetchKit(COMMIT, join(tmpdir(), "agent-kit-no-such-repository")), /fetching main from .* failed/);
+  refuses(() => fetchKit(COMMIT, "--upload-pack=touch /tmp/x"), /must name a git repository/);
+  refuses(() => fetchKit(COMMIT, ""), /must name a git repository/);
+  const empty = repository(t);
+  refuses(() => fetchKit(COMMIT, empty), /fetching main from .* failed/);
+});
+
+test("git may fetch only over https or from a local path, whatever the environment allows", (t) => {
+  const marker = join(mkdtempSync(join(tmpdir(), "agent-kit-ext-")), "ran");
+  t.after(() => rmSync(join(marker, ".."), { recursive: true, force: true }));
+  const before = process.env.GIT_ALLOW_PROTOCOL;
+  process.env.GIT_ALLOW_PROTOCOL = "ext:ssh:file:https";
+  t.after(() => (before === undefined ? delete process.env.GIT_ALLOW_PROTOCOL : (process.env.GIT_ALLOW_PROTOCOL = before)));
+  refuses(() => fetchKit(COMMIT, `ext::sh -c touch% ${marker}`), /fetching main from the --from repository failed/);
+  assert.ok(!existsSync(marker), "the ext:: transport ran a command");
+  refuses(() => fetchKit(COMMIT, "ssh://git@127.0.0.1:1/kit.git"), /fetching main from the --from repository failed/);
+});
+
+test("a token in a --from URL is not printed", () => {
+  refuses(
+    () => fetchKit(COMMIT, "https://user:secret-token@127.0.0.1:1/kit.git"),
+    /^(?![\s\S]*secret-token)[\s\S]*fetching main from the --from repository failed/,
+  );
+});
+
+test("the kit is fetched from this repository on GitHub and nowhere else by default", () => {
+  assert.equal(SOURCE, "https://github.com/unset-sh/agent-kit.git");
+});
+
+test("the copied script runs its check when started by any path, and fails on a changed copy", (t) => {
+  // Started as a child process, the way a repository's CI runs it, so a script that silently did nothing
+  // (because it did not recognise itself as the entry point) would show here as exit 0.
+  const script = readFileSync(fileURLToPath(new URL("../sync.mjs", import.meta.url)), "utf8");
+  const root = repository(t);
+  install(root, kitFromTree(COMMIT, [entry("rules/org.md", "# Rules\n"), entry("sync.mjs", script)]));
+  const linked = join(mkdtempSync(join(tmpdir(), "agent-kit-link-")), "repository");
+  t.after(() => rmSync(join(linked, ".."), { recursive: true, force: true }));
+  symlinkSync(root, linked);
+  const run = (base) =>
+    spawnSync(process.execPath, [join(base, ...SYNC_PATH.split("/")), "--check", "--root", root], { encoding: "utf8" });
+  for (const base of [root, linked]) assert.equal(run(base).status, 0, base);
+  writeFileSync(join(root, ".claude/rules/org/org.md"), "# Rules, loosened\n");
+  for (const base of [root, linked]) {
+    const result = run(base);
+    assert.equal(result.status, 1, base);
+    assert.match(result.stdout, /changed: \.claude\/rules\/org\/org\.md/);
+  }
+  assert.equal(execFileSync(process.execPath, ["--check", join(root, ...SYNC_PATH.split("/"))], { encoding: "utf8" }), "");
 });
 
 test("the command refuses arguments it does not understand", async () => {
-  for (const argv of [[], ["--check", "1.2.3"], ["latest"], ["1.2.3", "--from"], ["--check", "--from", "x"], ["1.2.3", "1.2.4"]]) {
+  for (const argv of [[], ["--check", COMMIT], ["latest"], ["0.1.0"], [COMMIT.slice(0, 7)], [COMMIT, "--from"], ["--check", "--from", "x"], [COMMIT, NEXT]]) {
     await assert.rejects(main(argv, () => {}), SyncError, JSON.stringify(argv));
   }
-  await assert.rejects(main(["1.2.3", "--from", "/nonexistent/agent-kit.json"], () => {}), /could not read/);
-});
-
-test("a release is downloaded from this repository's release page and nowhere else", () => {
-  assert.equal(releaseUrl("1.2.3"), "https://github.com/unset-sh/agent-kit/releases/download/v1.2.3/agent-kit.json");
 });
