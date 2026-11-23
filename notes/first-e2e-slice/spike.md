@@ -178,6 +178,52 @@ NODE_ENV=development bun telemetry-run.ts
 
 `experimental.instrumentation.enabled` defaults to true. The comment in `init-options.d.mts` says it does not affect usage reporting. `@better-auth/core/dist/instrumentation/api.mjs` dynamic-imports `@opentelemetry/api` and ignores failure. That package is not installed (`otelImport` `absent`). Default init performed no fetch.
 
+## Prompt 2, 2026-11-23
+
+Alex accepted, by pasting the follow-up prompt, the recommendation to use `@atproto/oauth-client` instead of `NodeOAuthClient`, and `pg` 8.23.1 for Better Auth's tables only. The record of that stays Proposed until another thread merges it.
+
+### (d) runtime-neutral client
+
+`@atproto/oauth-client` 0.9.3, published 2026-11-06. Constructor options read from `dist/oauth-client.d.ts` `OAuthClientOptions`: `responseMode`, `clientMetadata`, `stateStore`, `sessionStore`, `runtimeImplementation`, `fetch`, plus `handleResolver` and `didResolver` from `CreateOAuthResolverOptions`. Loopback metadata from `@atproto/oauth-types` `buildAtprotoLoopbackClientMetadata` (scope `atproto repo:sh.unset.profile`, redirect `http://127.0.0.1:8080/auth/callback`). DPoP keys from `@atproto/jwk-jose` 0.2.4 `JoseKey.generate` / `fromJWK`. Digests from WebCrypto. State and session rows are JSON in Postgres (`oauth_state`, `oauth_session`) via `Bun.sql` tagged templates; the private DPoP JWK is the only key material stored, and it is not printed.
+
+Command: `NODE_ENV=development bun oauth-base-run.ts`. Exit 0.
+
+`NodeOAuthClient` was not constructed. The client reached `https://bsky.social` through the guard: 4 dials, all IP literals, one state row, no session row. The result had `request_uri`. The URL is not in this note. Refresh, revocation, and a `sub` that does not match the issuer were not run: they need the consent callback.
+
+### (e) real TLS
+
+Command: `NODE_ENV=development bun tls-run.ts`. Exit 0.
+
+`https://example.com/` was dialed at an IP literal. `Host` and `tls.serverName` were `example.com`. The response was 200 and the body was that site, so the certificate check used the name. Bun 1.4.4 `docs/runtime/networking/fetch.mdx`, "Connecting to a specific address".
+
+### (g) Safari, for Alex to run
+
+This machine cannot run Safari. On a Mac, in the cookie app under the spike folder:
+
+```sh
+HOST=127.0.0.1 PORT=8080 ORIGIN=http://127.0.0.1:8080 bun build/index.js
+```
+
+Open `http://127.0.0.1:8080/` in Safari. In Web Inspector, Network, the first document:
+
+- Response header `Set-Cookie` is `__Host-unset=1; Path=/; HttpOnly; Secure; SameSite=Lax` and has no `Domain`.
+- The next navigation to `/check` sends a `Cookie` header whose name is `__Host-unset`, and the page text is `seen`.
+- The console expression `document.cookie` does not contain `__Host-unset`.
+
+Not run here.
+
+### (f) uuid cast, and (h) yaml
+
+`select ${id}::uuid` through `Bun.sql` returned the same uuid string. That is the cast backend's own tables will use. Better Auth stays on `pg`.
+
+`yaml` 2.9.1 `stringify` with `sortMapEntries: true` produced the same bytes for two objects whose keys were inserted in different orders. `Bun.YAML.stringify` will not be used for `openapi.yaml`.
+
+### What is still not merged
+
+`unset-sh/tooling#20` merged into `staging` at `c4918ca0525bbb9183da82a7166368f262b059dc` (2026-11-23 17:45 America/Toronto). tooling `main` is still `ded89d976839a644828ec8c483f1ef77ed771e88`, whose check is Node. No CI caller was pointed at it.
+
+`unset-sh/backend#5` and `unset-sh/web#5` are open drafts. The old app was not copied.
+
 ## Commands, in order
 
 ```sh
@@ -195,4 +241,6 @@ cd .. && NODE_ENV=development bun cookie-browser.ts
 NODE_ENV=development bun firefox-browser.ts
 bun node_modules/vitest/vitest.mjs run adapter.bun-sql.test.ts --reporter=dot
 bun node_modules/vitest/vitest.mjs run adapter.pg.test.ts --reporter=dot
+NODE_ENV=development bun oauth-base-run.ts
+NODE_ENV=development bun tls-run.ts
 ```

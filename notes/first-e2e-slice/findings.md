@@ -50,8 +50,16 @@ Once an endpoint is set, `telemetry.enabled: false` does not win over `BETTER_AU
 
 `experimental.instrumentation.enabled` defaults to true and the option comment says it does not affect usage reporting. With `@opentelemetry/api` absent, the dynamic import fails closed and init does not fetch.
 
+## Telemetry bypass, for an upstream report
+
+`@better-auth/telemetry` `dist/index.mjs` `createTelemetry`: `isEnabled` is true when `BETTER_AUTH_TELEMETRY` is set, even if `telemetry.enabled` is false, and a set `BETTER_AUTH_TELEMETRY_ENDPOINT` is what the publish call uses. `BETTER_AUTH_TELEMETRY_DEBUG` and `BETTER_AUTH_TELEMETRY_ID` are also read (`@better-auth/core` `dist/env/env-impl.mjs`). Do not file this upstream from here. Backend's config will refuse to start when `BETTER_AUTH_TELEMETRY` or `BETTER_AUTH_TELEMETRY_ENDPOINT` is set.
+
+## Real TLS pin
+
+`tls-run.ts` dialed `example.com` at the checked address. `Host` and SNI stayed `example.com`, and the certificate check succeeded (status 200, body was that site). The stub test is no longer the only evidence.
+
 ## Other
 
-- `unset-sh/tooling#20` is still open, so a Bun CI workflow on tooling `main` is not available to pin.
+- `unset-sh/tooling#20` merged into `staging` (`c4918ca0525bbb9183da82a7166368f262b059dc`), not into `main`. `main` is still `ded89d976839a644828ec8c483f1ef77ed771e88`. Do not pin it until that commit is on `main`.
 - Backend `CLAUDE.md` and the prompt disagree about copying the old app. The org file was followed. No product copy was made.
 - The spike did not set a Better Auth secret. The development fallback stayed inside the installed package.
