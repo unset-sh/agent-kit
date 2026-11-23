@@ -10,6 +10,7 @@ whatever repository they are in, and gets it to them as a pinned copy that each 
 | Folder | What it holds | In a repository it becomes |
 | --- | --- | --- |
 | [`rules/`](rules/) | The organisation's rules, how to work, and the engineering principles in short. Loaded at the start of every session, so kept to 150 lines in total | `.claude/rules/org/` |
+| [`docs/`](docs/) | Human guides maintained here for export to the documentation website | The `agent-kit/` website section; not part of the installed kit |
 | [`skills/`](skills/) | Procedures for jobs that repeat across repositories and organisation decision records, read when needed | `.claude/skills/org-*/` |
 | [`sync.mjs`](sync.mjs) | Installs the kit at one commit of `main` in a repository and checks the copy. `node:` built-in modules and git only, run with Bun | `.claude/agent-kit/sync.mjs` |
 | [`templates/`](templates/) | The `CLAUDE.md` and `AGENTS.md` a new repository starts from | Copied once, then owned by the repository |
@@ -29,7 +30,7 @@ decision; caller adoption, signer verification and automatic update delivery cha
 [Org-0005](skills/org-decisions/records/org-0005-ai-working-material-lives-in-agent-kit.md) keeps AI working
 material here, grouped by task, instead of adding ad hoc Markdown to consuming repositories. Maintained
 human documentation belongs in its owning repository's `docs/` and exports through the documentation
-pipeline to `unset-sh/docs` for publication; the shared `org-documentation` standard is not released yet.
+pipeline to `unset-sh/docs` for publication, written to the shared standard in the skill `org-documentation`.
 A README can introduce and link those guides. This rule does not start a bulk move or deletion of historical files. `sync.mjs`
 installs only `rules/`, `skills/`, `agents/` and itself, so `notes/` and `artifacts/` never reach a repository.
 
@@ -42,6 +43,28 @@ For repository, workflow and other maintained maps, follow [map maintenance](ski
 Maps use authoritative sources and automatic shared-tooling refresh; their ownership claims and explanations
 still need review. The skill describes registration, provenance, freshness and recovery without claiming an
 integration is active before its consumer verifies it.
+
+## Review an experience
+
+[`org-experience-review`](skills/org-experience-review/SKILL.md) coordinates seven independent perspectives
+on clarity, competence, autonomy, trust, expression, comfort and satisfaction. The coordinator combines
+observed strengths and gaps with separately labelled questions for later human testing. Smaller models
+may be used after capability checks; model comparisons keep tasks and conditions matched.
+
+Start with the [human overview](docs/experience-review.md) or the [run guide](docs/running-an-experience-review.md).
+The skill and its perspective prompts ship with each commit of `main`. A repository gets them when it takes a newer
+commit; their presence here does not update repositories that already hold an older one.
+
+## Human documentation
+
+The public source is [`docs/`](docs/); its export destination is `agent-kit/` in `unset-sh/docs`.
+Pages use the documentation site's source format and keep local links inside that exported tree.
+The docs are AGPL-3.0-only, like this repository, and `sync.mjs` never installs them.
+
+The documentation site discovers the section from `_index.md`. Agent-kit has no automatic documentation
+export caller yet. Export must preserve the source revision, page provenance and licence notices.
+Shared workflow implementations belong in `unset-sh/tooling` (org-0006); this change adds no publisher or
+credentials.
 
 ## How a repository uses it
 
@@ -109,6 +132,10 @@ To change a rule or a skill, change it here. The copy in a repository is never e
 - It never touches a repository's own `CLAUDE.md`, rules, skills, subagents or settings.
 
 ## Working on this repository
+
+For human documentation, follow the shared [documentation standard](skills/org-documentation/standard.md)
+and [page templates](skills/org-documentation/templates.md). Contributors and assistants use the same text.
+Repositories adopting it fill in only their [local documentation facts](skills/org-documentation/repository-rules.md).
 
 ```sh
 bun run check

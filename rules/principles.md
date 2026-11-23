@@ -39,6 +39,6 @@ The guiding rule: choose the simplest design that keeps responsibilities clear a
 - Treat stored data and external contracts as long-lived: plan migrations, compatibility and rollback in
   proportion to the risk.
 - Measure before optimising, and measure again after.
-- Document why, where the reason is not obvious. Record important decisions lightly.
+- Document why, where it is not obvious. Record important decisions lightly. Human docs: `org-documentation`.
 - When a small problem repeats, refactor. When it reveals a boundary problem, reconsider the design. A major
   change to boundaries, contracts or data models is surfaced for human review first.

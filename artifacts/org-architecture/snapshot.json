@@ -1,0 +1,55 @@
+{
+  "captured": "2026-11-22",
+  "source": "Architecture research and design documents produced in the architecture chat; copied without modification",
+  "status": "Historical research and proposals; current accepted direction is org-0007, tooling ownership is org-0006",
+  "files": [
+    {
+      "file": "README.md",
+      "bytes": 4736,
+      "sha256": "b30a73949378066268e36f1da01c12a6af10ad896f2010f17de6d5f42fb3016f"
+    },
+    {
+      "file": "adoption-plan.md",
+      "bytes": 12018,
+      "sha256": "43be49f77fcadb15636d4882fe3b215aace3435f620fa584c2d2d200a1fe8de0"
+    },
+    {
+      "file": "app-structure-assessment.md",
+      "bytes": 20855,
+      "sha256": "c417d57435482093507ddc1f7d9acf20a5567fd6f4f8b32f57058e7b14583498"
+    },
+    {
+      "file": "architecture-standard.md",
+      "bytes": 13759,
+      "sha256": "bebafe6efe86a48b2b15a9ed4637dee87e7b65d94f97fa31563428739e725c0c"
+    },
+    {
+      "file": "multi-repository-standard.md",
+      "bytes": 11876,
+      "sha256": "cd09bc48d81400505cd4639af58a09431eb212d7afc7ffbb8a503fc374ab8ef7"
+    },
+    {
+      "file": "repository-boundaries-and-contracts.md",
+      "bytes": 14578,
+      "sha256": "fdd270f4bc4d4763f8ecc4b096e474f8de8fe986d6d8ee592a3f31a66e0445dc"
+    },
+    {
+      "file": "research-basis.md",
+      "bytes": 7866,
+      "sha256": "78704bf5faaa53636a6f60c8d42828d5f0691817c86336180726987d0ac37c83"
+    },
+    {
+      "file": "shared-platform-and-automation.md",
+      "bytes": 11978,
+      "sha256": "70e80a27e225e7be1c47ddef00d32901047600d84e5eefc8ec971bc3572877d8"
+    }
+  ],
+  "supplemental": [
+    {
+      "file": "tooling-audit-before-map-refresh.md",
+      "bytes": 8774,
+      "sha256": "b820360891b820b248f7c7a770066772da8959ef75d017ab79fd9001ca3c348b",
+      "context": "Read-only audit of tooling 838a965 and .github b3c1b3d before PR 6 merged; .github main advanced to 3666555 during this task. Its PR-open/no-caller statements are historical."
+    }
+  ]
+}
