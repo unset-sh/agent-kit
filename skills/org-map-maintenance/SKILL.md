@@ -17,7 +17,9 @@ Keep working diagrams and investigation notes in agent-kit under the organisatio
 2. Register each map in its consumer's `.github/maps.json`, following the schema supported by the reviewed
    tooling revision. Name its generator, outputs and validation. Keep the registry and authored source facts
    under review; do not maintain a second editable copy of generated output.
-3. Use the pinned shared `automation-maps-refresh.yml` workflow from tooling. Configure the caller's source
+3. Use tooling's pinned `automation-maps-refresh.yml` for website JSON snapshots, or a documented shared
+   publisher that explicitly supports the map's committed output format. Never broaden the JSON runner's
+   file contract to publish executable or authored files. Configure the caller's source
    change events, schedule and manual recovery for the map's freshness needs. Declare the refresh interval,
    owner and failure path in maintained documentation. Verify the actual shared workflow and registry contract
    before wiring it; a rule or proposed integration is not evidence that refresh is running.
@@ -39,6 +41,12 @@ update the explanation and evidence through the owning repository's normal revie
 
 Other maps also need human review when a change alters meaning. Automatic extraction may update facts and
 layout; it must not automatically rewrite architectural decisions, ownership claims or explanations.
+
+Alex's instruction, 2026-11-22: a validated update containing only derived map data or generated views does not
+need a separate owner approval. Review the generator and authoritative source changes normally; do not ask the
+owner to approve the same facts again in their rendered map. A publisher must enforce its output paths, preserve
+authored text, validate the complete result, and respect repository merge restrictions. This exception does not
+approve release or production promotion, policy changes, or invented ownership and explanations.
 
 ## Verify refresh and recover
 

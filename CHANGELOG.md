@@ -7,6 +7,9 @@ the entry of its version.
 
 Proposed next release. Reconcile pending changes before the owner approves publication.
 
+- Clarify that checked, generated-only map refreshes need no separate owner approval. Source declarations and
+  generator changes retain normal review. Register the dedicated organisation Markdown publisher separately
+  from the JSON-only website snapshot path; neither may rewrite authored meaning or bypass merge restrictions.
 - Make the AI working-material rule explicit for plans, drafts, notes, reviews and supporting artifacts in
   every format. They stay in agent-kit; a consumer's `docs/` is for maintained human documentation.
 - Add `org-brand-request` and org-0008. Agents request missing shared design tokens or brand assets through
