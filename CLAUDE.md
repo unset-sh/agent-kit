@@ -8,8 +8,9 @@ copied into each repository from a pinned commit of `main`.
 - **Belongs here:** the organisation's rules, the engineering principles, skills and subagents for jobs that
   repeat across repositories, the organisation's decision records in `skills/org-decisions/records/`, the
   `CLAUDE.md` and `AGENTS.md` templates, the text of the Claude project instructions, and `sync.mjs`, which
-  installs the kit at one commit of `main` in a repository and checks the copy; AI working notes in `notes/<task>/` and supporting
-  artifacts in `artifacts/<task>/` (org-0005), kept here but excluded from the distributed kit.
+  installs the kit at one commit of `main` in a repository and checks the copy; AI working notes in
+  `notes/<task>/` and supporting artifacts in `artifacts/<task>/` (org-0005), kept here but excluded from the
+  distributed kit.
 - **Does not belong here:** a repository's own rules (its `CLAUDE.md`); the map of repositories (that is
   `unset-sh/.github`); a repository's own decision records; shared developer-tooling implementations
   (`unset-sh/tooling`, org-0006); another repository's maintained human documentation (its own `docs/`,
@@ -57,9 +58,15 @@ Other repositories load a copy of these. Here they are the source, so they are i
   that shows it refusing. Changing where it may write, what it accepts or where it downloads from is a
   security decision: stop and ask.
 - **A change that alters what a repository's assistant does** gets an entry in `CHANGELOG.md` under the
-  date it merges, newest first. The kit has no releases: whatever `main` holds is what a repository can take,
-  and only Alex merges into `main`. Before he merges a pull request that changes what ships, a separate thread
-  reviews its diff.
+  date it merges, newest first. The kit has no releases and no `staging`: pull requests go straight into
+  `main`, and whatever `main` holds is what a repository can take.
+- **Assistants manage this repository** (Alex, 2026-11-23: "For the agent kit, you're allowed to manage it
+  yourself"; "agent can merge ... to main without me"). This replaces the organisation rule that only the
+  owner merges into `main`, here only. A pull request merges once its checks pass and a thread other than its
+  author has reviewed its diff; the author never merges its own. Two kinds of change still need Alex's own
+  words, quoted in the pull request, before it merges: one to what `sync.mjs` accepts, where it writes or
+  where it fetches from; and one that relaxes a gate, an approval, or an identity, key or secret rule, here
+  or in the shipped rules.
 - Node 26 (`.nvmrc`), no dependencies, `node:test` only. Actions are pinned by full commit SHA.
 
 ## Commands

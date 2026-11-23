@@ -7,6 +7,8 @@ Entries go under the date the change is merged into `main`, newest first, one he
 
 ## 2026-11-23
 
+- Agent-kit is managed by assistants and has no `staging`: its pull requests go straight into `main` and
+  merge after a review by another thread. `org-kit-update` no longer says the owner merges kit changes.
 - The kit is installed from a pinned commit of `main` instead of a release. `sync.mjs` takes a full commit
   id, fetches `main` with git, refuses a commit that is not on it, and copies the shipped files from that
   commit's tree. The lock records the commit instead of a version and a bundle hash. `org-kit-update` says

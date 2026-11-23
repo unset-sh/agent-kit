@@ -47,9 +47,9 @@ integration is active before its consumer verifies it.
 
 A repository commits a copy of the kit as it is at one commit of `main` under `.claude/`. The file
 `.claude/agent-kit/lock.json` records that commit and a sha256 for every copied file. The kit has no
-releases: it is the assistants' shared memory, and every change to it reaches `main` only when the owner
-merges it. A repository takes a newer commit in a pull request of its own, so a change goes through two
-approvals before it steers an assistant there: the owner's merge here, and the reviewed pull request there.
+releases: it is the assistants' shared memory, and assistants manage it. Every change reaches `main` through a
+pull request reviewed by a thread other than its author. A repository takes a newer commit in a pull request
+of its own, so a change is reviewed twice before it steers an assistant there: here, and in that repository.
 
 A committed copy is used because it is the only form every kind of session loads. Claude Code loads a
 repository's `CLAUDE.md`, `.claude/rules/` and `.claude/skills/` from the clone, in cloud and local sessions

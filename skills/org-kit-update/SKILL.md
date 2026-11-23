@@ -12,7 +12,7 @@ by hand.
 ## Someone wants a rule or skill changed
 
 Do not edit the copy. Open a pull request on `unset-sh/agent-kit` with the change. It reaches repositories
-once the owner merges it into the kit's `main` and each repository takes that commit, through the steps below.
+once it is reviewed and merged into the kit's `main` and each repository takes that commit, through the steps below.
 
 ## Move to a newer commit
 
