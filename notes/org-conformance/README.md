@@ -25,7 +25,7 @@ where stated, in a fresh clone of the pushed branch. No workflow has run on GitH
 | 5 | docs | [#13](https://github.com/unset-sh/docs/pull/13) | CLAUDE.md and AGENTS.md (neither existed); kit copy. No Bun yet (below) | None |
 | 6 | pds | [#4](https://github.com/unset-sh/pds/pull/4) | CLAUDE.md, AGENTS.md, kit copy, a CI job that checks the copy | None |
 | 7 | deployment | [#5](https://github.com/unset-sh/deployment/pull/5) | Kit copy, AGENTS.md from the template, a CI job that checks the copy | None |
-| 8 | .github | [#20](https://github.com/unset-sh/.github/pull/20) | Map: presentation becomes rendering (org-0011); the adopting repositories use agent-kit | Overlaps open #11 |
+| 8 | .github | [#20](https://github.com/unset-sh/.github/pull/20) | Map: the adopting repositories use agent-kit (the rename landed through #19) | None |
 | 9 | agent-kit | [#33](https://github.com/unset-sh/agent-kit/pull/33) | This gap list; the brand plan moved from brand | None |
 
 Every Bun conversion migrated `package-lock.json` to `bun.lock` with `bun install`, so resolved versions did not
@@ -111,7 +111,7 @@ v2.2.0 needs.
 
 | Gap | State |
 | --- | --- |
-| `presentation` entry, package and references | Fixed in #20 |
+| `presentation` entry, package and references | Fixed on staging by #19 |
 | Adopting repositories did not list agent-kit | Fixed in #20 |
 | backend, web, deployment missing; `messaging` and `server-kit` still listed | Open `.github` #11 |
 
