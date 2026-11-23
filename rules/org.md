@@ -46,8 +46,8 @@ them there, never in this copy. A repository's own `CLAUDE.md` adds its own rule
 
 ## Releases
 
-- A release is published only after the owner approves it in the `release` environment. Never bypass, remove or
-  weaken that approval, and never move or reuse a release tag. A bad release is fixed by a new version.
+- Production is `main`; the owner's merge into it decides a release (org-0010). Keep each `release` environment
+  approval until a reviewed cutover removes it. Never move or reuse a release tag; a bad release gets a new version.
 - Pin dependencies to exact versions and GitHub Actions to full commit SHAs.
 - A new version of an `@unset-sh` package may be taken at once. Third-party packages keep the 7-day wait.
 
