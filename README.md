@@ -10,12 +10,38 @@ whatever repository they are in, and gets it to them in a way that cannot drift 
 | Folder | What it holds | In a repository it becomes |
 | --- | --- | --- |
 | [`rules/`](rules/) | The organisation's rules, how to work, and the engineering principles in short. Loaded at the start of every session, so kept to 150 lines in total | `.claude/rules/org/` |
-| [`skills/`](skills/) | Procedures for jobs that repeat across repositories, read only when the job comes up | `.claude/skills/org-*/` |
+| [`skills/`](skills/) | Procedures for jobs that repeat across repositories and organisation decision records, read when needed | `.claude/skills/org-*/` |
 | [`sync.mjs`](sync.mjs) | Installs a release in a repository and checks the copy. Node built-ins only | `.claude/agent-kit/sync.mjs` |
 | [`templates/`](templates/) | The `CLAUDE.md` and `AGENTS.md` a new repository starts from | Copied once, then owned by the repository |
 | [`projects/`](projects/) | The text of the instructions for Claude projects | Pasted into a project's settings by hand |
+| `notes/<task>/` | AI plans, working notes, investigations and review reports from organisation work | Stays here; excluded from the kit |
+| `artifacts/<task>/` | Supporting AI working artifacts and review evidence | Stays here; excluded from the kit |
 
 What belongs here and what does not is in [`CLAUDE.md`](CLAUDE.md).
+
+The [organisation decisions](skills/org-decisions/SKILL.md) record settled choices and their history. The
+current workflow ownership is [org-0006](skills/org-decisions/records/org-0006-developer-tooling-lives-in-tooling.md):
+shared CI, release and deployment implementations belong in the public `unset-sh/tooling` repository.
+`unset-sh/.github` retains organisation metadata, community defaults, workflow-picker templates and its local
+metadata checks. Consumers retain small callers, their build/test logic and reviewed pins. This kit records the
+decision; caller adoption, signer verification and automatic update delivery change through their own reviewed work.
+
+[Org-0005](skills/org-decisions/records/org-0005-ai-working-material-lives-in-agent-kit.md) keeps AI working
+material here, grouped by task, instead of adding ad hoc Markdown to consuming repositories. Maintained
+human documentation belongs in its owning repository's `docs/`, follows the `org-documentation` standard,
+and exports through the documentation pipeline to `unset-sh/docs` for publication. A README can introduce
+and link those guides. This rule does not start a bulk move or deletion of historical files. The bundle's
+existing allowlist excludes `notes/` and `artifacts/`.
+
+For missing shared design tokens or brand assets, use [brand requests](skills/org-brand-request/SKILL.md).
+The organisation rule sends concrete requests to `unset-sh/brand` issues; the shared handoff stays here.
+[`AGENTS.md`](AGENTS.md) and its [consumer template](templates/AGENTS.md) point to the relevant source or
+installed files. This is a procedure for assigned agents, not a running queue monitor.
+
+For repository, workflow and other maintained maps, follow [map maintenance](skills/org-map-maintenance/SKILL.md).
+Maps use authoritative sources and automatic shared-tooling refresh; their ownership claims and explanations
+still need review. The skill describes registration, provenance, freshness and recovery without claiming an
+integration is active before its consumer verifies it.
 
 ## How a repository uses it
 

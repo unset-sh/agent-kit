@@ -1,0 +1,65 @@
+{
+  "checkedAt": "2026-11-22T18:33:41.690823+00:00",
+  "frameworkCommit": "02bfc33cbe6a44f7f57f3e06dfc4012739899265",
+  "mainChecks": "https://github.com/unset-sh/docs/actions/runs/45055616893",
+  "deployment": "https://github.com/unset-sh/docs/actions/runs/45055616820",
+  "results": [
+    {
+      "url": "https://docs.unset.sh/github/",
+      "status": 200,
+      "bytes": 55308,
+      "expectedTitle": true
+    },
+    {
+      "url": "https://docs.unset.sh/github/source.json",
+      "status": 200,
+      "bytes": 975,
+      "sourceRevision": "36665552fe5d95005ddfdac1a8276333d479f103",
+      "manifestMatchesCommittedBytes": true
+    },
+    {
+      "url": "https://docs.unset.sh/tooling/",
+      "status": 200,
+      "bytes": 56332,
+      "expectedTitle": true
+    },
+    {
+      "url": "https://docs.unset.sh/tooling/source.json",
+      "status": 200,
+      "bytes": 1099,
+      "sourceRevision": "838a965d14d0887291046c279422becb7b0228f3",
+      "manifestMatchesCommittedBytes": true
+    },
+    {
+      "url": "https://docs.unset.sh/profile-recipes/",
+      "status": 200,
+      "bytes": 54243,
+      "expectedTitle": true
+    },
+    {
+      "url": "https://docs.unset.sh/profile-recipes/source.json",
+      "status": 200,
+      "bytes": 2535,
+      "sourceRevision": "1e64c469f86dd2ad6e9b26200d26e308d6d06f4e",
+      "manifestMatchesCommittedBytes": true
+    },
+    {
+      "url": "https://docs.unset.sh/_brand/provenance.json",
+      "status": 200,
+      "bytes": 6352,
+      "frameworkCommit": "02bfc33cbe6a44f7f57f3e06dfc4012739899265"
+    },
+    {
+      "url": "https://docs.unset.sh/all-docs/",
+      "status": 200,
+      "bytes": 72823,
+      "allSectionsDiscoverable": true
+    },
+    {
+      "url": "https://docs.unset.sh/organisation/",
+      "status": 200,
+      "bytes": 119962,
+      "mapRevision": "36665552fe5d95005ddfdac1a8276333d479f103"
+    }
+  ]
+}

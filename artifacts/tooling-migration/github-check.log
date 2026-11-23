@@ -1,0 +1,34 @@
+
+> check
+> node --test "scripts/*.test.mjs" && node scripts/map.mjs --check
+
+✔ no findings when the map matches (0.516625ms)
+✔ a repository missing from the map is reported (0.416666ms)
+✔ forks are ignored (0.090042ms)
+✔ archived, vanished, newly created and changed repositories are reported (0.08125ms)
+✔ repositories outside the organisation are never checked (0.0835ms)
+✔ the report lists findings and skipped private repositories (0.070834ms)
+✔ a licence GitHub detects that the map does not record is reported (0.051333ms)
+✔ repos.json is valid (0.692417ms)
+✔ a repository listed twice is refused (0.091708ms)
+✔ an unknown status is refused (0.044791ms)
+✔ a use of a repository not in the map is refused (0.038958ms)
+✔ an existing organisation repository needs its GitHub description (0.067208ms)
+✔ the map lists every repository and every dependency edge (0.809041ms)
+✔ repositories not created yet are not linked (0.066917ms)
+✔ the profile section leaves out hidden and proposed repositories (0.188125ms)
+✔ the profile section groups repositories two to a row and escapes text (0.107041ms)
+✔ links must be docs, site or package, and URLs https (0.083209ms)
+✔ the profile section replaces only the text between its markers (0.159625ms)
+✔ a dependency cycle is refused (0.056792ms)
+✔ every repository states its licence against the rule (0.041625ms)
+✔ the map lists the repositories whose licence does not follow the rule (0.03875ms)
+✔ a group of one is a plain paragraph, not a table (0.032208ms)
+ℹ tests 22
+ℹ suites 0
+ℹ pass 22
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 42.682875

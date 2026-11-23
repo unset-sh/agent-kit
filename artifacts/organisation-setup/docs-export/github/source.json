@@ -1,0 +1,41 @@
+{
+  "schemaVersion": 1,
+  "repository": "unset-sh/.github",
+  "revision": "a364702ca70ce6b8de4c28de233613a6ea47f420",
+  "directory": "docs/site",
+  "section": "github",
+  "files": [
+    {
+      "path": "LICENSE",
+      "sha256": "d8a6cc31abc16b6748c7a21f21611f5a1ec33f67d22ca23d7da1c19b95496bee"
+    },
+    {
+      "path": "_index.md",
+      "sha256": "196257455efa8f4a921c026a129b36b8dc5d70b35ea1d3080da718e474a72278"
+    },
+    {
+      "path": "export-docs.md",
+      "sha256": "9baeb853c6a902f95b5da28d289340f34a3ed01244c447c937b37dfcd6c1d78b"
+    },
+    {
+      "path": "manage-docs-publishing-key.md",
+      "sha256": "f9f6c97785d8fbe669794f687500924320c04a4ab605760c34c61ccb563fefb6"
+    },
+    {
+      "path": "organisation-defaults.md",
+      "sha256": "fe87705f8a820f8a17c84d3cac4b9a368978dcff618230da81c9344f617f51b2"
+    },
+    {
+      "path": "release-reference.md",
+      "sha256": "535c5599d6d05d48e5a16ca1ccd9812490aec5a0df5de8aaf88f1994cce873f5"
+    },
+    {
+      "path": "use-workflows.md",
+      "sha256": "5a58e63f8cfa36d58e9ddf8bb532c404490300d03eea09fa374c5cfea60f5bd9"
+    },
+    {
+      "path": "workflow-layout.md",
+      "sha256": "08d74a2918509fdea4dc189df366681f1e7250e7eaad44ccfcebe7e146167be1"
+    }
+  ]
+}
