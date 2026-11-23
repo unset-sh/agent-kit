@@ -30,8 +30,8 @@ decision; caller adoption, signer verification and automatic update delivery cha
 material here, grouped by task, instead of adding ad hoc Markdown to consuming repositories. Maintained
 human documentation belongs in its owning repository's `docs/` and exports through the documentation
 pipeline to `unset-sh/docs` for publication; the shared `org-documentation` standard is not released yet.
-A README can introduce and link those guides. This rule does not start a bulk move or deletion of historical files. The bundle's
-existing allowlist excludes `notes/` and `artifacts/`.
+A README can introduce and link those guides. This rule does not start a bulk move or deletion of historical files. `sync.mjs`
+installs only `rules/`, `skills/`, `agents/` and itself, so `notes/` and `artifacts/` never reach a repository.
 
 For missing shared design tokens or brand assets, use [brand requests](skills/org-brand-request/SKILL.md).
 The organisation rule sends concrete requests to `unset-sh/brand` issues; the shared handoff stays here.
@@ -106,16 +106,6 @@ To change a rule or a skill, change it here. The copy in a repository is never e
   that the kit may not ship.
 - It refuses to read or write through a symbolic link.
 - It never touches a repository's own `CLAUDE.md`, rules, skills, subagents or settings.
-
-## Releases
-
-A release starts when a raised version in `package.json` reaches `main`: pull requests land on `staging`, and
-the owner merges `staging` into `main`. The workflow checks that the `release` environment still holds the
-owner's approval, builds `agent-kit.json` once, and waits. The owner presses Approve; the workflow then creates the tag `v<version>` at that commit,
-attests the files and publishes them on the release page with the changelog entry of that version. Nobody
-pushes a tag. Whoever can change this repository can steer every assistant in
-every unset.sh repository, so a release goes through two approvals before it reaches a repository: the
-owner's on the release, and a reviewed pull request in the repository that takes it.
 
 ## Working on this repository
 

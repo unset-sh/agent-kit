@@ -38,13 +38,13 @@ Other repositories load a copy of these. Here they are the source, so they are i
 
 - **The test for what ships:** would an assistant working in any organisation repository need it, whatever
   that repository is? Task-specific AI notes and artifacts stay here under `notes/` and `artifacts/`, outside
-  the bundle. Product-specific rules and maintained human documentation stay in the repository that owns
+  the kit. Product-specific rules and maintained human documentation stay in the repository that owns
   the product and export to `unset-sh/docs` (the `org-documentation` standard is not released yet).
 - **What ships is text a person can review in a diff.** Only `.md` files under `rules/`, `skills/` and
   `agents/`, plus `sync.mjs`. No hooks, no MCP server definitions, no settings files, no scripts inside skills,
   no skill line that runs a shell command, no `@path` import, and no front matter that grants tools. A
   subagent may set only `model` and `effort` beyond its name and description. The kit's own checks enforce
-  this on what it releases; `sync.mjs` does not re-check content when it installs. Changing it needs the
+  this on what reaches `main`; `sync.mjs` does not re-check content when it installs. Changing it needs the
   owner's decision first: whoever can change this repository can steer every assistant in every repository.
 - **Every always-loaded line is paid for in every session of every repository.** The files in `rules/` share
   a budget of 150 lines. A new rule has to earn its lines; anything longer belongs in a skill.
@@ -56,13 +56,10 @@ Other repositories load a copy of these. Here they are the source, so they are i
 - **`sync.mjs` uses Node built-ins only** and reads as an ordered sequence of checks. Every refusal has a test
   that shows it refusing. Changing where it may write, what it accepts or where it downloads from is a
   security decision: stop and ask.
-- **A change that alters what a repository's assistant does** gets an entry in `CHANGELOG.md` under
-  "Unreleased". A release is one pull request that renames that heading to the new version and raises
-  `package.json` to match. It lands on `staging`; the release starts when Alex merges `staging` into `main`,
-  and he then presses Approve (`skills/org-release/SKILL.md`). Before the release pull request merges, a
-  separate thread reviews the full diff since the last release. What is released is whatever `staging` holds
-  at the promotion, so the promotion pull request names the reviewed `staging` commit, nothing else merges into
-  `staging` in between, and any later change gets its own review of the difference.
+- **A change that alters what a repository's assistant does** gets an entry in `CHANGELOG.md` under the
+  date it merges, newest first. The kit has no releases: whatever `main` holds is what a repository can take,
+  and only Alex merges into `main`. Before he merges a pull request that changes what ships, a separate thread
+  reviews its diff.
 - Node 26 (`.nvmrc`), no dependencies, `node:test` only. Actions are pinned by full commit SHA.
 
 ## Commands
