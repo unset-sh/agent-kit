@@ -30,7 +30,7 @@ decision; caller adoption, signer verification and automatic update delivery cha
 [Org-0005](skills/org-decisions/records/org-0005-ai-working-material-lives-in-agent-kit.md) keeps AI working
 material here, grouped by task, instead of adding ad hoc Markdown to consuming repositories. Maintained
 human documentation belongs in its owning repository's `docs/` and exports through the documentation
-pipeline to `unset-sh/docs` for publication; the shared `org-documentation` standard is not released yet.
+pipeline to `unset-sh/docs` for publication, written to the shared standard in the skill `org-documentation`.
 A README can introduce and link those guides. This rule does not start a bulk move or deletion of historical files. `sync.mjs`
 installs only `rules/`, `skills/`, `agents/` and itself, so `notes/` and `artifacts/` never reach a repository.
 
@@ -132,6 +132,10 @@ To change a rule or a skill, change it here. The copy in a repository is never e
 - It never touches a repository's own `CLAUDE.md`, rules, skills, subagents or settings.
 
 ## Working on this repository
+
+For human documentation, follow the shared [documentation standard](skills/org-documentation/standard.md)
+and [page templates](skills/org-documentation/templates.md). Contributors and assistants use the same text.
+Repositories adopting it fill in only their [local documentation facts](skills/org-documentation/repository-rules.md).
 
 ```sh
 npm run check
