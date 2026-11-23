@@ -40,6 +40,10 @@ Added after Alex's questions on 2026-11-23: the slice's routes go in one Elysia 
 API, so a public API at `api.unset.sh` (edge straight to backend, scoped tokens, its own spec and
 breaking-change check) can be added later as a separate group. The public API is out of scope for the slice.
 
+Also added on 2026-11-23 at Alex's request: reuse the old app's code wherever it fits (copy, then change
+only what the move needs, in separate commits with provenance), and keep a `findings.md` of weak spots
+noticed while copying. Security weaknesses are reported, never copied as is.
+
 Smaller fixes: profile-recipes listed as a staged repo; lexicons' move to `main` + `drafts` noted; `email` added
 to the never-logged list; display name limits taken from the schema (`maxGraphemes 64`, `maxLength 640`);
 ADRs 0014 and 0054 added to the reading list; "web-to-backend network authentication" listed as out of scope

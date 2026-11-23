@@ -85,11 +85,20 @@ files win; say so in the PR.
   the upstream MIT `LICENSE`, and a check that fails when the copy differs). Not a `github:` dependency: the
   lexicons package is private and unpublished, and git dependencies have already failed `bun install`'s
   integrity check in this org.
-- **The old app.** `github.com/Undefined6799/unset` is a **read-only reference** at commit
-  `60228f5e60ead58c359f798519816fc3e8ec3fa4` (verify it exists). Rewrite what you need into the new repo's
-  shape, keep its security invariants and tests, and cite the source path and commit in the commit body.
-  Never edit that repo or its ADRs. Do not bulk-copy folders. Code that depended on Node behaviour is
-  rewritten for Bun, never shimmed.
+- **The old app: reuse first (Alex, 2026-11-23).** `github.com/Undefined6799/unset` is a **read-only
+  source** at commit `60228f5e60ead58c359f798519816fc3e8ec3fa4` (verify it exists). Do not reinvent what it
+  already does well: copy its files and tests into the new repo and change only what the move requires (the
+  new repo's layout and boundaries, Bun in place of Node-only behaviour, the decisions in §3). Copied code
+  becomes AGPL-3.0-only (Alex authorised it as owner). Cite the source path and commit in the commit body,
+  and keep a copy and its later changes in separate commits, so the diff shows what changed. Copy file by
+  file what the step needs, not whole folders of unrelated code. Keep every security invariant and its
+  tests. Code whose behaviour depends on Node (the undici-based net-guard, `pg` where `Bun.sql` replaces it)
+  is rewritten for Bun, never shimmed. Never edit that repo or its ADRs.
+- **Notes on weak spots.** While you copy, write down anything that looks weak or improvable (a missing
+  test, a confusing name, a duplicated rule, a fragile dependency) in agent-kit
+  `notes/first-e2e-slice/findings.md`: file, what you saw, and a suggested fix. Fix it in the slice only if
+  it is small and the step needs it; otherwise leave it noted. A security weakness is never copied as is:
+  stop, note it, and tell Alex in your next report.
 - **Evidence.** Before relying on how Bun, Elysia, Better Auth, SvelteKit, `@atproto/*`, Postgres or GitHub
   behaves, read its current docs or source for the pinned version and cite URL or path + version in the code
   comment or PR. If the docs are silent, call the behaviour unverified until a test proves it. Everything in
@@ -121,7 +130,7 @@ files win; say so in the PR.
 | agent-kit | main | rules, records org-0001…0014, skills | your notes and the decision record |
 | .github | main | `repos.json`, `MAP.md`, PR template | map update in step 12 |
 
-Pieces of the old app worth reading before you write their new version (paths at `60228f5`):
+Pieces of the old app to reuse (copy, then adapt) (paths at `60228f5`):
 `infrastructure/net-guard/`, `domains/identity/{resolve-handle,resolve-did,verify-handle,did-doc}.ts`,
 `infrastructure/pds/oauth/{oauth-client,identity-resolvers,scopes,sign-in}.ts`,
 `infrastructure/session/store.ts`, `shared/http/{headers,returnPath,config}.ts`, `shared/config/`,
@@ -298,7 +307,8 @@ Docs to read first: <https://elysiajs.com/integrations/better-auth>, <https://el
    and role + OAuth state/session tables), separate migrate and runtime roles, tests against a real Postgres
    (official image pinned by digest; no mocks of the database).
 6. **backend: egress guard and identity.** The Bun egress guard from spike (e) and handle↔DID verification,
-   with tests ported from the old app's net-guard and identity tests, failing first.
+   with the old app's identity code and its net-guard and identity tests copied over; the guard's refusal
+   tests must fail against a non-guarding `fetch` first.
 7. **backend: sign-in and session.** OAuth client with Postgres stores and the guard's `fetch`, the `atproto`
    plugin, the bearer plugin, the sign-in, callback and sign-out operations. Tests: denial without a session,
    a token for one DID never reads another DID's rows, a handle whose DID doc does not point back is
