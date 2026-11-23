@@ -36,6 +36,10 @@ session's repository access, so commit `60228f5` is unverified.
 | 20 | 2FA not mentioned | Not enabled; comment that the plugin must start the pending step | better-auth 1.7.27 2FA only gates email/username/phone sign-ins (plan doc) |
 | 21 | Pin list | Table with today's pins and the date each newer version becomes allowed | Registry read 2026-11-23, see below |
 
+Added after Alex's questions on 2026-11-23: the slice's routes go in one Elysia group for web's internal
+API, so a public API at `api.unset.sh` (edge straight to backend, scoped tokens, its own spec and
+breaking-change check) can be added later as a separate group. The public API is out of scope for the slice.
+
 Smaller fixes: profile-recipes listed as a staged repo; lexicons' move to `main` + `drafts` noted; `email` added
 to the never-logged list; display name limits taken from the schema (`maxGraphemes 64`, `maxLength 640`);
 ADRs 0014 and 0054 added to the reading list; "web-to-backend network authentication" listed as out of scope

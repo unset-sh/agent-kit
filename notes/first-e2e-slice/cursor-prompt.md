@@ -153,7 +153,10 @@ web     ──► @unset-sh/brand@0.1.1 (tokens, fonts)    backend ──► sh.
 - **Contract.** Elysia's route schemas (TypeBox, `t.*`) are the source of truth (Alex, 2026-11-23). Every
   route declares its request **and response** schema. Elysia's OpenAPI plugin writes
   `backend/api/openapi.yaml` (YAML, as Alex prefers); `bun run check` regenerates it and fails when the
-  committed copy differs, so the required CI check blocks drift. Better Auth's endpoints the slice uses are
+  committed copy differs, so the required CI check blocks drift. Put every route this slice adds in one
+  Elysia group for web's internal API, with its own spec file. A public API (planned at `api.unset.sh`,
+  routed by the edge straight to backend, with scoped tokens and never the web session) will later be a
+  separate group with its own spec and breaking-change check, so do not mix the two or name anything public. Better Auth's endpoints the slice uses are
   in the same file (its `openAPI()` plugin, merged by hand: the Elysia guide says they do not merge on their
   own).
 - **Web's backend client is not decided.** Alex is choosing between (A) Eden Treaty with backend publishing
@@ -355,7 +358,7 @@ Docs to read first: <https://elysiajs.com/integrations/better-auth>, <https://el
 Messaging/Matrix, modules, feeds, posts, media and blobs (avatars), moderation, admin and pds-admin, invites,
 age check, terms and onboarding, the PDS contact email, 2FA/passkeys, indexer/Tap, mobile, any hosted
 environment (staging or production), DNS, a confidential OAuth client, web-to-backend network authentication
-(phase 6), lexicon changes or publication, promotions to `main`, self-hosted runners, the Proxmox lab, and any
+(phase 6), any public API or `api.unset.sh` route, lexicon changes or publication, promotions to `main`, self-hosted runners, the Proxmox lab, and any
 change to `Undefined6799/unset`. If the slice seems to need one of these, **STOP** and ask.
 
 ## 8. When you report
