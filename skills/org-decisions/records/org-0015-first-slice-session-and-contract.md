@@ -22,5 +22,5 @@ Two choices were recommendations. He accepted them by pasting the follow-up prom
 
 - Web calls backend only from the server, behind a capability interface. The client library is still not chosen.
 - A real sign-in, refresh and revocation wait for Alex to approve a consent screen himself. No agent types or stores his password.
-- tooling's Bun check merged into `staging` as `unset-sh/tooling#20` (`c4918ca0525bbb9183da82a7166368f262b059dc`). tooling `main` is still `ded89d976839a644828ec8c483f1ef77ed771e88`. Callers pin a `main` commit only after this workflow is on `main`.
+- tooling's Bun check reached `main` through `unset-sh/tooling#22` at `7cd2e8c3d284cd9bb90c54f336adc0834b515d97` (2026-11-23). `unset-sh/tooling#20` had merged only into the retired `staging`. Callers pin that `main` commit or a later one.
 - This record is proposed. Another thread merges it (org-0013). It does not by itself start the backend or web implementation.
