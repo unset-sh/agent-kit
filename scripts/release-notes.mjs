@@ -5,8 +5,8 @@
 // An entry starts at a line "## v<version>" in CHANGELOG.md and runs to the next "## " line. A release with no
 // entry fails here, so no release goes out without saying what changes for the repositories that take it.
 
-import { readFileSync } from "node:fs";
-import { pathToFileURL } from "node:url";
+import { readFileSync, realpathSync } from "node:fs";
+import { fileURLToPath } from "node:url";
 
 export function notesFor(changelog, version) {
   const lines = changelog.split("\n");
@@ -27,7 +27,16 @@ export function versionsIn(changelog) {
     .map((line) => line.trim().slice(4));
 }
 
-if (process.argv[1] !== undefined && import.meta.url === pathToFileURL(process.argv[1]).href) {
+function startedAsScript() {
+  if (process.argv[1] === undefined) return false;
+  try {
+    return realpathSync(process.argv[1]) === realpathSync(fileURLToPath(import.meta.url));
+  } catch {
+    return false;
+  }
+}
+
+if (startedAsScript()) {
   const changelog = readFileSync(new URL("../CHANGELOG.md", import.meta.url), "utf8");
   process.stdout.write(notesFor(changelog, process.argv[2] ?? ""));
 }
