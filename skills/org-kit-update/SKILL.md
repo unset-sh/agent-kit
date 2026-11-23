@@ -20,16 +20,16 @@ once it is reviewed and merged into the kit's `main` and each repository takes t
    `git ls-remote https://github.com/unset-sh/agent-kit.git refs/heads/main`. Use the full 40-character id.
 2. Read what changes in behaviour between the commit in `lock.json` and the target: the kit's `CHANGELOG.md`
    at the target, and `git log <old>..<new>` in a clone of the kit.
-3. On your own branch, from the repository root, run `node .claude/agent-kit/sync.mjs <commit>`. It fetches
+3. On your own branch, from the repository root, run `bun .claude/agent-kit/sync.mjs <commit>`. It fetches
    the kit's `main` with git, refuses a commit that is not on it, replaces the kit's files with that commit's
-   and rewrites `lock.json`. It touches nothing else. Then run `node .claude/agent-kit/sync.mjs --check`; it
+   and rewrites `lock.json`. It touches nothing else. Then run `bun .claude/agent-kit/sync.mjs --check`; it
    must print that the copy matches.
 4. Read the diff. If a changed rule conflicts with the repository's own `CLAUDE.md`, say so in the pull
    request and do not resolve it silently.
 5. Open a pull request titled `Update agent-kit to <first 7 characters of the commit>`. Say which rules and
    skills changed, in one line each, and give the full commit. It is reviewed and merged like code and never
    qualifies for a docs-only merge. `--check` proves only that the copy matches its lock, not that the lock
-   matches the kit, so this pull request is the control: its reviewer runs `node .claude/agent-kit/sync.mjs
+   matches the kit, so this pull request is the control: its reviewer runs `bun .claude/agent-kit/sync.mjs
    <commit>` on the branch and expects no diff.
 
 ## First adoption
@@ -38,9 +38,9 @@ once it is reviewed and merged into the kit's `main` and each repository takes t
    as in step 1 above. Check it is on `main` before running anything from it:
    `git -C <folder> merge-base --is-ancestor <commit> origin/main` must exit 0. If it does not, stop and tell
    the owner. Then `git -C <folder> checkout <commit>`.
-2. From the repository root run `node <folder>/sync.mjs <commit>`. It installs the kit's files, its own copy
+2. From the repository root run `bun <folder>/sync.mjs <commit>`. It installs the kit's files, its own copy
    at `.claude/agent-kit/sync.mjs`, and `lock.json`.
-3. Add `node .claude/agent-kit/sync.mjs --check` to the repository's CI check.
+3. Add `bun .claude/agent-kit/sync.mjs --check` to the repository's CI check.
 4. Make sure the repository's `CLAUDE.md` starts with "Where this repository fits" and that `AGENTS.md`
    exists, both from the kit's `templates/`. Remove rules from `CLAUDE.md` that the kit's rules now state.
 5. In the same piece of work, record in `repos.json` (`unset-sh/.github`) that the repository uses
