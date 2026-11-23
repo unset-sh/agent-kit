@@ -7,6 +7,10 @@ Entries go under the date the change is merged into `main`, newest first, one he
 
 ## 2026-11-23
 
+- Bun replaces Node (Alex, 2026-11-23). `org-kit-update`, `org-new-repo` and the `CLAUDE.md` template now run
+  `bun .claude/agent-kit/sync.mjs`. `sync.mjs` itself is unchanged: it uses only `node:` built-in modules, so a
+  copy that is already installed keeps working, with Bun or with Node. The map command they name in
+  `unset-sh/.github` is `bun run map` once that repository's Bun change lands.
 - Agent-kit is managed by assistants and has no `staging`: its pull requests go straight into `main` and
   merge after a review by another thread. `org-kit-update` no longer says the owner merges kit changes.
 - The kit is installed from a pinned commit of `main` instead of a release. `sync.mjs` takes a full commit

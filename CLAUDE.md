@@ -25,7 +25,7 @@ moving work between repositories or starting work that might belong elsewhere.
 
 **Keep the map current.** When a change here adds, removes or moves a responsibility, changes what this
 repository uses or ships, or renames or archives it, open a pull request on `unset-sh/.github` that updates
-`repos.json` (run `npm run map` there) and update this section to match.
+`repos.json` (run `bun run map` there) and update this section to match.
 
 ## The organisation's rules
 
@@ -54,7 +54,7 @@ Other repositories load a copy of these. Here they are the source, so they are i
 - **Nothing shipped may depend on one repository.** No step ids, folder names or tools that only one repository has.
 - **Everything shipped carries an `org` name** (`skills/org-*`, `agents/org-*`), so a repository's own files
   never clash with the kit's.
-- **`sync.mjs` uses Node built-ins only** and reads as an ordered sequence of checks. Every refusal has a test
+- **`sync.mjs` uses only `node:` built-in modules, which Bun provides, and runs with `bun`**, and reads as an ordered sequence of checks. Every refusal has a test
   that shows it refusing. Changing where it may write, what it accepts or where it downloads from is a
   security decision: stop and ask.
 - **A change that alters what a repository's assistant does** gets an entry in `CHANGELOG.md` under the
@@ -67,10 +67,11 @@ Other repositories load a copy of these. Here they are the source, so they are i
   words, quoted in the pull request, before it merges: one to what `sync.mjs` accepts, where it writes or
   where it fetches from; and one that relaxes a gate, an approval, or an identity, key or secret rule, here
   or in the shipped rules.
-- Node 26 (`.nvmrc`), no dependencies, `node:test` only. Actions are pinned by full commit SHA.
+- Bun (`.bun-version`; Alex, 2026-11-23: "Bun is actually going to be replacing Node"), no dependencies, `bun test`
+  only. Actions are pinned by full commit SHA.
 
 ## Commands
 
 ```sh
-npm run check   # every check and test
+bun run check   # every check and test
 ```
