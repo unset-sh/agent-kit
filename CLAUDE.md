@@ -13,8 +13,8 @@ released as one version and copied into each repository.
 - **Does not belong here:** a repository's own rules (its `CLAUDE.md`); the map of repositories (that is
   `unset-sh/.github`); a repository's own decision records; shared developer-tooling implementations
   (`unset-sh/tooling`, org-0006); another repository's maintained human documentation (its own `docs/`,
-  exported to `unset-sh/docs`; the shared standard `org-documentation` is not released yet); anything written for members' assistants
-  (that is `unset-sh/profile-recipes`).
+  exported to `unset-sh/docs`; the shared standard `org-documentation` is not released yet); anything
+  written for members' assistants (that is `unset-sh/profile-recipes`).
 - **Uses:** nothing. **Used by:** every organisation repository, as a committed copy under `.claude/` pinned by
   `.claude/agent-kit/lock.json`.
 - **Licence:** follows the organisation rule.
