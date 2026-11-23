@@ -5,9 +5,10 @@ them there, never in this copy. A repository's own `CLAUDE.md` adds its own rule
 
 ## Licence
 
-- Everything written for unset.sh is AGPL-3.0-only. Work we use from others keeps its own licence.
-- The only exceptions are the ones a repository's `CLAUDE.md` names.
-- Never change the licence of anything already published without the owner's decision.
+- The owner sets each repository's licence and decides any change to a published one; where none is set, ask.
+  Product repositories are AGPL-3.0-only and take no outside code for now. Others' work keeps its own licence.
+- Work made to be copied stays permissive (`profile-recipes` recipes CC0-1.0, lexicon schemas MIT) and takes
+  outside work with a DCO sign-off only. Propose no contributor licence agreement or other signing step.
 - The copyright line is `Copyright (c) 2026 Alex (Undefined6799)`.
 
 ## The owner
@@ -20,7 +21,7 @@ them there, never in this copy. A repository's own `CLAUDE.md` adds its own rule
 - One job per repository. Read <https://github.com/unset-sh/.github/blob/main/MAP.md>
   before moving work between repositories or starting work that might belong elsewhere.
 - Repositories meet only through exact package versions, pinned release assets, or full commits while no release exists.
-  Copies of another repository's files require a pin and a check proving they still match.
+  Copies of another repository's files require a pin and a check proving they still match, except the map's pushes.
 - Generate maps from authoritative sources and refresh them automatically through shared tooling. Follow
   `org-map-maintenance` for registration, source evidence, freshness, failure handling and meaning review.
 - For missing shared design tokens or brand assets, follow `org-brand-request`: open or update a concrete
@@ -53,4 +54,4 @@ them there, never in this copy. A repository's own `CLAUDE.md` adds its own rule
 
 - Assistants never create, read, copy, place or rotate a deploy key, a private key or a token that can write.
   The owner does that by hand. A read-only token used only to pull packages is fine.
-- Secrets and personal data never appear in code, logs, commits, pull requests or chat.
+- Secrets and users' personal data never appear in code, logs, commits, pull requests or chat.

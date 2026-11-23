@@ -32,12 +32,15 @@ Keep it to what the repository needs on day one. Folders appear with their first
 
 Workflow rules: `permissions: {}` at the top and the least each job needs; every action pinned to a full
 commit SHA with the version in a comment; `persist-credentials: false` on checkout; a timeout on every job.
-Copy pins from a repository whose CI is green, and read the action's release notes before raising one.
+Before using a pin, confirm in the action's own repository that the SHA is the commit of the tag in the
+comment, and read the action's release notes before raising one.
 
 ## After the first merge
 
 4. Ask the owner to protect `main` with a ruleset: pull requests only, squash merges, no force pushes or
-   deletion, and the CI check required. Assistants do not change repository settings.
+   deletion, and the CI check required. A repository that receives pushes the map records (docs into
+   `unset-sh/docs`, the lexicon mirror) needs an exception for that deploy key, or the push fails.
+   Rulesets, environments and deploy keys are the owner's to set; assistants ask for them.
 5. If the repository releases anything, ask the owner for the `release` environment, then follow the skill
    `org-release`.
 6. Human docs live in the repository's `docs/` folder. Wiring it to docs.unset.sh needs a deploy key, which
