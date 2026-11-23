@@ -27,8 +27,7 @@ them there, never in this copy. A repository's own `CLAUDE.md` adds its own rule
   `org-map-maintenance` for registration, source evidence, freshness, failure handling and meaning review.
 - For missing shared design tokens or brand assets, follow `org-brand-request`: open or update a concrete
   request in `unset-sh/brand` issues. The requester/provider handoff instructions live in agent-kit.
-- Never create, rename, archive or change the visibility of an organisation repository without the owner's
-  approval for that repository.
+- Never create, rename, archive or change the visibility of an org repository without the owner's approval for it.
 - When a change adds, removes or moves a responsibility, or changes what a repository uses or ships, update
   `repos.json` in `unset-sh/.github` in the same piece of work.
 - Do not design a new repository around the current app (`Undefined6799/unset`). The app will be largely
@@ -46,8 +45,9 @@ them there, never in this copy. A repository's own `CLAUDE.md` adds its own rule
 
 ## Releases
 
-- Production is `main`; the owner's merge into it decides a release (org-0010). Never bypass, remove or weaken
-  a `release` environment approval without the owner's decision. Never move or reuse a tag: release a new version.
+- Production is `main`; the owner's merge into it decides a release (org-0010). Never bypass, remove or weaken a
+  `release` approval without his decision. After his merge, agents may approve brand or rendering; never a
+  production deploy or lexicon publication unless he authorised it (org-0012). Never move or reuse a release tag.
 - Pin dependencies to exact versions and GitHub Actions to full commit SHAs.
 - A new version of an `@unset-sh` package may be taken at once. Third-party packages keep the 7-day wait.
 

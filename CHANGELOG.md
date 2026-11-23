@@ -36,6 +36,9 @@ Also:
   is removed only when the owner decides it.
 - Add org-0013: in agent-kit, a review thread other than the author merges pull requests into `main`
   after the checks pass; Alex no longer merges them. Every other repository keeps org-0010.
+- Add org-0012: agents may press Approve for brand and rendering releases, but never approve, trigger or
+  merge toward a production deploy or a lexicon publication unless the owner authorised that release.
+  Lexicon drafts stay on lexicons `staging` and never reach the network. The release rule says so.
 - Add org-0011: `presentation` is now `rendering`, and `unset-sh/tooling` replaces `unset-sh/workflows`.
 - Add org-0007: backend, web and deployment have separate ownership behind small capability contracts.
   The proposed server-kit and standalone messaging repositories are dropped.
