@@ -1,9 +1,8 @@
 # Engineering principles, in short
 
-A copy of `rules/principles.md` in `unset-sh/agent-kit`: change it there, never in this copy. This page is a
-digest of three documents by Alex. The full text is in the skill `org-principles`. Read the full text before
-you design or restructure code, add a dependency, a layer, an abstraction or a contract, or plan a change that
-touches stored data, a public contract or deployment.
+A copy of `rules/principles.md` in `unset-sh/agent-kit`: change it there, never in this copy. It digests three
+documents by Alex, given in full in the skill `org-principles`. Read them before you design or restructure code,
+add a dependency, layer, abstraction or contract, or plan a change to stored data, a public contract or deployment.
 
 The guiding rule: choose the simplest design that keeps responsibilities clear and changes localised.
 
