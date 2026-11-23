@@ -3,12 +3,12 @@
 ## Where this repository fits
 
 This is `unset-sh/agent-kit`: the rules, skills and templates every unset.sh repository's assistant needs,
-released as one version and copied into each repository.
+copied into each repository from a pinned commit of `main`.
 
 - **Belongs here:** the organisation's rules, the engineering principles, skills and subagents for jobs that
   repeat across repositories, the organisation's decision records in `skills/org-decisions/records/`, the
   `CLAUDE.md` and `AGENTS.md` templates, the text of the Claude project instructions, and `sync.mjs`, which
-  installs a release in a repository and checks the copy; AI working notes in `notes/<task>/` and supporting
+  installs the kit at one commit of `main` in a repository and checks the copy; AI working notes in `notes/<task>/` and supporting
   artifacts in `artifacts/<task>/` (org-0005), kept here but excluded from the distributed kit.
 - **Does not belong here:** a repository's own rules (its `CLAUDE.md`); the map of repositories (that is
   `unset-sh/.github`); a repository's own decision records; shared developer-tooling implementations
@@ -68,6 +68,5 @@ Other repositories load a copy of these. Here they are the source, so they are i
 ## Commands
 
 ```sh
-npm run check                                              # every check and test
-node scripts/bundle.mjs --commit "$(git rev-parse HEAD)"   # build dist/agent-kit.json as a release would
+npm run check   # every check and test
 ```
