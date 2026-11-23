@@ -18,7 +18,7 @@ moving work between repositories or starting work that might belong elsewhere.
 
 **Keep the map current.** When a change here adds, removes or moves a responsibility, changes what this
 repository uses or ships, or renames or archives it, open a pull request on `unset-sh/.github` that updates
-`repos.json` (run `npm run map` there) and update this section to match.
+`repos.json` (run `bun run map` there) and update this section to match.
 
 ## Rules
 
@@ -30,5 +30,5 @@ repository uses or ships, or renames or archives it, open a pull request on `uns
 
 ```sh
 <the one command that runs every check>
-node .claude/agent-kit/sync.mjs --check
+bun .claude/agent-kit/sync.mjs --check
 ```

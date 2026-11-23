@@ -12,7 +12,7 @@ description: Set up a new repository in the unset-sh organisation after the owne
 2. The repository has one job. Write down what belongs in it, what does not and where that goes instead.
    If you cannot, the repository is not ready to exist.
 3. Add it to the map: a pull request on `unset-sh/.github` that adds the entry to `repos.json` and runs
-   `npm run map`. Cloud sessions cannot attach a repository whose name starts with a dot, so that change goes
+   `bun run map`. Cloud sessions cannot attach a repository whose name starts with a dot, so that change goes
    through the owner's machine or the thread that maintains the map.
 4. Ask the owner to create `staging` from `main` and make it the default branch before the first pull
    request. The shared branch-policy check refuses a task branch's pull request into `main`.
@@ -29,7 +29,7 @@ Keep it to what the repository needs on day one. Folders appear with their first
 | `AGENTS.md` | From the kit's `templates/AGENTS.md` |
 | `.claude/` | The kit's copy, installed with the skill `org-kit-update` (first adoption) |
 | Manifest | The licence field, exact dependency versions, and one `check` command that runs every check |
-| `.github/workflows/ci.yml` | Runs the `check` command and `node .claude/agent-kit/sync.mjs --check` on every pull request and on `staging` and `main` |
+| `.github/workflows/ci.yml` | Runs the `check` command and `bun .claude/agent-kit/sync.mjs --check` on every pull request and on `staging` and `main` |
 | `.github/workflows/branch-policy.yml` | Calls the shared branch-policy check from `unset-sh/tooling`, pinned to a full commit, on every pull request |
 | `.github/pull_request_template.md` | What changed, where it came from, a short checklist |
 

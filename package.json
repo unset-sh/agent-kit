@@ -10,6 +10,6 @@
   },
   "type": "module",
   "scripts": {
-    "check": "node --test \"checks/*.test.mjs\""
+    "check": "bun test ./checks/"
   }
 }

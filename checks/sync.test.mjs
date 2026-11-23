@@ -413,7 +413,9 @@ test("the copied script runs its check when started by any path, and fails on a 
     assert.equal(result.status, 1, base);
     assert.match(result.stdout, /changed: \.claude\/rules\/org\/org\.md/);
   }
-  assert.equal(execFileSync(process.execPath, ["--check", join(root, ...SYNC_PATH.split("/"))], { encoding: "utf8" }), "");
+  // The copy parses as a module on its own; Bun's transpiler throws on a syntax error. (`bun --check` type
+  // checks and then runs the file, so it is no syntax check.)
+  assert.doesNotThrow(() => new Bun.Transpiler({ loader: "js" }).transformSync(readFileSync(join(root, ...SYNC_PATH.split("/")), "utf8")));
 });
 
 test("the command refuses arguments it does not understand", async () => {
