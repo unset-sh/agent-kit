@@ -7,6 +7,11 @@ Entries go under the date the change is merged into `main`, newest first, one he
 
 ## 2026-11-23
 
+- Adds `org-documentation`, the shared standard for human documentation: page templates, guidance for
+  explaining architecture and code with worked examples, and an adoption checklist for a repository's own
+  source paths and checks. Code, workflow and ownership changes come with related documentation or a
+  reviewed reason it is still correct. A short pointer in the engineering principles loads the skill when
+  needed. It enables no site checks, enrolls no repository and publishes nothing by itself.
 - Agent-kit is managed by assistants and has no `staging`: its pull requests go straight into `main` and
   merge after a review by another thread. `org-kit-update` no longer says the owner merges kit changes.
 - The kit is installed from a pinned commit of `main` instead of a release. `sync.mjs` takes a full commit

@@ -14,7 +14,7 @@ copied into each repository from a pinned commit of `main`.
 - **Does not belong here:** a repository's own rules (its `CLAUDE.md`); the map of repositories (that is
   `unset-sh/.github`); a repository's own decision records; shared developer-tooling implementations
   (`unset-sh/tooling`, org-0006); another repository's maintained human documentation (its own `docs/`,
-  exported to `unset-sh/docs`; the shared standard `org-documentation` is not released yet); anything
+  exported to `unset-sh/docs`, written to the shared standard in the skill `org-documentation`); anything
   written for members' assistants (that is `unset-sh/profile-recipes`).
 - **Uses:** nothing. **Used by:** every organisation repository, as a committed copy under `.claude/` pinned by
   `.claude/agent-kit/lock.json`.
@@ -40,7 +40,7 @@ Other repositories load a copy of these. Here they are the source, so they are i
 - **The test for what ships:** would an assistant working in any organisation repository need it, whatever
   that repository is? Task-specific AI notes and artifacts stay here under `notes/` and `artifacts/`, outside
   the kit. Product-specific rules and maintained human documentation stay in the repository that owns
-  the product and export to `unset-sh/docs` (the `org-documentation` standard is not released yet).
+  the product and export to `unset-sh/docs`, following the skill `org-documentation`.
 - **What ships is text a person can review in a diff.** Only `.md` files under `rules/`, `skills/` and
   `agents/`, plus `sync.mjs`. No hooks, no MCP server definitions, no settings files, no scripts inside skills,
   no skill line that runs a shell command, no `@path` import, and no front matter that grants tools. A
