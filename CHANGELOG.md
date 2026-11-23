@@ -7,6 +7,10 @@ Entries go under the date the change is merged into `main`, newest first, one he
 
 ## 2026-11-23
 
+- Add org-0014: assistants check and merge their own pull requests into `staging`, and into `main` in
+  tooling, `.github` and docs, without waiting for the owner. Only the owner merges `staging` into `main`.
+  Production deploys and lexicon publication still need his authorisation (org-0012), and docs merges into
+  `main` wait for his word until he says whether publishing docs.unset.sh counts as one. The working rules say so.
 - Adds the skill `org-experience-review`, with seven reviewer perspectives inside it, for reviewing how a
   design supports orientation, competence, autonomy, trust, expression, comfort and satisfaction. Reports
   separate observed behaviour from emotional hypotheses and questions for later human testing. The
