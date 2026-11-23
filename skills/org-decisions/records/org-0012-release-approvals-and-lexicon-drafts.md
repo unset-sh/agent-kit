@@ -1,7 +1,8 @@
 # org-0012. Who approves releases, and lexicon drafts stay off the network
 
 Status: accepted (2026-11-23, Alex: "for the production deploy, and then for the push to the lexicon, uh, let's make
-it a rule that the AI is not going to do it under unless I authorize it.")
+it a rule that the AI is not going to do it under unless I authorize it."; on where drafts live, he chose "Staging is the draft branch" on a decision card,
+2026-11-23)
 
 ## Context
 
@@ -25,9 +26,9 @@ network."
 2. **Production deploys and lexicon publication.** No agent approves, triggers or merges anything that leads to a
    production deploy or to publishing lexicons to the network unless Alex has authorised that release himself.
    The release environments for these keep their Approve step, and only Alex presses it.
-3. **Lexicon drafts stay off the network.** Drafts for an upcoming app or feature live on a lexicons branch that
-   is not `main`, and nothing on that branch is published to the network. Only a promotion to `main` that Alex
-   authorised publishes lexicons. Which branch holds the drafts is still open (see Consequences).
+3. **Lexicon drafts stay off the network.** Lexicons `staging` is the draft branch. Drafts for an upcoming app or
+   feature live there, its prereleases serve staging consumers only, and nothing on it is published to the network.
+   Only a promotion to `main` that Alex authorised publishes lexicons.
 4. This settles the question org-0010 left open. No approval gate is removed except by Alex's decision.
 
 ## Consequences
@@ -36,8 +37,9 @@ network."
   is not Alex's authorisation.
 - Removing the Approve step from the brand or rendering environments stays Alex's decision. Agents may only press
   it.
-- On 2026-11-23 Alex was asked whether lexicon drafts belong on `staging` or on a separate draft branch. A later
-  record states his answer. Until then, drafts never go to `main`.
+- Alex was offered a separate draft branch instead and chose `staging`. Because a promotion takes everything on
+  `staging`, an unfinished draft must not sit there when Alex authorises a promotion. Keep it on a feature branch or
+  a draft pull request until it is ready to publish.
 - Lexicon evolution rules make published schemas effectively permanent, which is why drafts stay off the network:
   see the [Lexicon specification](https://atproto.com/specs/lexicon#lexicon-evolution), read 2026-11-22 for
   org-0007.
