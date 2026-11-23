@@ -20,6 +20,13 @@ for organisation work.
 | [org-0004](records/org-0004-workflows-live-in-github.md) | Superseded by org-0006; originally placed organisation workflow implementations in `unset-sh/.github` |
 | [org-0005](records/org-0005-ai-working-material-lives-in-agent-kit.md) | AI working notes and artifacts live in agent-kit, grouped by task and excluded from the kit |
 | [org-0006](records/org-0006-developer-tooling-lives-in-tooling.md) | Shared developer tooling lives in public `unset-sh/tooling`; `.github` retains organisation metadata and community defaults |
+| [org-0007](records/org-0007-backend-web-and-deployment-boundaries.md) | Backend, web and deployment have separate ownership; capability contracts and runtime-appropriate adapters replace the server-kit and standalone messaging proposals |
+| [org-0008](records/org-0008-brand-requests-use-issues.md) | Brand requests use issues; shared handoff instructions and AI working material live in agent-kit |
+| [org-0009](records/org-0009-maps-refresh-through-shared-tooling.md) | Maintained maps refresh automatically through shared tooling; human meaning remains reviewed |
+| [org-0010](records/org-0010-staged-delivery-on-main.md) | Work enters `staging` and only a person promotes it to `main`, which then releases on its own; tooling, agent-kit, `.github` and docs work on `main` alone, with no releases |
+| [org-0011](records/org-0011-presentation-is-rendering-and-workflows-retired.md) | `presentation` is renamed `rendering`; `unset-sh/tooling` replaces `unset-sh/workflows` |
+| [org-0012](records/org-0012-release-approvals-and-lexicon-drafts.md) | Agents may press Approve for brand and rendering; never for a production deploy or lexicon publication unless Alex authorised it; lexicon drafts stay on lexicons `staging`, off the network |
+| [org-0013](records/org-0013-agents-manage-agent-kit.md) | Agents merge agent-kit pull requests into `main` after a separate review; every other repository keeps org-0010 |
 
 ## Before you decide something
 
