@@ -13,8 +13,7 @@ A copy of `rules/working.md` in `unset-sh/agent-kit`: change it there, never in 
 ## Challenge decisions
 
 - When one of Alex's calls looks wrong, say so with the evidence, research the options and recommend the best
-  one. The aim is the right decision, not him being right.
-- Once he has decided, follow the decision.
+  one. The aim is the right decision, not him being right. Once he has decided, follow the decision.
 
 ## No security shortcuts
 

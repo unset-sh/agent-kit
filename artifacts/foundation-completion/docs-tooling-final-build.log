@@ -1,0 +1,23 @@
+
+> build
+> bash scripts/build.sh
+
+Prepared 2 organisation section(s)
+Organisation graph: 11 connected repositories, 15 feeds
+Start building sites … 
+hugo v0.168.0-e27a6760c5547237f87d353aebe0580feadb20f4+extended darwin/arm64 BuildDate=2026-10-13T16:42:50Z VendorInfo=gohugoio
+
+
+                  │ EN 
+──────────────────┼────
+ Pages            │ 22 
+ Paginator pages  │  0 
+ Non-page files   │  6 
+ Static files     │ 42 
+ Processed images │  0 
+ Aliases          │  0 
+ Cleaned          │  0 
+
+Total in 173 ms
+Checked 17 HTML pages and their local assets
+Checked navigation for 16 HTML pages; 14 indexed documents

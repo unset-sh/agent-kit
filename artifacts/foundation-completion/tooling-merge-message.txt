@@ -1,0 +1,7 @@
+Centralise shared checks, protected release helpers and documentation exports.
+Keep organisation defaults and starter templates in .github.
+
+Preserve release approvals and read-only export boundaries. Version 0.0.0
+remains unreleased until the protected release setup is approved.
+
+Signed-off-by: Alex <v2e.env@mx.v2e.sh>
