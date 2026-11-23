@@ -330,7 +330,8 @@ const GIT_SETTINGS = ["-c", "core.hooksPath=/dev/null", "-c", "fetch.fsckObjects
 
 /** Text from git with any password or token in a URL taken out, so it can be printed in a CI log. */
 function withoutCredentials(text, source) {
-  return text.replaceAll(source, "the --from repository").replace(/\/\/[^/@\s]*@/g, "//");
+  const named = source === SOURCE ? text : text.replaceAll(source, "the --from repository");
+  return named.replace(/\/\/[^/@\s]*@/g, "//");
 }
 
 /**
