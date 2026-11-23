@@ -40,7 +40,7 @@ v2.2.0 needs.
 | Gap | Rule | State |
 | --- | --- | --- |
 | Node 26, npm, `node --test`, `package-lock.json` | Bun replaces Node | Fixed in #8 |
-| `@unset-sh/brand` pinned to a git commit; Bun cannot install it (integrity mismatch) | Pinned, released inputs | Fixed in #8: brand 0.1.0 from GitHub Packages, the same design-sheet files. Supersedes draft #4 |
+| `@unset-sh/brand` pinned to a git commit; Bun cannot install it (integrity mismatch) | Pinned, released inputs | Fixed: #4 (merged into staging 2026-11-23) took brand 0.1.0 from GitHub Packages; #8 builds on it for Bun |
 | Brand 0.1.1 (the new contract, Graphite palette, no `plum`) not taken | Use the current brand | Open: changes every drawing, needs its own PR with gallery review |
 | No agent-kit copy, no `sync.mjs --check` | `org-new-repo`, `org-kit-update` | Fixed in #8 |
 | CLAUDE.md names `Undefined6799/unset` as consumer and decider; says "no licence file yet"; no Rules or Commands | Template; do not design around the current app | Fixed in #8 |
@@ -81,7 +81,7 @@ v2.2.0 needs.
 | `docs-mirror` runs setup-bun (a third-party action) in the job that later holds `DOCS_DEPLOY_KEY` | Security-sensitive workflow | Open: Alex decides, or the export moves to a key-less job as tooling's exporter does |
 | `AGENTS.md` here is for members' assistants, not the kit template | Template vs. repository rule | Open: kept, as CLAUDE.md requires |
 | `DESIGN-REVIEW.md` reads as an AI review report | org-0005 | Open: flagged; the README sends readers to it first |
-| Schemas and limits copied from `Undefined6799/unset` | Lexicons authority | Open: follows the lexicons cutover |
+| Schemas copied from `Undefined6799/unset` | Lexicons authority | Fixed on staging by #7: schemas now come from `unset-sh/lexicons`; editor limits still from the app |
 
 ### docs
 
