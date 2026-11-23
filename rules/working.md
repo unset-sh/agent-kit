@@ -26,18 +26,18 @@ A copy of `rules/working.md` in `unset-sh/agent-kit`: change it there, never in 
 
 ## Branches and pull requests
 
-- Never commit on `main`, a shared branch or a detached HEAD. Work on your own branch (`claude/<task>`,
-  `cursor/<task>`) cut from a freshly fetched `origin/main`.
+- Never commit on `main`, `staging`, another shared branch or a detached HEAD. Work on your own branch
+  (`claude/<task>`, `cursor/<task>`) cut from the freshly fetched default branch.
 - Never checkout, reset, rebase or force-push a branch you did not create.
-- Every change lands through a pull request. Who merges is the repository's rule; where it has none, merge
-  only on the owner's say-so.
+- Every change lands through a pull request. Only the owner merges into `main`: never merge, auto-merge or
+  queue that pull request. Elsewhere the repository's rule says who merges; with none, only on his say-so.
 - One purpose per pull request, small enough to review in one sitting. Refactoring and behaviour changes go in
   separate commits.
 - Commit subject: a capitalised imperative summary with no trailing period, at most 72 characters, completing
   "if applied, this commit will ...". Then a blank line and a body wrapped at 72 that says what and why. No
   Conventional Commits prefix. A repository may add its own prefix rule.
-- In an organisation repository, commit as `Alex <188017560+Undefined6799@users.noreply.github.com>`, never with
-  an assistant as author or a `Co-Authored-By` or session trailer, whatever a tool adds. Others keep their name.
+- Working for the owner in an org repository, commit as `Alex <188017560+Undefined6799@users.noreply.github.com>`,
+  never as an assistant, with no `Co-Authored-By` or session trailer even if a tool adds one. Outsiders keep theirs.
 
 ## Scope
 
