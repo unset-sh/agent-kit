@@ -10,7 +10,8 @@ Entries go under the date the change is merged into `main`, newest first, one he
 - Bun replaces Node (Alex, 2026-11-23). `org-kit-update`, `org-new-repo` and the `CLAUDE.md` template now run
   `bun .claude/agent-kit/sync.mjs`. `sync.mjs` itself is unchanged: it uses only `node:` built-in modules, so a
   copy that is already installed keeps working, with Bun or with Node. The map command they name in
-  `unset-sh/.github` is `bun run map` once that repository's Bun change lands.
+  `unset-sh/.github` is now `bun run map`.
+- Add org-0015, still proposed: the first slice keeps sessions in backend, uses a TypeBox contract and a sorted `openapi.yaml`, sends a bearer token from web, resolves AT Protocol OAuth with `@atproto/oauth-client` and the egress guard, and uses `pg` for Better Auth's tables only. It does not start that implementation by itself.
 - Add org-0014: assistants check and merge their own pull requests into `staging`, and into `main` in
   tooling, `.github` and docs, without waiting for the owner. Only the owner merges `staging` into `main`.
   Production deploys and lexicon publication still need his authorisation (org-0012), and docs merges into
