@@ -7,9 +7,10 @@ Entries go under the date the change is merged into `main`, newest first, one he
 
 ## 2026-11-23
 
-- Adds `org-experience-review` and seven specialist subagents (`org-experience-*`) for reviewing how a
+- Adds the skill `org-experience-review`, with seven reviewer perspectives inside it, for reviewing how a
   design supports orientation, competence, autonomy, trust, expression, comfort and satisfaction. Reports
-  separate observed behaviour from emotional hypotheses and questions for later human testing. Human
+  separate observed behaviour from emotional hypotheses and questions for later human testing. The
+  coordinator runs each perspective as a fresh general subagent; none is installed as a subagent. Human
   guides live in agent-kit's `docs/` for the documentation site and are not installed.
 - Agent-kit is managed by assistants and has no `staging`: its pull requests go straight into `main` and
   merge after a review by another thread. `org-kit-update` no longer says the owner merges kit changes.

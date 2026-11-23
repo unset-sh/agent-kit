@@ -1,7 +1,6 @@
 ---
 name: org-experience-review
 description: Coordinate an evidence-based experience review of an interface or user workflow using seven perspectives on clarity, competence, autonomy, trust, expression, comfort and satisfaction. Use when asked to assess how design supports intended feelings before human testing. This is a design review, not a human study or a security certification.
-license: AGPL-3.0-only
 ---
 
 # Review an experience through seven perspectives
@@ -21,20 +20,22 @@ Resolve the target and version, tasks, evidence mode, access, permitted actions 
 dependent work. Ask only for information the available context cannot establish. Continue unaffected
 preparation when an input is missing; do not invent a target, supported feature or successful interaction.
 
-Give each specialist a fresh context with only the completed brief, shared instructions, report template,
-its perspective and the assigned evidence. Withhold source code, design rationale, desired conclusions and
-other reports until the independent reviews are complete. Disclose any history the tooling cannot isolate.
-Provide goals and necessary facts without a click path or an expected emotional answer.
+Run each specialist as a fresh general-purpose subagent: hand it its perspective file from the table below,
+with only the completed brief, shared instructions, report template and the assigned evidence. The
+perspectives are prompts inside this skill, not installed subagents, so only this skill's description is
+always loaded. Withhold source code, design rationale, desired conclusions and other reports until the
+independent reviews are complete. Disclose any history the tooling cannot isolate. Provide goals and
+necessary facts without a click path or an expected emotional answer.
 
 | Specialist | Question | Prompt |
 | --- | --- | --- |
-| Orientation | Do I understand where I am and what I can do? | [org-experience-orientation](../../agents/org-experience-orientation.md) |
-| Competence | Can I accomplish what I came to do? | [org-experience-competence](../../agents/org-experience-competence.md) |
-| Autonomy | Can I choose what happens and change my mind? | [org-experience-autonomy](../../agents/org-experience-autonomy.md) |
-| Trust | Can I rely on what this product tells me? | [org-experience-trust](../../agents/org-experience-trust.md) |
-| Expression | Can I represent myself in a way that fits me? | [org-experience-expression](../../agents/org-experience-expression.md) |
-| Comfort | Can I use this comfortably under the tested conditions? | [org-experience-comfort](../../agents/org-experience-comfort.md) |
-| Satisfaction | Does this experience feel appropriate and worth completing? | [org-experience-satisfaction](../../agents/org-experience-satisfaction.md) |
+| Orientation | Do I understand where I am and what I can do? | [orientation](perspectives/orientation.md) |
+| Competence | Can I accomplish what I came to do? | [competence](perspectives/competence.md) |
+| Autonomy | Can I choose what happens and change my mind? | [autonomy](perspectives/autonomy.md) |
+| Trust | Can I rely on what this product tells me? | [trust](perspectives/trust.md) |
+| Expression | Can I represent myself in a way that fits me? | [expression](perspectives/expression.md) |
+| Comfort | Can I use this comfortably under the tested conditions? | [comfort](perspectives/comfort.md) |
+| Satisfaction | Does this experience feel appropriate and worth completing? | [satisfaction](perspectives/satisfaction.md) |
 
 ## Run independent checks
 

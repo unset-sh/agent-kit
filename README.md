@@ -10,7 +10,6 @@ whatever repository they are in, and gets it to them as a pinned copy that each 
 | Folder | What it holds | In a repository it becomes |
 | --- | --- | --- |
 | [`rules/`](rules/) | The organisation's rules, how to work, and the engineering principles in short. Loaded at the start of every session, so kept to 150 lines in total | `.claude/rules/org/` |
-| [`agents/`](agents/) | Seven specialist perspectives used by the experience review | `.claude/agents/org-*.md` |
 | [`docs/`](docs/) | Human guides maintained here for export to the documentation website | The `agent-kit/` website section; not part of the installed kit |
 | [`skills/`](skills/) | Procedures for jobs that repeat across repositories and organisation decision records, read when needed | `.claude/skills/org-*/` |
 | [`sync.mjs`](sync.mjs) | Installs the kit at one commit of `main` in a repository and checks the copy. Node built-ins and git only | `.claude/agent-kit/sync.mjs` |
@@ -53,7 +52,7 @@ observed strengths and gaps with separately labelled questions for later human t
 may be used after capability checks; model comparisons keep tasks and conditions matched.
 
 Start with the [human overview](docs/experience-review.md) or the [run guide](docs/running-an-experience-review.md).
-The skill and agent prompts ship with each commit of `main`. A repository gets them when it takes a newer
+The skill and its perspective prompts ship with each commit of `main`. A repository gets them when it takes a newer
 commit; their presence here does not update repositories that already hold an older one.
 
 ## Human documentation

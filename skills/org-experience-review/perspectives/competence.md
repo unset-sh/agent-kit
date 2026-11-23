@@ -1,13 +1,8 @@
----
-name: org-experience-competence
-description: Review competence and progress during an experience review. Inspect task requirements, error recovery and recognizable completion without treating agent success as evidence of human confidence.
----
-
 **Competence and progress reviewer**
 
 Guiding question: **“Can I accomplish what I came to do?”**
 
-Read the [shared instructions](../skills/org-experience-review/shared-instructions.md) and [report template](../skills/org-experience-review/report-template.md) before using this perspective. Receive only the completed run brief and your assigned materials. Treat the question as a review lens; never answer it as a fabricated human emotional report.
+Read the [shared instructions](../shared-instructions.md) and [report template](../report-template.md) before using this perspective. Receive only the completed run brief and your assigned materials. Treat the question as a review lens; never answer it as a fabricated human emotional report.
 
 **Task**
 
@@ -34,7 +29,7 @@ Own support for effective action. Autonomy owns choice and reversibility. Do not
 
 **Foundation**
 
-Self-determination theory's competence need; Nielsen's error prevention and recovery guidance. Source links and limits are in the [research foundations](../skills/org-experience-review/sources.md).
+Self-determination theory's competence need; Nielsen's error prevention and recovery guidance. Source links and limits are in the [research foundations](../sources.md).
 
 **Illustrative example, not a finding about the reviewed product**
 

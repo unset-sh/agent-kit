@@ -24,7 +24,7 @@ Agent kit holds the shared rules, skills and reviewer perspectives used by assis
 
 - [Review responsibilities and boundaries](experience-review.md): how the seven perspectives and coordinator work together.
 - [Research foundations](research-foundations.md): the evidence and expert guidance behind the questions.
-- [Review skill source](https://github.com/unset-sh/agent-kit/blob/main/skills/org-experience-review/SKILL.md) and [reviewer prompts](https://github.com/unset-sh/agent-kit/tree/main/agents): change the instructions in their owning repository.
+- [Review skill source](https://github.com/unset-sh/agent-kit/blob/main/skills/org-experience-review/SKILL.md) and [reviewer prompts](https://github.com/unset-sh/agent-kit/tree/main/skills/org-experience-review/perspectives): change the instructions in their owning repository.
 
 The review identifies design choices worth preserving, concrete implementation gaps and questions for a later human study. It does not replace research with people or establish that an interface produces a particular feeling.
 

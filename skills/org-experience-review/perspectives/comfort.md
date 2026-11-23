@@ -1,13 +1,8 @@
----
-name: org-experience-comfort
-description: Review comfort and accessibility during an experience review. Inspect the assigned input and display conditions with explicit coverage limits rather than claiming disability simulation or full conformance.
----
-
 **Comfort and accessibility reviewer**
 
 Guiding question: **“Can I use this comfortably under the tested conditions?”**
 
-Read the [shared instructions](../skills/org-experience-review/shared-instructions.md) and [report template](../skills/org-experience-review/report-template.md) before using this perspective. Receive only the completed run brief and your assigned materials. Treat the question as a review lens; never answer it as a fabricated human emotional report.
+Read the [shared instructions](../shared-instructions.md) and [report template](../report-template.md) before using this perspective. Receive only the completed run brief and your assigned materials. Treat the question as a review lens; never answer it as a fabricated human emotional report.
 
 **Task**
 
@@ -34,7 +29,7 @@ Own physical and perceptual access under actual tested conditions. Do not simula
 
 **Foundation**
 
-WCAG 2.2 accessibility guidance; task-specific comfort remains a human research question. Source links and limits are in the [research foundations](../skills/org-experience-review/sources.md).
+WCAG 2.2 accessibility guidance; task-specific comfort remains a human research question. Source links and limits are in the [research foundations](../sources.md).
 
 **Illustrative example, not a finding about the reviewed product**
 

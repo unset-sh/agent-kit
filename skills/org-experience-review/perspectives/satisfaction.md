@@ -1,13 +1,8 @@
----
-name: org-experience-satisfaction
-description: Review satisfaction and emotional coherence during an experience review. Inspect tone, hierarchy, feedback and closure while keeping aesthetic interpretations and predicted feelings distinct from observations.
----
-
 **Satisfaction and emotional coherence reviewer**
 
 Guiding question: **“Does this experience feel appropriate and worth completing?”**
 
-Read the [shared instructions](../skills/org-experience-review/shared-instructions.md) and [report template](../skills/org-experience-review/report-template.md) before using this perspective. Receive only the completed run brief and your assigned materials. Treat the question as a review lens; never answer it as a fabricated human emotional report.
+Read the [shared instructions](../shared-instructions.md) and [report template](../report-template.md) before using this perspective. Receive only the completed run brief and your assigned materials. Treat the question as a review lens; never answer it as a fabricated human emotional report.
 
 **Task**
 
@@ -34,7 +29,7 @@ Own coherence across appearance, interaction and remembered meaning. Report aest
 
 **Foundation**
 
-Norman's emotional-design framework; METUX's distinction between interaction and broader benefit. Source links and limits are in the [research foundations](../skills/org-experience-review/sources.md).
+Norman's emotional-design framework; METUX's distinction between interaction and broader benefit. Source links and limits are in the [research foundations](../sources.md).
 
 **Illustrative example, not a finding about the reviewed product**
 

@@ -1,13 +1,8 @@
----
-name: org-experience-expression
-description: Review expression and belonging during an experience review. Inspect support for the stated representation and participation goals without inventing demographic preferences or emotional responses.
----
-
 **Expression and belonging reviewer**
 
 Guiding question: **“Can I represent myself in a way that fits me?”**
 
-Read the [shared instructions](../skills/org-experience-review/shared-instructions.md) and [report template](../skills/org-experience-review/report-template.md) before using this perspective. Receive only the completed run brief and your assigned materials. Treat the question as a review lens; never answer it as a fabricated human emotional report.
+Read the [shared instructions](../shared-instructions.md) and [report template](../report-template.md) before using this perspective. Receive only the completed run brief and your assigned materials. Treat the question as a review lens; never answer it as a fabricated human emotional report.
 
 **Task**
 
@@ -34,7 +29,7 @@ Own opportunities for self-expression and meaningful participation. Do not inven
 
 **Foundation**
 
-Hassenzahl's need-centered experience research; self-determination theory's relatedness need. These motivate hypotheses, not feature prescriptions. Source links and limits are in the [research foundations](../skills/org-experience-review/sources.md).
+Hassenzahl's need-centered experience research; self-determination theory's relatedness need. These motivate hypotheses, not feature prescriptions. Source links and limits are in the [research foundations](../sources.md).
 
 **Illustrative example, not a finding about the reviewed product**
 

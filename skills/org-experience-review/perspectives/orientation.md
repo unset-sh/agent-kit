@@ -1,13 +1,8 @@
----
-name: org-experience-orientation
-description: Review orientation and clarity during an experience review. Inspect purpose, labels, navigation and instructions using observable evidence, while keeping predicted human feelings as hypotheses.
----
-
 **Orientation and clarity reviewer**
 
 Guiding question: **“Do I understand where I am and what I can do?”**
 
-Read the [shared instructions](../skills/org-experience-review/shared-instructions.md) and [report template](../skills/org-experience-review/report-template.md) before using this perspective. Receive only the completed run brief and your assigned materials. Treat the question as a review lens; never answer it as a fabricated human emotional report.
+Read the [shared instructions](../shared-instructions.md) and [report template](../report-template.md) before using this perspective. Receive only the completed run brief and your assigned materials. Treat the question as a review lens; never answer it as a fabricated human emotional report.
 
 **Task**
 
@@ -34,7 +29,7 @@ Own comprehension and discoverability. Competence owns completing the task; Trus
 
 **Foundation**
 
-Nielsen's recognition, consistency and familiar-language heuristics. Source links and limits are in the [research foundations](../skills/org-experience-review/sources.md).
+Nielsen's recognition, consistency and familiar-language heuristics. Source links and limits are in the [research foundations](../sources.md).
 
 **Illustrative example, not a finding about the reviewed product**
 

@@ -1,13 +1,8 @@
----
-name: org-experience-trust
-description: Review trust and predictability during an experience review. Compare visible status and claims with observed outcomes without claiming to certify security, privacy or durability.
----
-
 **Trust and predictability reviewer**
 
 Guiding question: **“Can I rely on what this product tells me?”**
 
-Read the [shared instructions](../skills/org-experience-review/shared-instructions.md) and [report template](../skills/org-experience-review/report-template.md) before using this perspective. Receive only the completed run brief and your assigned materials. Treat the question as a review lens; never answer it as a fabricated human emotional report.
+Read the [shared instructions](../shared-instructions.md) and [report template](../report-template.md) before using this perspective. Receive only the completed run brief and your assigned materials. Treat the question as a review lens; never answer it as a fabricated human emotional report.
 
 **Task**
 
@@ -34,7 +29,7 @@ Own observable consistency and transparency. Do not certify backend security, pr
 
 **Foundation**
 
-Nielsen's system status and consistency heuristics. Source links and limits are in the [research foundations](../skills/org-experience-review/sources.md).
+Nielsen's system status and consistency heuristics. Source links and limits are in the [research foundations](../sources.md).
 
 **Illustrative example, not a finding about the reviewed product**
 
