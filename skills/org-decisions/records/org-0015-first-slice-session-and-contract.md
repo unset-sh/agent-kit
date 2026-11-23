@@ -1,10 +1,10 @@
 # org-0015. The first slice's session, contract and egress
 
-Status: proposed (2026-11-23, Alex accepted the two recommendations by pasting the follow-up prompt: use `@atproto/oauth-client` rather than `NodeOAuthClient`, and use `pg` for Better Auth's tables. The rest of this record quotes that prompt and the spike. It is not accepted until he says so of the record itself.)
+Status: accepted (2026-11-23, Alex: "accepting org-0015". Before that, the same day, he accepted the two recommendations by pasting the follow-up prompt: use `@atproto/oauth-client` rather than `NodeOAuthClient`, and use `pg` for Better Auth's tables.)
 
 ## Context
 
-The first working slice is a person signing in with an AT Protocol handle, seeing their profile, editing the display name, and signing out. Alex chose Bun with no Node fallback on 2026-11-23 ("Bun is actually going to be replacing Node"). A spike on Bun 1.4.4 ran the pieces that do not need his password. The evidence is `notes/first-e2e-slice/spike.md` on `cursor/first-e2e-slice-spike-dd02` (not on `main` yet).
+The first working slice is a person signing in with an AT Protocol handle, seeing their profile, editing the display name, and signing out. Alex chose Bun with no Node fallback on 2026-11-23 ("Bun is actually going to be replacing Node"). A spike on Bun 1.4.4 ran the pieces that do not need his password. The evidence is `notes/first-e2e-slice/spike.md`.
 
 Two choices were recommendations. He accepted them by pasting the follow-up prompt unchanged on 2026-11-23.
 
@@ -23,4 +23,4 @@ Two choices were recommendations. He accepted them by pasting the follow-up prom
 - Web calls backend only from the server, behind a capability interface. The client library is still not chosen.
 - A real sign-in, refresh and revocation wait for Alex to approve a consent screen himself. No agent types or stores his password.
 - tooling's Bun check reached `main` through `unset-sh/tooling#22` at `7cd2e8c3d284cd9bb90c54f336adc0834b515d97` (2026-11-23). `unset-sh/tooling#20` had merged only into the retired `staging`. Callers pin that `main` commit or a later one.
-- This record is proposed. Another thread merges it (org-0013). It does not by itself start the backend or web implementation.
+- This record does not by itself start the backend or web implementation.
