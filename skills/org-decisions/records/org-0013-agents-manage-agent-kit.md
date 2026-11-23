@@ -6,7 +6,7 @@ updated"; then "Yes, agent can merge agent can to main without me. It's like the
 
 ## Context
 
-org-0010 decision 6 puts agent-kit with the main-only repositories: no `staging`, no releases, and only a person
+org-0010 decision 5 puts agent-kit with the main-only repositories: no `staging`, no releases, and only a person
 merges into `main`. Alex had already said the kit is the assistants' own working memory: "it's going to be your kind
 of your memory, so I don't feel like we need like releases there." He has now said assistants may manage it
 themselves.
@@ -16,7 +16,7 @@ themselves.
 1. In agent-kit, agents merge pull requests into `main`. Alex no longer has to merge them.
 2. The author of a pull request never merges it. A separate review thread reads the full diff and merges only after
    the required checks pass.
-3. This replaces, for agent-kit only, the "only a person merges it" part of org-0010 decision 6, and agent-kit's
+3. This replaces, for agent-kit only, the "only a person merges it" part of org-0010 decision 5, and agent-kit's
    lines saying only Alex merges into `main`. Every other repository keeps org-0010 unchanged, and `working.md` keeps
    "only the owner merges into `main`" as the organisation default. agent-kit's `CLAUDE.md` names the exception, as
    the organisation rules provide.
@@ -34,4 +34,8 @@ themselves.
 
   Both guard every repository's assistant, and the no-security-shortcuts rule asks for his explicit word before
   either is relaxed.
+- Merging is not deciding. Whoever merges into agent-kit `main` steers every assistant, including the rules that
+  keep "only the owner merges into `main`" elsewhere and the release approvals of org-0012. A rule still states
+  something Alex decided. A change here that relaxes a gate or an approval in another repository needs his own
+  words, quoted in the pull request, before a review thread merges it. (Reviewer's wording, for Alex to strike.)
 - Accepted records stay intact. org-0010 changes only for agent-kit, through this record.
