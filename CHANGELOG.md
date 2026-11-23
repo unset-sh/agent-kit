@@ -4,7 +4,7 @@ Each entry says what changes for a repository that takes the release, in plain w
 the entry of its version.
 
 Changes merged since the last release go under "Unreleased". The release pull request renames that heading to
-the new version and raises `package.json` to match; merging it starts the release.
+the new version and raises `package.json` to match; the release starts when that change reaches `main`.
 
 ## Unreleased
 
@@ -24,6 +24,9 @@ Remove from the repository's own `CLAUDE.md` any rule these files now state.
 
 Also in this release:
 
+- Work branches are cut from the freshly fetched default branch, pull requests land on `staging`, and only
+  the owner merges `staging` into `main`. The working rules, `org-new-repo` and `org-release` say so; a
+  release starts when the owner's promotion reaches `main`.
 - Clarify that checked, generated-only map refreshes need no separate owner approval. Source declarations and
   generator changes retain normal review. Register the dedicated organisation Markdown publisher separately
   from the JSON-only website snapshot path; neither may rewrite authored meaning or bypass merge restrictions.
@@ -47,5 +50,6 @@ Also in this release:
   publish a release. Existing owner release approvals remain required.
 - Add org-0005: keep AI plans, notes and review reports in agent-kit under `notes/<task>/`, and supporting
   artifacts under `artifacts/<task>/`, outside the distributed kit. Maintained human docs belong in the
-  owning repository's `docs/`, follow `org-documentation`, and export to `unset-sh/docs` for publication.
+  owning repository's `docs/` and export to `unset-sh/docs` for publication. The shared standard that
+  org-0005 names, `org-documentation`, is not in this release.
   Historical files are not moved or deleted by this rule alone.

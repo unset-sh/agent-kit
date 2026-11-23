@@ -13,8 +13,8 @@ released as one version and copied into each repository.
 - **Does not belong here:** a repository's own rules (its `CLAUDE.md`); the map of repositories (that is
   `unset-sh/.github`); a repository's own decision records; shared developer-tooling implementations
   (`unset-sh/tooling`, org-0006); another repository's maintained human documentation (its own `docs/`,
-  following `org-documentation`, exported to `unset-sh/docs`); anything written for members' assistants
-  (that is `unset-sh/profile-recipes`).
+  exported to `unset-sh/docs`; the shared standard `org-documentation` is not released yet); anything
+  written for members' assistants (that is `unset-sh/profile-recipes`).
 - **Uses:** nothing. **Used by:** every organisation repository, as a committed copy under `.claude/` pinned by
   `.claude/agent-kit/lock.json`.
 - **Licence:** follows the organisation rule.
@@ -39,7 +39,7 @@ Other repositories load a copy of these. Here they are the source, so they are i
 - **The test for what ships:** would an assistant working in any organisation repository need it, whatever
   that repository is? Task-specific AI notes and artifacts stay here under `notes/` and `artifacts/`, outside
   the bundle. Product-specific rules and maintained human documentation stay in the repository that owns
-  the product; human docs follow `org-documentation` and its publication/export mechanism.
+  the product and export to `unset-sh/docs` (the `org-documentation` standard is not released yet).
 - **What ships is text a person can review in a diff.** Only `.md` files under `rules/`, `skills/` and
   `agents/`, plus `sync.mjs`. No hooks, no MCP server definitions, no settings files, no scripts inside skills,
   no skill line that runs a shell command, no `@path` import, and no front matter that grants tools. A
@@ -58,9 +58,11 @@ Other repositories load a copy of these. Here they are the source, so they are i
   security decision: stop and ask.
 - **A change that alters what a repository's assistant does** gets an entry in `CHANGELOG.md` under
   "Unreleased". A release is one pull request that renames that heading to the new version and raises
-  `package.json` to match; merging it starts the release, and Alex's one step is Approve
-  (`skills/org-release/SKILL.md`). A separate thread reviews the full diff since the last release before that
-  pull request is merged.
+  `package.json` to match. It lands on `staging`; the release starts when Alex merges `staging` into `main`,
+  and he then presses Approve (`skills/org-release/SKILL.md`). Before the release pull request merges, a
+  separate thread reviews the full diff since the last release. What is released is whatever `staging` holds
+  at the promotion, so the promotion pull request names the reviewed `staging` commit, nothing else merges into
+  `staging` in between, and any later change gets its own review of the difference.
 - Node 26 (`.nvmrc`), no dependencies, `node:test` only. Actions are pinned by full commit SHA.
 
 ## Commands

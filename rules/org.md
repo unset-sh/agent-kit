@@ -20,8 +20,9 @@ them there, never in this copy. A repository's own `CLAUDE.md` adds its own rule
 
 - One job per repository. Read <https://github.com/unset-sh/.github/blob/main/MAP.md>
   before moving work between repositories or starting work that might belong elsewhere.
-- Repositories meet only through exact package versions, pinned release assets, or full commits while no release exists.
-  Copies of another repository's files require a pin and a check proving they still match, except the map's pushes.
+- What one repository takes from another comes pinned: an exact package version, a release asset, or a full
+  commit (a reusable workflow, or anything with no release yet). A copy of another repository's files needs a pin
+  and a check that it still matches; the pushes the map records (the docs push, the lexicon mirror) are exceptions.
 - Generate maps from authoritative sources and refresh them automatically through shared tooling. Follow
   `org-map-maintenance` for registration, source evidence, freshness, failure handling and meaning review.
 - For missing shared design tokens or brand assets, follow `org-brand-request`: open or update a concrete
@@ -40,8 +41,8 @@ them there, never in this copy. A repository's own `CLAUDE.md` adds its own rule
 - An accepted decision record is never edited, only superseded by a new one.
 - Store all AI working plans, drafts, task notes and review reports only in `unset-sh/agent-kit:notes/<task>/`,
   and supporting artifacts only in `artifacts/<task>/` there, outside the kit (org-0005), never across repos.
-- Maintain human docs in their owner's `docs/`, follow `org-documentation`, and export to `unset-sh/docs`.
-  A docs folder is not storage for AI working material. This rule does not authorise bulk moves or deletions.
+- Maintain human docs in their owner's `docs/` and export them to `unset-sh/docs`. A docs folder is not storage
+  for AI working material. This rule does not authorise bulk moves or deletions.
 
 ## Releases
 
