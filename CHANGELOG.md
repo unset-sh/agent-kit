@@ -6,7 +6,7 @@ the entry of its version.
 Changes merged since the last release go under "Unreleased". The release pull request renames that heading to
 the new version and raises `package.json` to match; the release starts when that change reaches `main`.
 
-## Unreleased
+## v0.1.0
 
 The first release. A repository that takes it gains:
 
