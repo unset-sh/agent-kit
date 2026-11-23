@@ -1,0 +1,1300 @@
+{
+  "checked_at_utc": "2026-11-23T02:06:15.994869+00:00",
+  "scope": "live repository branch settings and staged policy adoption",
+  "stable_branch": "main",
+  "development_default": "staging",
+  "repositories": [
+    {
+      "repository": "unset-sh/pds",
+      "settings": {
+        "default_branch": "staging",
+        "allow_merge_commit": true,
+        "allow_squash_merge": true,
+        "allow_rebase_merge": false,
+        "allow_auto_merge": false,
+        "delete_branch_on_merge": false
+      },
+      "branches": {
+        "main": {
+          "sha": "5d2ac534cc1851d12698dc7957911c6094247d2b",
+          "protected": true,
+          "ruleset_id": 27868323,
+          "bypass_actors": [],
+          "pull_request": {
+            "required_approving_review_count": 0,
+            "dismiss_stale_reviews_on_push": true,
+            "required_reviewers": [],
+            "require_code_owner_review": false,
+            "dismissal_restriction": {
+              "enabled": false,
+              "allowed_actors": []
+            },
+            "require_last_push_approval": false,
+            "required_review_thread_resolution": true,
+            "require_extra_approval_for_unattributed_changes": true,
+            "allowed_merge_methods": [
+              "merge"
+            ]
+          },
+          "required_status_checks": {
+            "strict_required_status_checks_policy": true,
+            "do_not_enforce_on_create": false,
+            "required_status_checks": [
+              {
+                "context": "policy / Validate branch policy",
+                "integration_id": 15368
+              }
+            ]
+          }
+        },
+        "staging": {
+          "sha": "1ff1df8bdd9dfc5bf1260053df0e6f46d97b38cc",
+          "protected": true,
+          "ruleset_id": 27868325,
+          "bypass_actors": [],
+          "pull_request": {
+            "required_approving_review_count": 0,
+            "dismiss_stale_reviews_on_push": true,
+            "required_reviewers": [],
+            "require_code_owner_review": false,
+            "dismissal_restriction": {
+              "enabled": false,
+              "allowed_actors": []
+            },
+            "require_last_push_approval": false,
+            "required_review_thread_resolution": true,
+            "require_extra_approval_for_unattributed_changes": true,
+            "allowed_merge_methods": [
+              "squash",
+              "merge"
+            ]
+          },
+          "required_status_checks": {
+            "strict_required_status_checks_policy": true,
+            "do_not_enforce_on_create": false,
+            "required_status_checks": [
+              {
+                "context": "policy / Validate branch policy",
+                "integration_id": 15368
+              }
+            ]
+          }
+        }
+      },
+      "policy_pr": {
+        "url": "https://github.com/unset-sh/pds/pull/1",
+        "head": "8d74bee0df0035b3a92914c69aa804ae33f89e02",
+        "merge_commit": "1ff1df8bdd9dfc5bf1260053df0e6f46d97b38cc",
+        "base": "staging",
+        "merged": true
+      },
+      "required_checks_passed_at_reviewed_head": true,
+      "findings": []
+    },
+    {
+      "repository": "unset-sh/.github",
+      "settings": {
+        "default_branch": "staging",
+        "allow_merge_commit": true,
+        "allow_squash_merge": true,
+        "allow_rebase_merge": false,
+        "allow_auto_merge": false,
+        "delete_branch_on_merge": false
+      },
+      "branches": {
+        "main": {
+          "sha": "f9f5b5eabf46187cf7ed7b627fad77e349e68302",
+          "protected": true,
+          "ruleset_id": 27868326,
+          "bypass_actors": [],
+          "pull_request": {
+            "required_approving_review_count": 0,
+            "dismiss_stale_reviews_on_push": true,
+            "required_reviewers": [],
+            "require_code_owner_review": false,
+            "dismissal_restriction": {
+              "enabled": false,
+              "allowed_actors": []
+            },
+            "require_last_push_approval": false,
+            "required_review_thread_resolution": true,
+            "require_extra_approval_for_unattributed_changes": true,
+            "allowed_merge_methods": [
+              "merge"
+            ]
+          },
+          "required_status_checks": {
+            "strict_required_status_checks_policy": true,
+            "do_not_enforce_on_create": false,
+            "required_status_checks": [
+              {
+                "context": "Check the organisation map",
+                "integration_id": 15368
+              },
+              {
+                "context": "check / Check",
+                "integration_id": 15368
+              },
+              {
+                "context": "policy / Validate branch policy",
+                "integration_id": 15368
+              }
+            ]
+          }
+        },
+        "staging": {
+          "sha": "ff0e35a129a52914cb0e6f0bb15465165032fed5",
+          "protected": true,
+          "ruleset_id": 27868327,
+          "bypass_actors": [],
+          "pull_request": {
+            "required_approving_review_count": 0,
+            "dismiss_stale_reviews_on_push": true,
+            "required_reviewers": [],
+            "require_code_owner_review": false,
+            "dismissal_restriction": {
+              "enabled": false,
+              "allowed_actors": []
+            },
+            "require_last_push_approval": false,
+            "required_review_thread_resolution": true,
+            "require_extra_approval_for_unattributed_changes": true,
+            "allowed_merge_methods": [
+              "squash",
+              "merge"
+            ]
+          },
+          "required_status_checks": {
+            "strict_required_status_checks_policy": true,
+            "do_not_enforce_on_create": false,
+            "required_status_checks": [
+              {
+                "context": "Check the organisation map",
+                "integration_id": 15368
+              },
+              {
+                "context": "check / Check",
+                "integration_id": 15368
+              },
+              {
+                "context": "policy / Validate branch policy",
+                "integration_id": 15368
+              }
+            ]
+          }
+        }
+      },
+      "policy_pr": {
+        "url": "https://github.com/unset-sh/.github/pull/17",
+        "head": "b2f6cd924c13204c021f33d72aa98a12e27797bc",
+        "merge_commit": "ff0e35a129a52914cb0e6f0bb15465165032fed5",
+        "base": "staging",
+        "merged": true
+      },
+      "required_checks_passed_at_reviewed_head": true,
+      "findings": []
+    },
+    {
+      "repository": "unset-sh/docs",
+      "settings": {
+        "default_branch": "staging",
+        "allow_merge_commit": true,
+        "allow_squash_merge": true,
+        "allow_rebase_merge": false,
+        "allow_auto_merge": false,
+        "delete_branch_on_merge": false
+      },
+      "branches": {
+        "main": {
+          "sha": "bf11b83aa3239efc68f868d1f9357e7648f3ae80",
+          "protected": true,
+          "ruleset_id": 27868329,
+          "bypass_actors": [],
+          "pull_request": {
+            "required_approving_review_count": 0,
+            "dismiss_stale_reviews_on_push": true,
+            "required_reviewers": [],
+            "require_code_owner_review": false,
+            "dismissal_restriction": {
+              "enabled": false,
+              "allowed_actors": []
+            },
+            "require_last_push_approval": false,
+            "required_review_thread_resolution": true,
+            "require_extra_approval_for_unattributed_changes": true,
+            "allowed_merge_methods": [
+              "merge"
+            ]
+          },
+          "required_status_checks": {
+            "strict_required_status_checks_policy": true,
+            "do_not_enforce_on_create": false,
+            "required_status_checks": [
+              {
+                "context": "Validate documentation",
+                "integration_id": 15368
+              },
+              {
+                "context": "policy / Validate branch policy",
+                "integration_id": 15368
+              }
+            ]
+          }
+        },
+        "staging": {
+          "sha": "831871ff8e5fbc64b421834f4788aac603ff3c04",
+          "protected": true,
+          "ruleset_id": 27868330,
+          "bypass_actors": [],
+          "pull_request": {
+            "required_approving_review_count": 0,
+            "dismiss_stale_reviews_on_push": true,
+            "required_reviewers": [],
+            "require_code_owner_review": false,
+            "dismissal_restriction": {
+              "enabled": false,
+              "allowed_actors": []
+            },
+            "require_last_push_approval": false,
+            "required_review_thread_resolution": true,
+            "require_extra_approval_for_unattributed_changes": true,
+            "allowed_merge_methods": [
+              "squash",
+              "merge"
+            ]
+          },
+          "required_status_checks": {
+            "strict_required_status_checks_policy": true,
+            "do_not_enforce_on_create": false,
+            "required_status_checks": [
+              {
+                "context": "Validate documentation",
+                "integration_id": 15368
+              },
+              {
+                "context": "policy / Validate branch policy",
+                "integration_id": 15368
+              }
+            ]
+          }
+        }
+      },
+      "policy_pr": {
+        "url": "https://github.com/unset-sh/docs/pull/7",
+        "head": "cf2eacb411b286377018fa71f5b43620d079b2eb",
+        "merge_commit": "831871ff8e5fbc64b421834f4788aac603ff3c04",
+        "base": "staging",
+        "merged": true
+      },
+      "required_checks_passed_at_reviewed_head": true,
+      "findings": []
+    },
+    {
+      "repository": "unset-sh/profile-recipes",
+      "settings": {
+        "default_branch": "staging",
+        "allow_merge_commit": true,
+        "allow_squash_merge": true,
+        "allow_rebase_merge": false,
+        "allow_auto_merge": false,
+        "delete_branch_on_merge": false
+      },
+      "branches": {
+        "main": {
+          "sha": "1e64c469f86dd2ad6e9b26200d26e308d6d06f4e",
+          "protected": true,
+          "ruleset_id": 27782273,
+          "bypass_actors": [],
+          "pull_request": {
+            "required_approving_review_count": 0,
+            "dismiss_stale_reviews_on_push": true,
+            "required_reviewers": [],
+            "require_code_owner_review": false,
+            "dismissal_restriction": {
+              "enabled": false,
+              "allowed_actors": []
+            },
+            "require_last_push_approval": false,
+            "required_review_thread_resolution": true,
+            "require_extra_approval_for_unattributed_changes": true,
+            "allowed_merge_methods": [
+              "merge"
+            ]
+          },
+          "required_status_checks": {
+            "strict_required_status_checks_policy": true,
+            "do_not_enforce_on_create": false,
+            "required_status_checks": [
+              {
+                "context": "Typecheck, test and validate recipes",
+                "integration_id": 15368
+              },
+              {
+                "context": "DCO",
+                "integration_id": 15368
+              },
+              {
+                "context": "policy / Validate branch policy",
+                "integration_id": 15368
+              }
+            ]
+          }
+        },
+        "staging": {
+          "sha": "a6eadbb3e570e59b06cde65b0c9181c300b4cc39",
+          "protected": true,
+          "ruleset_id": 27868331,
+          "bypass_actors": [],
+          "pull_request": {
+            "required_approving_review_count": 0,
+            "dismiss_stale_reviews_on_push": true,
+            "required_reviewers": [],
+            "require_code_owner_review": false,
+            "dismissal_restriction": {
+              "enabled": false,
+              "allowed_actors": []
+            },
+            "require_last_push_approval": false,
+            "required_review_thread_resolution": true,
+            "require_extra_approval_for_unattributed_changes": true,
+            "allowed_merge_methods": [
+              "squash",
+              "merge"
+            ]
+          },
+          "required_status_checks": {
+            "strict_required_status_checks_policy": true,
+            "do_not_enforce_on_create": false,
+            "required_status_checks": [
+              {
+                "context": "Typecheck, test and validate recipes",
+                "integration_id": 15368
+              },
+              {
+                "context": "DCO",
+                "integration_id": 15368
+              },
+              {
+                "context": "policy / Validate branch policy",
+                "integration_id": 15368
+              }
+            ]
+          }
+        }
+      },
+      "policy_pr": {
+        "url": "https://github.com/unset-sh/profile-recipes/pull/8",
+        "head": "f9357d71476de5e7612022e0516eb7dbaf184d45",
+        "merge_commit": "a6eadbb3e570e59b06cde65b0c9181c300b4cc39",
+        "base": "staging",
+        "merged": true
+      },
+      "required_checks_passed_at_reviewed_head": true,
+      "findings": []
+    },
+    {
+      "repository": "unset-sh/brand",
+      "settings": {
+        "default_branch": "staging",
+        "allow_merge_commit": true,
+        "allow_squash_merge": true,
+        "allow_rebase_merge": false,
+        "allow_auto_merge": false,
+        "delete_branch_on_merge": false
+      },
+      "branches": {
+        "main": {
+          "sha": "8c998a2990ae477daf5ac1636028f6cbf379577b",
+          "protected": true,
+          "ruleset_id": 27820264,
+          "bypass_actors": [],
+          "pull_request": {
+            "required_approving_review_count": 0,
+            "dismiss_stale_reviews_on_push": true,
+            "required_reviewers": [],
+            "require_code_owner_review": false,
+            "dismissal_restriction": {
+              "enabled": false,
+              "allowed_actors": []
+            },
+            "require_last_push_approval": false,
+            "required_review_thread_resolution": true,
+            "require_extra_approval_for_unattributed_changes": true,
+            "allowed_merge_methods": [
+              "merge"
+            ]
+          },
+          "required_status_checks": {
+            "strict_required_status_checks_policy": true,
+            "do_not_enforce_on_create": false,
+            "required_status_checks": [
+              {
+                "context": "Check pins, tokens, files and package",
+                "integration_id": 15368
+              },
+              {
+                "context": "policy / Validate branch policy",
+                "integration_id": 15368
+              }
+            ]
+          }
+        },
+        "staging": {
+          "sha": "a29c94293613e119faf5cdd0eab0a6e18664b618",
+          "protected": true,
+          "ruleset_id": 27868333,
+          "bypass_actors": [],
+          "pull_request": {
+            "required_approving_review_count": 0,
+            "dismiss_stale_reviews_on_push": true,
+            "required_reviewers": [],
+            "require_code_owner_review": false,
+            "dismissal_restriction": {
+              "enabled": false,
+              "allowed_actors": []
+            },
+            "require_last_push_approval": false,
+            "required_review_thread_resolution": true,
+            "require_extra_approval_for_unattributed_changes": true,
+            "allowed_merge_methods": [
+              "squash",
+              "merge"
+            ]
+          },
+          "required_status_checks": {
+            "strict_required_status_checks_policy": true,
+            "do_not_enforce_on_create": false,
+            "required_status_checks": [
+              {
+                "context": "Check pins, tokens, files and package",
+                "integration_id": 15368
+              },
+              {
+                "context": "policy / Validate branch policy",
+                "integration_id": 15368
+              }
+            ]
+          }
+        }
+      },
+      "policy_pr": {
+        "url": "https://github.com/unset-sh/brand/pull/7",
+        "head": "15ee6769fcc949c692bd9d1d402c17265be7e679",
+        "merge_commit": "a29c94293613e119faf5cdd0eab0a6e18664b618",
+        "base": "staging",
+        "merged": true
+      },
+      "required_checks_passed_at_reviewed_head": true,
+      "findings": []
+    },
+    {
+      "repository": "unset-sh/rendering",
+      "settings": {
+        "default_branch": "staging",
+        "allow_merge_commit": true,
+        "allow_squash_merge": true,
+        "allow_rebase_merge": false,
+        "allow_auto_merge": false,
+        "delete_branch_on_merge": false
+      },
+      "branches": {
+        "main": {
+          "sha": "f4597ce765007c28c0fd0aadbd3f9f0333939229",
+          "protected": true,
+          "ruleset_id": 27820300,
+          "bypass_actors": [],
+          "pull_request": {
+            "required_approving_review_count": 0,
+            "dismiss_stale_reviews_on_push": true,
+            "required_reviewers": [],
+            "require_code_owner_review": false,
+            "dismissal_restriction": {
+              "enabled": false,
+              "allowed_actors": []
+            },
+            "require_last_push_approval": false,
+            "required_review_thread_resolution": true,
+            "require_extra_approval_for_unattributed_changes": true,
+            "allowed_merge_methods": [
+              "merge"
+            ]
+          },
+          "required_status_checks": {
+            "strict_required_status_checks_policy": true,
+            "do_not_enforce_on_create": false,
+            "required_status_checks": [
+              {
+                "context": "Typecheck, lint, build, tests and gallery",
+                "integration_id": 15368
+              },
+              {
+                "context": "policy / Validate branch policy",
+                "integration_id": 15368
+              }
+            ]
+          }
+        },
+        "staging": {
+          "sha": "d47afdae9dcd542dc2f343ba8254b85b650ae828",
+          "protected": true,
+          "ruleset_id": 27868336,
+          "bypass_actors": [],
+          "pull_request": {
+            "required_approving_review_count": 0,
+            "dismiss_stale_reviews_on_push": true,
+            "required_reviewers": [],
+            "require_code_owner_review": false,
+            "dismissal_restriction": {
+              "enabled": false,
+              "allowed_actors": []
+            },
+            "require_last_push_approval": false,
+            "required_review_thread_resolution": true,
+            "require_extra_approval_for_unattributed_changes": true,
+            "allowed_merge_methods": [
+              "squash",
+              "merge"
+            ]
+          },
+          "required_status_checks": {
+            "strict_required_status_checks_policy": true,
+            "do_not_enforce_on_create": false,
+            "required_status_checks": [
+              {
+                "context": "Typecheck, lint, build, tests and gallery",
+                "integration_id": 15368
+              },
+              {
+                "context": "policy / Validate branch policy",
+                "integration_id": 15368
+              }
+            ]
+          }
+        }
+      },
+      "policy_pr": {
+        "url": "https://github.com/unset-sh/rendering/pull/5",
+        "head": "aca6da4d3eda9a3d02daeba1d1fc7890932ec606",
+        "merge_commit": "d47afdae9dcd542dc2f343ba8254b85b650ae828",
+        "base": "staging",
+        "merged": true
+      },
+      "required_checks_passed_at_reviewed_head": true,
+      "findings": []
+    },
+    {
+      "repository": "unset-sh/agent-kit",
+      "settings": {
+        "default_branch": "staging",
+        "allow_merge_commit": true,
+        "allow_squash_merge": true,
+        "allow_rebase_merge": false,
+        "allow_auto_merge": false,
+        "delete_branch_on_merge": false
+      },
+      "branches": {
+        "main": {
+          "sha": "a98152cd5391ffd84776dc7c5eee7ff3994d5e57",
+          "protected": true,
+          "ruleset_id": 27820225,
+          "bypass_actors": [],
+          "pull_request": {
+            "required_approving_review_count": 0,
+            "dismiss_stale_reviews_on_push": true,
+            "required_reviewers": [],
+            "require_code_owner_review": false,
+            "dismissal_restriction": {
+              "enabled": false,
+              "allowed_actors": []
+            },
+            "require_last_push_approval": false,
+            "required_review_thread_resolution": true,
+            "require_extra_approval_for_unattributed_changes": true,
+            "allowed_merge_methods": [
+              "merge"
+            ]
+          },
+          "required_status_checks": {
+            "strict_required_status_checks_policy": true,
+            "do_not_enforce_on_create": false,
+            "required_status_checks": [
+              {
+                "context": "Check rules, skills, sync and bundle",
+                "integration_id": 15368
+              },
+              {
+                "context": "policy / Validate branch policy",
+                "integration_id": 15368
+              }
+            ]
+          }
+        },
+        "staging": {
+          "sha": "25c4b50e68a2f80d8f042166c07258a73f9701e9",
+          "protected": true,
+          "ruleset_id": 27868337,
+          "bypass_actors": [],
+          "pull_request": {
+            "required_approving_review_count": 0,
+            "dismiss_stale_reviews_on_push": true,
+            "required_reviewers": [],
+            "require_code_owner_review": false,
+            "dismissal_restriction": {
+              "enabled": false,
+              "allowed_actors": []
+            },
+            "require_last_push_approval": false,
+            "required_review_thread_resolution": true,
+            "require_extra_approval_for_unattributed_changes": true,
+            "allowed_merge_methods": [
+              "squash",
+              "merge"
+            ]
+          },
+          "required_status_checks": {
+            "strict_required_status_checks_policy": true,
+            "do_not_enforce_on_create": false,
+            "required_status_checks": [
+              {
+                "context": "Check rules, skills, sync and bundle",
+                "integration_id": 15368
+              },
+              {
+                "context": "policy / Validate branch policy",
+                "integration_id": 15368
+              }
+            ]
+          }
+        }
+      },
+      "policy_pr": {
+        "url": "https://github.com/unset-sh/agent-kit/pull/16",
+        "head": "2a2b27579aa77900e8764245415a0338d549fac9",
+        "merge_commit": "25c4b50e68a2f80d8f042166c07258a73f9701e9",
+        "base": "staging",
+        "merged": true
+      },
+      "required_checks_passed_at_reviewed_head": true,
+      "findings": []
+    },
+    {
+      "repository": "unset-sh/lexicons",
+      "settings": {
+        "default_branch": "staging",
+        "allow_merge_commit": true,
+        "allow_squash_merge": true,
+        "allow_rebase_merge": false,
+        "allow_auto_merge": false,
+        "delete_branch_on_merge": false
+      },
+      "branches": {
+        "main": {
+          "sha": "52cfb6990f3833e4bdd260cd5bb520fc4446e122",
+          "protected": true,
+          "ruleset_id": 27868338,
+          "bypass_actors": [],
+          "pull_request": {
+            "required_approving_review_count": 0,
+            "dismiss_stale_reviews_on_push": true,
+            "required_reviewers": [],
+            "require_code_owner_review": false,
+            "dismissal_restriction": {
+              "enabled": false,
+              "allowed_actors": []
+            },
+            "require_last_push_approval": false,
+            "required_review_thread_resolution": true,
+            "require_extra_approval_for_unattributed_changes": true,
+            "allowed_merge_methods": [
+              "merge"
+            ]
+          },
+          "required_status_checks": {
+            "strict_required_status_checks_policy": true,
+            "do_not_enforce_on_create": false,
+            "required_status_checks": [
+              {
+                "context": "check",
+                "integration_id": 15368
+              },
+              {
+                "context": "policy / Validate branch policy",
+                "integration_id": 15368
+              }
+            ]
+          }
+        },
+        "staging": {
+          "sha": "27e6e5b573d49c8bc01171c6cf6d275382a5f07e",
+          "protected": true,
+          "ruleset_id": 27868339,
+          "bypass_actors": [],
+          "pull_request": {
+            "required_approving_review_count": 0,
+            "dismiss_stale_reviews_on_push": true,
+            "required_reviewers": [],
+            "require_code_owner_review": false,
+            "dismissal_restriction": {
+              "enabled": false,
+              "allowed_actors": []
+            },
+            "require_last_push_approval": false,
+            "required_review_thread_resolution": true,
+            "require_extra_approval_for_unattributed_changes": true,
+            "allowed_merge_methods": [
+              "squash",
+              "merge"
+            ]
+          },
+          "required_status_checks": {
+            "strict_required_status_checks_policy": true,
+            "do_not_enforce_on_create": false,
+            "required_status_checks": [
+              {
+                "context": "check",
+                "integration_id": 15368
+              },
+              {
+                "context": "policy / Validate branch policy",
+                "integration_id": 15368
+              }
+            ]
+          }
+        }
+      },
+      "policy_pr": {
+        "url": "https://github.com/unset-sh/lexicons/pull/2",
+        "head": "d9df2a03e8fa46f4fb14928dc78bb96f73147fbb",
+        "merge_commit": "27e6e5b573d49c8bc01171c6cf6d275382a5f07e",
+        "base": "staging",
+        "merged": true
+      },
+      "required_checks_passed_at_reviewed_head": true,
+      "findings": []
+    },
+    {
+      "repository": "unset-sh/tooling",
+      "settings": {
+        "default_branch": "staging",
+        "allow_merge_commit": true,
+        "allow_squash_merge": true,
+        "allow_rebase_merge": false,
+        "allow_auto_merge": false,
+        "delete_branch_on_merge": false
+      },
+      "branches": {
+        "main": {
+          "sha": "92fc3b444c107d6fdfb680dd90388ca9de2bdbc9",
+          "protected": true,
+          "ruleset_id": 27868273,
+          "bypass_actors": [],
+          "pull_request": {
+            "required_approving_review_count": 0,
+            "dismiss_stale_reviews_on_push": true,
+            "required_reviewers": [],
+            "require_code_owner_review": false,
+            "dismissal_restriction": {
+              "enabled": false,
+              "allowed_actors": []
+            },
+            "require_last_push_approval": false,
+            "required_review_thread_resolution": true,
+            "require_extra_approval_for_unattributed_changes": true,
+            "allowed_merge_methods": [
+              "merge"
+            ]
+          },
+          "required_status_checks": {
+            "strict_required_status_checks_policy": true,
+            "do_not_enforce_on_create": false,
+            "required_status_checks": [
+              {
+                "context": "check / Check",
+                "integration_id": 15368
+              },
+              {
+                "context": "actionlint",
+                "integration_id": 15368
+              },
+              {
+                "context": "policy / Validate branch policy",
+                "integration_id": 15368
+              }
+            ]
+          }
+        },
+        "staging": {
+          "sha": "33817bbf23fd4a4e2f6bf99d1f958847364b4549",
+          "protected": true,
+          "ruleset_id": 27868272,
+          "bypass_actors": [],
+          "pull_request": {
+            "required_approving_review_count": 0,
+            "dismiss_stale_reviews_on_push": true,
+            "required_reviewers": [],
+            "require_code_owner_review": false,
+            "dismissal_restriction": {
+              "enabled": false,
+              "allowed_actors": []
+            },
+            "require_last_push_approval": false,
+            "required_review_thread_resolution": true,
+            "require_extra_approval_for_unattributed_changes": true,
+            "allowed_merge_methods": [
+              "squash",
+              "merge"
+            ]
+          },
+          "required_status_checks": {
+            "strict_required_status_checks_policy": true,
+            "do_not_enforce_on_create": false,
+            "required_status_checks": [
+              {
+                "context": "check / Check",
+                "integration_id": 15368
+              },
+              {
+                "context": "actionlint",
+                "integration_id": 15368
+              },
+              {
+                "context": "policy / Validate branch policy",
+                "integration_id": 15368
+              }
+            ]
+          }
+        }
+      },
+      "policy_pr": {
+        "url": "https://github.com/unset-sh/tooling/pull/8",
+        "head": "5f47dbe68fc8c8860e99eccd1edc882aba65bf63",
+        "merge_commit": "33817bbf23fd4a4e2f6bf99d1f958847364b4549",
+        "base": "staging",
+        "merged": true
+      },
+      "required_checks_passed_at_reviewed_head": true,
+      "findings": []
+    },
+    {
+      "repository": "unset-sh/backend",
+      "settings": {
+        "default_branch": "staging",
+        "allow_merge_commit": true,
+        "allow_squash_merge": true,
+        "allow_rebase_merge": false,
+        "allow_auto_merge": false,
+        "delete_branch_on_merge": false
+      },
+      "branches": {
+        "main": {
+          "sha": "cb2d1840e5db61336c2a4740b98db830980d7b54",
+          "protected": true,
+          "ruleset_id": 27868314,
+          "bypass_actors": [],
+          "pull_request": {
+            "required_approving_review_count": 0,
+            "dismiss_stale_reviews_on_push": true,
+            "required_reviewers": [],
+            "require_code_owner_review": false,
+            "dismissal_restriction": {
+              "enabled": false,
+              "allowed_actors": []
+            },
+            "require_last_push_approval": false,
+            "required_review_thread_resolution": true,
+            "require_extra_approval_for_unattributed_changes": true,
+            "allowed_merge_methods": [
+              "merge"
+            ]
+          },
+          "required_status_checks": {
+            "strict_required_status_checks_policy": true,
+            "do_not_enforce_on_create": false,
+            "required_status_checks": [
+              {
+                "context": "policy / Validate branch policy",
+                "integration_id": 15368
+              }
+            ]
+          }
+        },
+        "staging": {
+          "sha": "19ea29a840bb38cec37a5aa4626c5b6353eb43a9",
+          "protected": true,
+          "ruleset_id": 27868316,
+          "bypass_actors": [],
+          "pull_request": {
+            "required_approving_review_count": 0,
+            "dismiss_stale_reviews_on_push": true,
+            "required_reviewers": [],
+            "require_code_owner_review": false,
+            "dismissal_restriction": {
+              "enabled": false,
+              "allowed_actors": []
+            },
+            "require_last_push_approval": false,
+            "required_review_thread_resolution": true,
+            "require_extra_approval_for_unattributed_changes": true,
+            "allowed_merge_methods": [
+              "squash",
+              "merge"
+            ]
+          },
+          "required_status_checks": {
+            "strict_required_status_checks_policy": true,
+            "do_not_enforce_on_create": false,
+            "required_status_checks": [
+              {
+                "context": "policy / Validate branch policy",
+                "integration_id": 15368
+              }
+            ]
+          }
+        }
+      },
+      "policy_pr": {
+        "url": "https://github.com/unset-sh/backend/pull/2",
+        "head": "01e15ce20958bf9620ea222f14dc6c589f8c8724",
+        "merge_commit": "19ea29a840bb38cec37a5aa4626c5b6353eb43a9",
+        "base": "staging",
+        "merged": true
+      },
+      "required_checks_passed_at_reviewed_head": true,
+      "findings": []
+    },
+    {
+      "repository": "unset-sh/web",
+      "settings": {
+        "default_branch": "staging",
+        "allow_merge_commit": true,
+        "allow_squash_merge": true,
+        "allow_rebase_merge": false,
+        "allow_auto_merge": false,
+        "delete_branch_on_merge": false
+      },
+      "branches": {
+        "main": {
+          "sha": "e30a1da4b08d50957df4513f7743f0c2f2be9737",
+          "protected": true,
+          "ruleset_id": 27868319,
+          "bypass_actors": [],
+          "pull_request": {
+            "required_approving_review_count": 0,
+            "dismiss_stale_reviews_on_push": true,
+            "required_reviewers": [],
+            "require_code_owner_review": false,
+            "dismissal_restriction": {
+              "enabled": false,
+              "allowed_actors": []
+            },
+            "require_last_push_approval": false,
+            "required_review_thread_resolution": true,
+            "require_extra_approval_for_unattributed_changes": true,
+            "allowed_merge_methods": [
+              "merge"
+            ]
+          },
+          "required_status_checks": {
+            "strict_required_status_checks_policy": true,
+            "do_not_enforce_on_create": false,
+            "required_status_checks": [
+              {
+                "context": "policy / Validate branch policy",
+                "integration_id": 15368
+              }
+            ]
+          }
+        },
+        "staging": {
+          "sha": "8239c4ac24059c236524aef1433f1582255d2d25",
+          "protected": true,
+          "ruleset_id": 27868320,
+          "bypass_actors": [],
+          "pull_request": {
+            "required_approving_review_count": 0,
+            "dismiss_stale_reviews_on_push": true,
+            "required_reviewers": [],
+            "require_code_owner_review": false,
+            "dismissal_restriction": {
+              "enabled": false,
+              "allowed_actors": []
+            },
+            "require_last_push_approval": false,
+            "required_review_thread_resolution": true,
+            "require_extra_approval_for_unattributed_changes": true,
+            "allowed_merge_methods": [
+              "squash",
+              "merge"
+            ]
+          },
+          "required_status_checks": {
+            "strict_required_status_checks_policy": true,
+            "do_not_enforce_on_create": false,
+            "required_status_checks": [
+              {
+                "context": "policy / Validate branch policy",
+                "integration_id": 15368
+              }
+            ]
+          }
+        }
+      },
+      "policy_pr": {
+        "url": "https://github.com/unset-sh/web/pull/2",
+        "head": "40465f7d470d01d0ba8a7a561099fcb3ff5e5d7c",
+        "merge_commit": "8239c4ac24059c236524aef1433f1582255d2d25",
+        "base": "staging",
+        "merged": true
+      },
+      "required_checks_passed_at_reviewed_head": true,
+      "findings": []
+    },
+    {
+      "repository": "unset-sh/deployment",
+      "settings": {
+        "default_branch": "staging",
+        "allow_merge_commit": true,
+        "allow_squash_merge": true,
+        "allow_rebase_merge": false,
+        "allow_auto_merge": false,
+        "delete_branch_on_merge": false
+      },
+      "branches": {
+        "main": {
+          "sha": "e71eb3edd84777fce35c2083f8712d880d5de363",
+          "protected": true,
+          "ruleset_id": 27868321,
+          "bypass_actors": [],
+          "pull_request": {
+            "required_approving_review_count": 0,
+            "dismiss_stale_reviews_on_push": true,
+            "required_reviewers": [],
+            "require_code_owner_review": false,
+            "dismissal_restriction": {
+              "enabled": false,
+              "allowed_actors": []
+            },
+            "require_last_push_approval": false,
+            "required_review_thread_resolution": true,
+            "require_extra_approval_for_unattributed_changes": true,
+            "allowed_merge_methods": [
+              "merge"
+            ]
+          },
+          "required_status_checks": {
+            "strict_required_status_checks_policy": true,
+            "do_not_enforce_on_create": false,
+            "required_status_checks": [
+              {
+                "context": "policy / Validate branch policy",
+                "integration_id": 15368
+              }
+            ]
+          }
+        },
+        "staging": {
+          "sha": "979b2bfb88953f1449fbfdc69ba8b4bb1f81c462",
+          "protected": true,
+          "ruleset_id": 27868322,
+          "bypass_actors": [],
+          "pull_request": {
+            "required_approving_review_count": 0,
+            "dismiss_stale_reviews_on_push": true,
+            "required_reviewers": [],
+            "require_code_owner_review": false,
+            "dismissal_restriction": {
+              "enabled": false,
+              "allowed_actors": []
+            },
+            "require_last_push_approval": false,
+            "required_review_thread_resolution": true,
+            "require_extra_approval_for_unattributed_changes": true,
+            "allowed_merge_methods": [
+              "squash",
+              "merge"
+            ]
+          },
+          "required_status_checks": {
+            "strict_required_status_checks_policy": true,
+            "do_not_enforce_on_create": false,
+            "required_status_checks": [
+              {
+                "context": "policy / Validate branch policy",
+                "integration_id": 15368
+              }
+            ]
+          }
+        }
+      },
+      "policy_pr": {
+        "url": "https://github.com/unset-sh/deployment/pull/2",
+        "head": "adff4d280c6535c2fc6c65d785ad579b11daf1f9",
+        "merge_commit": "979b2bfb88953f1449fbfdc69ba8b4bb1f81c462",
+        "base": "staging",
+        "merged": true
+      },
+      "required_checks_passed_at_reviewed_head": true,
+      "findings": []
+    }
+  ],
+  "retargeted_prs": [
+    {
+      "repo": "backend",
+      "number": 1,
+      "head": "ac0d7deb460e2b47f6445c25a6f0a4d74166b635",
+      "url": "https://github.com/unset-sh/backend/pull/1",
+      "old_base": "main",
+      "base": "staging"
+    },
+    {
+      "repo": "web",
+      "number": 1,
+      "head": "f2f785a8d254415da71d5dabc024f312e54a6200",
+      "url": "https://github.com/unset-sh/web/pull/1",
+      "old_base": "main",
+      "base": "staging"
+    },
+    {
+      "repo": "deployment",
+      "number": 1,
+      "head": "8610876e90fb4930b4f666fde8c00e2d685502f2",
+      "url": "https://github.com/unset-sh/deployment/pull/1",
+      "old_base": "main",
+      "base": "staging"
+    },
+    {
+      "repo": ".github",
+      "number": 13,
+      "head": "01504181dace87ccc1c461b4c4603f9b764fbe2a",
+      "url": "https://github.com/unset-sh/.github/pull/13",
+      "old_base": "main",
+      "base": "staging"
+    },
+    {
+      "repo": ".github",
+      "number": 11,
+      "head": "deaca1d9ce02c852ce58aa89184f55ed9f967f90",
+      "url": "https://github.com/unset-sh/.github/pull/11",
+      "old_base": "main",
+      "base": "staging"
+    },
+    {
+      "repo": ".github",
+      "number": 10,
+      "head": "25b6e96325f2e8fe8d354e67a7d6b1e0429ea47a",
+      "url": "https://github.com/unset-sh/.github/pull/10",
+      "old_base": "main",
+      "base": "staging"
+    },
+    {
+      "repo": ".github",
+      "number": 9,
+      "head": "5b35af2c6d75f53c6dd1659559162e3c9440620c",
+      "url": "https://github.com/unset-sh/.github/pull/9",
+      "old_base": "main",
+      "base": "staging"
+    },
+    {
+      "repo": ".github",
+      "number": 3,
+      "head": "f1ca1abe6131cd80074ec890e995a9810c3ada66",
+      "url": "https://github.com/unset-sh/.github/pull/3",
+      "old_base": "main",
+      "base": "staging"
+    },
+    {
+      "repo": ".github",
+      "number": 2,
+      "head": "1c9f09e9769298d904fdddf54dc15d0431f77e88",
+      "url": "https://github.com/unset-sh/.github/pull/2",
+      "old_base": "main",
+      "base": "staging"
+    },
+    {
+      "repo": "profile-recipes",
+      "number": 7,
+      "head": "dad5d7d760ae0fb4e22439f47d019c4bde130f2e",
+      "url": "https://github.com/unset-sh/profile-recipes/pull/7",
+      "old_base": "main",
+      "base": "staging"
+    },
+    {
+      "repo": "rendering",
+      "number": 4,
+      "head": "dec9e7b40ec2b8a8a8a86ee536d68c0a7291e398",
+      "url": "https://github.com/unset-sh/rendering/pull/4",
+      "old_base": "main",
+      "base": "staging"
+    },
+    {
+      "repo": "agent-kit",
+      "number": 14,
+      "head": "411280a0e3df512d4038c22efe8436cdefdc5c9d",
+      "url": "https://github.com/unset-sh/agent-kit/pull/14",
+      "old_base": "main",
+      "base": "staging"
+    },
+    {
+      "repo": "agent-kit",
+      "number": 13,
+      "head": "13e00d27148fdaa34c6aa4a9486bebf2e47128dd",
+      "url": "https://github.com/unset-sh/agent-kit/pull/13",
+      "old_base": "main",
+      "base": "staging"
+    },
+    {
+      "repo": "agent-kit",
+      "number": 11,
+      "head": "af0679b5e801234e951921618bb3f6721ee83f22",
+      "url": "https://github.com/unset-sh/agent-kit/pull/11",
+      "old_base": "main",
+      "base": "staging"
+    },
+    {
+      "repo": "agent-kit",
+      "number": 9,
+      "head": "66e2305bc2e0e60dd7ebc55ed51a851a14064f68",
+      "url": "https://github.com/unset-sh/agent-kit/pull/9",
+      "old_base": "main",
+      "base": "staging"
+    },
+    {
+      "repo": "agent-kit",
+      "number": 7,
+      "head": "adf461d260972ea1c8c56b2e8ea4f169c108a009",
+      "url": "https://github.com/unset-sh/agent-kit/pull/7",
+      "old_base": "main",
+      "base": "staging"
+    },
+    {
+      "repo": "agent-kit",
+      "number": 4,
+      "head": "4f43b22abc6570a2fd1faebd10c0d6adf3c6617b",
+      "url": "https://github.com/unset-sh/agent-kit/pull/4",
+      "old_base": "main",
+      "base": "staging"
+    },
+    {
+      "repo": "agent-kit",
+      "number": 3,
+      "head": "727da5c7aabccefea0b11c9a7f221696a32d90e7",
+      "url": "https://github.com/unset-sh/agent-kit/pull/3",
+      "old_base": "main",
+      "base": "staging"
+    },
+    {
+      "repo": "agent-kit",
+      "number": 2,
+      "head": "8c4c6383e12fb5526a1a3cece4827bf593be2b34",
+      "url": "https://github.com/unset-sh/agent-kit/pull/2",
+      "old_base": "main",
+      "base": "staging"
+    }
+  ],
+  "limitations": [
+    "Human versus agent use of shared credentials is procedural, not identifiable by GitHub.",
+    "PR-controlled workflow changes require review; the shared status is not tamper-proof against a writer who edits its caller.",
+    "Existing release environment approvals remain. Staging prereleases and single-approval production delivery are not migrated.",
+    "Legacy hourly docs/map publication skips when the default branch is staging; main push/manual paths remain unchanged."
+  ]
+}
