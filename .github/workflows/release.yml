@@ -1,12 +1,21 @@
 name: release
 
-# A release is a tag v<version> on a commit of main. The bundle is built once, in `bundle`; `publish` waits for
-# approval on the `release` environment and then attests and publishes those same files. Repositories install
-# a release with sync.mjs, which downloads agent-kit.json from the release page.
+# A release starts when a raised version in package.json lands on main. There is no tag to push and no button
+# to press: the run checks that the `release` environment is still the owner's, builds the bundle once, and
+# then waits. The owner's one step is Approve. The workflow then creates the tag v<version> at that commit and
+# publishes the same files it built.
+#
+# Why from main and not from a pushed tag: GitHub runs the workflow file of the commit it starts from, so a tag
+# on an unreviewed commit would bring its own release workflow, without the checks below. A push to main runs
+# only reviewed code. Docs read 2026-11-22: "Runs your workflow when you push a commit or tag"
+# (https://docs.github.com/en/actions/reference/workflows-and-actions/events-that-trigger-workflows#push), and a
+# tag created with the workflow's own token starts no new run
+# (https://docs.github.com/en/actions/concepts/security/github_token).
 
 on:
   push:
-    tags: ["v*"]
+    branches: [main]
+    paths: [package.json]
 
 permissions: {}
 
@@ -14,9 +23,73 @@ concurrency:
   group: release
   cancel-in-progress: false
 
+defaults:
+  run:
+    shell: bash # with -o pipefail, so a failed command before a pipe fails the step
+
 jobs:
+  plan:
+    name: Decide whether this version is new, and check the release environment
+    runs-on: ubuntu-24.04
+    timeout-minutes: 5
+    permissions:
+      contents: read
+      actions: read # read the environment and its branch policies
+    outputs:
+      version: ${{ steps.version.outputs.version }}
+      publish: ${{ steps.version.outputs.publish }}
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
+        with:
+          node-version-file: .nvmrc
+          package-manager-cache: false
+      - name: Read the version, and stop quietly if it is already released
+        id: version
+        env:
+          GH_TOKEN: ${{ github.token }}
+          GH_REPO: ${{ github.repository }}
+        run: |
+          version="$(node -p 'require("./package.json").version')"
+          echo "version=$version" >> "$GITHUB_OUTPUT"
+          if [ "$version" = "0.0.0" ]; then
+            echo "publish=false" >> "$GITHUB_OUTPUT"
+            echo "Version 0.0.0: nothing is released yet." >> "$GITHUB_STEP_SUMMARY"
+            exit 0
+          fi
+          status=0
+          git ls-remote --exit-code --tags origin "refs/tags/v$version" > /dev/null || status=$?
+          # git ls-remote --exit-code: 2 means no matching ref, 0 a match, anything else a failure
+          # (git v2.43.0 Documentation/git-ls-remote.txt).
+          case "$status" in
+            0) # A tag with no release page was pushed by hand, not made here: stop loudly, never skip it.
+               if ! gh release view "v$version" > /dev/null; then
+                 echo "v$version is tagged but has no release; a v* tag is never pushed by hand. Ask the owner."
+                 exit 1
+               fi
+               echo "publish=false" >> "$GITHUB_OUTPUT"
+               echo "v$version is already released; nothing to do." >> "$GITHUB_STEP_SUMMARY" ;;
+            2) echo "publish=true" >> "$GITHUB_OUTPUT" ;;
+            *) echo "could not list the tags (git exit $status)"; exit 1 ;;
+          esac
+      - name: The release environment holds the owner's approval, from main only
+        if: steps.version.outputs.publish == 'true'
+        env:
+          GH_TOKEN: ${{ github.token }}
+          GH_REPO: ${{ github.repository }}
+        run: |
+          gh api "repos/$GH_REPO/environments/release" > "$RUNNER_TEMP/environment.json"
+          # This listing fails when the environment allows any branch; the gate then names that problem.
+          gh api "repos/$GH_REPO/environments/release/deployment-branch-policies" > "$RUNNER_TEMP/policies.json" \
+            || echo '{}' > "$RUNNER_TEMP/policies.json"
+          node scripts/release-gate.mjs "$RUNNER_TEMP/environment.json" "$RUNNER_TEMP/policies.json"
+
   bundle:
     name: Check and build the bundle
+    needs: plan
+    if: needs.plan.outputs.publish == 'true'
     runs-on: ubuntu-24.04
     timeout-minutes: 5
     permissions:
@@ -25,26 +98,42 @@ jobs:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
           persist-credentials: false
-          fetch-depth: 0
       - uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
         with:
           node-version-file: .nvmrc
           package-manager-cache: false
-      - name: The tag is the package version
-        env:
-          TAG: ${{ github.ref_name }}
-        run: test "$TAG" = "v$(node -p 'require("./package.json").version')"
-      - name: The tagged commit is on main
-        run: git merge-base --is-ancestor "$GITHUB_SHA" origin/main
       - run: npm run check
+      - name: Find what changed since the last release
+        id: since
+        env:
+          GH_TOKEN: ${{ github.token }}
+          GH_REPO: ${{ github.repository }}
+        run: |
+          last="$(gh release list --limit 1 --exclude-drafts --json tagName --jq '.[0].tagName // ""')"
+          if [ -z "$last" ]; then
+            echo "changes=the first release: all of main up to this commit" >> "$GITHUB_OUTPUT"
+          else
+            echo "changes=https://github.com/$GH_REPO/compare/$last...$GITHUB_SHA" >> "$GITHUB_OUTPUT"
+          fi
       - name: Build the bundle, with sync.mjs and the release notes beside it
         env:
-          TAG: ${{ github.ref_name }}
+          VERSION: ${{ needs.plan.outputs.version }}
+          CHANGES: ${{ steps.since.outputs.changes }}
         run: |
           node scripts/bundle.mjs --commit "$GITHUB_SHA" --out dist/agent-kit.json
           cp sync.mjs dist/sync.mjs
-          node scripts/release-notes.mjs "${TAG#v}" > dist/notes.md
-          sha256sum dist/agent-kit.json dist/sync.mjs | tee -a "$GITHUB_STEP_SUMMARY"
+          node scripts/release-notes.mjs "$VERSION" > dist/notes.md
+          {
+            echo "## v$VERSION waits for approval"
+            echo
+            echo "Commit \`$GITHUB_SHA\` on main. Changes since the last release: $CHANGES"
+            echo
+            echo '```'
+            sha256sum dist/agent-kit.json dist/sync.mjs
+            echo '```'
+            echo
+            cat dist/notes.md
+          } >> "$GITHUB_STEP_SUMMARY"
       - uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
         with:
           name: release
@@ -54,12 +143,12 @@ jobs:
 
   publish:
     name: Publish the release
-    needs: bundle
+    needs: [plan, bundle]
     runs-on: ubuntu-24.04
     timeout-minutes: 5
     environment: release
     permissions:
-      contents: write # create the release page with the workflow's own token; no stored secret
+      contents: write # create the tag and the release page with the workflow's own token; no stored secret
       id-token: write # sign the attestation
       attestations: write # store the attestation
     steps:
@@ -69,14 +158,49 @@ jobs:
           path: dist
       - name: Exactly the three built files
         run: test "$(ls dist | sort | tr '\n' ' ')" = "agent-kit.json notes.md sync.mjs "
+      - name: The tag does not exist yet
+        env:
+          GH_TOKEN: ${{ github.token }}
+          GH_REPO: ${{ github.repository }}
+          VERSION: ${{ needs.plan.outputs.version }}
+        run: |
+          # gh would reuse a tag that appeared meanwhile, wherever it points, so refuse one instead. Only
+          # exit 2 (no matching ref) lets the release go on; a failed lookup stops it too.
+          status=0
+          git ls-remote --exit-code --tags "https://github.com/$GH_REPO" "refs/tags/v$VERSION" > /dev/null || status=$?
+          case "$status" in
+            2) ;;
+            0) echo "v$VERSION was tagged while this run waited; nothing is published. Raise the version again."
+               exit 1 ;;
+            *) echo "could not list the tags (git exit $status); nothing is published."
+               exit 1 ;;
+          esac
       - uses: actions/attest@1e69f48acb82d1966a394da916b4c1698aa569d6 # v4.2.2
         with:
           subject-path: |
             dist/agent-kit.json
             dist/sync.mjs
-      - name: Publish on the release page
+      - name: Create the tag at this commit and publish the release page
         env:
-          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GH_TOKEN: ${{ github.token }}
           GH_REPO: ${{ github.repository }}
-          TAG: ${{ github.ref_name }}
-        run: gh release create "$TAG" dist/agent-kit.json dist/sync.mjs --verify-tag --title "$TAG" --notes-file dist/notes.md
+          VERSION: ${{ needs.plan.outputs.version }}
+        # "If a matching git tag does not yet exist, one will automatically get created", at --target; with
+        # assets, gh creates a draft, uploads, then publishes (https://cli.github.com/manual/gh_release_create,
+        # read 2026-11-22).
+        run: |
+          gh release create "v$VERSION" dist/agent-kit.json dist/sync.mjs \
+            --target "$GITHUB_SHA" --title "v$VERSION" --notes-file dist/notes.md
+      - name: The published tag points at this commit
+        env:
+          GH_TOKEN: ${{ github.token }}
+          GH_REPO: ${{ github.repository }}
+          VERSION: ${{ needs.plan.outputs.version }}
+        run: |
+          # A tag pushed in the seconds between the check above and the create would be reused by gh. The release
+          # cannot be taken back once published, but the run fails loudly so the owner knows not to announce it.
+          tagged="$(gh api "repos/$GH_REPO/commits/v$VERSION" --jq .sha)"
+          if [ "$tagged" != "$GITHUB_SHA" ]; then
+            echo "v$VERSION points at $tagged, not $GITHUB_SHA. Do not use this release; tell the owner."
+            exit 1
+          fi

@@ -28,10 +28,22 @@ test("the templates and the project instructions exist", () => {
 });
 
 test("the newest changelog entry is the package version and says something", () => {
+  // 0.0.0 means nothing is released yet, so there is no versioned entry to match.
   const changelog = readText("CHANGELOG.md");
   const { version } = JSON.parse(readText("package.json"));
+  if (version === "0.0.0") {
+    assert.deepEqual(versionsIn(changelog), []);
+    return;
+  }
   assert.equal(versionsIn(changelog)[0], version);
   assert.ok(notesFor(changelog, version).length > 40);
+});
+
+test("unreleased changes sit in one section above the released versions", () => {
+  const headings = readText("CHANGELOG.md").split("\n").filter((line) => line.startsWith("## "));
+  const unreleased = headings.filter((line) => line === "## Unreleased");
+  assert.ok(unreleased.length <= 1, "one Unreleased section at most");
+  if (unreleased.length === 1) assert.equal(headings[0], "## Unreleased", "Unreleased comes first");
 });
 
 test("release notes are one version's entry, and a missing or empty entry is an error", () => {
@@ -57,4 +69,15 @@ test("every workflow drops all permissions at the top and pins each action to a 
       assert.match(checkout[1], /persist-credentials: false/, `${path}: a checkout keeps its token`);
     }
   }
+});
+
+test("a release starts only from main, is gated on the environment, and creates its own tag", () => {
+  const text = readText(".github/workflows/release.yml");
+  const trigger = text.slice(text.indexOf("\non:"), text.indexOf("\npermissions:"));
+  assert.match(trigger, /push:\n\s+branches: \[main\]/);
+  assert.doesNotMatch(trigger, /tags|workflow_dispatch|pull_request|workflow_run/, "a release may start only from a push to main");
+  assert.match(text, /node scripts\/release-gate\.mjs/);
+  assert.match(text, /environment: release/);
+  assert.match(text, /gh release create "v\$VERSION"[^\n]*\\\n\s+--target "\$GITHUB_SHA"/);
+  assert.doesNotMatch(text, /--verify-tag/);
 });

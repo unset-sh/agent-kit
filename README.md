@@ -92,9 +92,11 @@ To change a rule or a skill, change it here. The copy in a repository is never e
 
 ## Releases
 
-A release is a tag `v<version>` on a commit of `main`. The workflow builds `agent-kit.json` once, waits for
-the owner's approval in the `release` environment, attests the files and publishes them on the release page
-with the changelog entry of that version. Whoever can change this repository can steer every assistant in
+A release starts when a pull request that raises the version in `package.json` is merged to `main`. The
+workflow checks that the `release` environment still holds the owner's approval, builds `agent-kit.json` once,
+and waits. The owner's one step is Approve; the workflow then creates the tag `v<version>` at that commit,
+attests the files and publishes them on the release page with the changelog entry of that version. Nobody
+pushes a tag. Whoever can change this repository can steer every assistant in
 every unset.sh repository, so a release goes through two approvals before it reaches a repository: the
 owner's on the release, and a reviewed pull request in the repository that takes it.
 
