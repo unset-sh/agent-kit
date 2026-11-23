@@ -56,8 +56,8 @@ Other repositories load a copy of these. Here they are the source, so they are i
 - **Everything shipped carries an `org` name** (`skills/org-*`, `agents/org-*`), so a repository's own files
   never clash with the kit's.
 - **`sync.mjs` uses only `node:` built-in modules, which Bun provides, and runs with `bun`**, and reads as an
-  ordered sequence of checks. Every refusal has a test that shows it refusing. Changing where it may write, what it accepts or where it downloads from is a
-  security decision: stop and ask.
+  ordered sequence of checks. Every refusal has a test that shows it refusing. Changing where it may write,
+  what it accepts or where it downloads from is a security decision: stop and ask.
 - **A change that alters what a repository's assistant does** gets an entry in `CHANGELOG.md` under the
   date it merges, newest first. The kit has no releases and no `staging`: pull requests go straight into
   `main`, and whatever `main` holds is what a repository can take.
