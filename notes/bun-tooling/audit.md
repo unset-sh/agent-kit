@@ -7,7 +7,7 @@ upgrading the workflows". This reorders the migration plan: tooling moves first,
 ## How this was checked
 
 Each repository was checked out at its current default-branch commit. Its own test files and check scripts were run
-under **Bun 1.4.4** (the version in this container; the plan names 1.4.5, which is the version to pin). Repositories
+under **Bun 1.4.4**. The plan named 1.4.5, but it was released on 2026-11-19 and is still inside the 7-day wait, so 1.4.4 is what gets pinned; the release tests also pass on 1.4.5. Repositories
 with dependencies were installed with `bun install --frozen-lockfile --ignore-scripts` into a scratch copy, reading
 their existing `package-lock.json`. `node --test` files were run with `bun test` without editing them. Nothing ran
 on GitHub. Release, publish and docs-push behaviour was **not** exercised and stays unverified until a workflow run.
@@ -72,3 +72,17 @@ and `workflows/descriptions.json`. Alex decided "Bun replaces Node everywhere" (
 3. .github and agent-kit, each on the new tooling pin, with their rule changes.
 4. docs, lexicons, profile-recipes, then brand and rendering (these two after step 2, for their releases).
 5. backend, web, deployment, pds: bump the branch-policy pin.
+
+## What was opened (2026-11-23, overnight)
+
+Alex chose "release chain first" and asked for the rest to proceed autonomously, one PR per repository.
+
+- unset-sh/tooling#20: release chain plus every shared workflow on Bun 1.4.4. Findings it pins in tests:
+  `bun publish` sends the first `package/package.json` while `bun install` unpacks the last; a scope registry in
+  the publish folder's `.npmrc` wins over `--registry`; `bun pm pack` writes size/time ending in a space and the
+  checksum ending NUL-space (node-tar's form differs), and PAX headers for non-ASCII names; `bun publish` needs a
+  `package.json` in its working folder even for a tarball; setup-bun v2.2.0 installs the latest Bun when the
+  version file is missing; `bun install --frozen-lockfile` installs from package.json when there is no lockfile.
+- unset-sh/.github#21: map scripts on Bun. Depends on tooling#20 for its four tooling pins.
+- unset-sh/agent-kit (this PR): kit CI, tests and shipped instructions on Bun; `sync.mjs` unchanged.
+- Content repositories' package scripts and lockfiles: the "Bring older org repos up to the rules" thread.
