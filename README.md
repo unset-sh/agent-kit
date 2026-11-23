@@ -28,9 +28,9 @@ decision; caller adoption, signer verification and automatic update delivery cha
 
 [Org-0005](skills/org-decisions/records/org-0005-ai-working-material-lives-in-agent-kit.md) keeps AI working
 material here, grouped by task, instead of adding ad hoc Markdown to consuming repositories. Maintained
-human documentation belongs in its owning repository's `docs/`, follows the `org-documentation` standard,
-and exports through the documentation pipeline to `unset-sh/docs` for publication. A README can introduce
-and link those guides. This rule does not start a bulk move or deletion of historical files. The bundle's
+human documentation belongs in its owning repository's `docs/` and exports through the documentation
+pipeline to `unset-sh/docs` for publication; the shared `org-documentation` standard is not released yet.
+A README can introduce and link those guides. This rule does not start a bulk move or deletion of historical files. The bundle's
 existing allowlist excludes `notes/` and `artifacts/`.
 
 For missing shared design tokens or brand assets, use [brand requests](skills/org-brand-request/SKILL.md).
@@ -100,9 +100,9 @@ To change a rule or a skill, change it here. The copy in a repository is never e
 
 ## Releases
 
-A release starts when a pull request that raises the version in `package.json` is merged to `main`. The
-workflow checks that the `release` environment still holds the owner's approval, builds `agent-kit.json` once,
-and waits. The owner's one step is Approve; the workflow then creates the tag `v<version>` at that commit,
+A release starts when a raised version in `package.json` reaches `main`: pull requests land on `staging`, and
+the owner merges `staging` into `main`. The workflow checks that the `release` environment still holds the
+owner's approval, builds `agent-kit.json` once, and waits. The owner presses Approve; the workflow then creates the tag `v<version>` at that commit,
 attests the files and publishes them on the release page with the changelog entry of that version. Nobody
 pushes a tag. Whoever can change this repository can steer every assistant in
 every unset.sh repository, so a release goes through two approvals before it reaches a repository: the
