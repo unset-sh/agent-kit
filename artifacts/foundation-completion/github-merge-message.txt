@@ -1,0 +1,7 @@
+Establish organisation community defaults and native workflow templates.
+Pin the read-only documentation caller to merged developer tooling and
+refresh the repository map and maintained organisation guides.
+
+Preserve local metadata checks, release approvals and source ownership.
+
+Signed-off-by: Alex <v2e.env@mx.v2e.sh>

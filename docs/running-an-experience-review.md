@@ -17,7 +17,7 @@ The review covers a named build and specific tasks. Production remains read-only
 The run brief records the target, version, audience goals, device and input conditions, tasks, starting state, available evidence, allowed actions, reset procedure and evidence location. It also records model details, tools and comparable review budgets. Tasks describe goals rather than click paths. Missing prerequisites limit the affected assessment; they do not establish a product defect.
 
 Use the [run brief template](https://github.com/unset-sh/agent-kit/blob/main/skills/org-experience-review/run-brief.md)
-in an agent-kit checkout, or in a repository that has adopted a release containing the review skill:
+in an agent-kit checkout, or in a repository that has taken a kit commit containing the review skill:
 
 1. Choose the real tasks and evidence to review, and fill in the brief.
 2. Ask the assistant to use `org-experience-review` with that brief. If the host does not discover skills,

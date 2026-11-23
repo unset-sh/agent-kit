@@ -3,9 +3,9 @@
 import assert from "node:assert/strict";
 import { readFileSync, statSync } from "node:fs";
 import { test } from "node:test";
-import { shippedPaths } from "../scripts/bundle.mjs";
+import { shippedPaths } from "../scripts/shipped.mjs";
 import { destinationOf } from "../sync.mjs";
-import { root } from "./repo.mjs";
+import { readText, root } from "./repo.mjs";
 
 const shipped = shippedPaths();
 const bytesOf = (path) => readFileSync(new URL(path, root));
@@ -68,5 +68,19 @@ test("no rule or skill written here names something only one repository has", ()
   for (const path of ours) {
     const text = bytesOf(path).toString("utf8");
     for (const shape of ONE_REPOSITORY_ONLY) assert.ok(!shape.test(text), `${path} matches ${shape}`);
+  }
+});
+
+test("no shipped file imports another file into context", () => {
+  // Claude Code expands an @path import in a loaded Markdown file into context
+  // (https://code.claude.com/docs/en/memory, as read for the pre-release review of 2026-11-22), so one line could
+  // pull a consuming repository's file into every session without it showing in this repository's diff. Code
+  // spans and blocks are left out here; whether Claude Code skips them too is unverified, and none holds a path.
+  for (const path of shipped.filter((file) => file.endsWith(".md"))) {
+    const prose = readText(path)
+      .replace(/```[\s\S]*?```/g, "")
+      .replace(/`[^`\n]*`/g, "");
+    // Any @ not inside a word, so "[@x]", "see:@x" and ">@x" are caught as well as " @x".
+    assert.doesNotMatch(prose, /(?<!\w)@\S/, `${path} has an @ import`);
   }
 });

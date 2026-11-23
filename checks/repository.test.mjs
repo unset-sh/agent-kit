@@ -2,7 +2,6 @@
 // workflows.
 import assert from "node:assert/strict";
 import { test } from "node:test";
-import { notesFor, versionsIn } from "../scripts/release-notes.mjs";
 import { exists, filesIn, readText } from "./repo.mjs";
 
 const FITS = "## Where this repository fits";
@@ -27,20 +26,17 @@ test("the templates and the project instructions exist", () => {
   }
 });
 
-test("the newest changelog entry is the package version and says something", () => {
-  const changelog = readText("CHANGELOG.md");
-  const { version } = JSON.parse(readText("package.json"));
-  assert.equal(versionsIn(changelog)[0], version);
-  assert.ok(notesFor(changelog, version).length > 40);
+test("the changelog has one dated section per merge day, newest first, none empty", () => {
+  const sections = readText("CHANGELOG.md").split(/^## /m).slice(1);
+  assert.ok(sections.length > 0);
+  const dates = sections.map((section) => section.slice(0, section.indexOf("\n")));
+  for (const date of dates) assert.match(date, /^\d{4}-\d{2}-\d{2}$/, `"## ${date}" is not a date`);
+  assert.deepEqual(dates, [...new Set(dates)].sort().reverse(), "dates are unique and newest first");
+  for (const section of sections) assert.ok(section.trim().length > 40, `## ${section.slice(0, 10)} says nothing`);
 });
 
-test("release notes are one version's entry, and a missing or empty entry is an error", () => {
-  const changelog = "# Changelog\n\n## v0.2.0\n\nSecond.\n\n## v0.1.0\n\nFirst.\n\n## v0.0.1\n\n";
-  assert.equal(notesFor(changelog, "0.2.0"), "Second.\n");
-  assert.equal(notesFor(changelog, "0.1.0"), "First.\n");
-  assert.throws(() => notesFor(changelog, "0.3.0"), /no entry/);
-  assert.throws(() => notesFor(changelog, "0.0.1"), /is empty/);
-  assert.deepEqual(versionsIn(changelog), ["0.2.0", "0.1.0", "0.0.1"]);
+test("the kit has no release workflow", () => {
+  assert.ok(!exists(".github/workflows/release.yml"));
 });
 
 test("every workflow drops all permissions at the top and pins each action to a full commit", () => {
