@@ -10,6 +10,6 @@
 ## Checklist
 
 - [ ] `npm run check` passes
-- [ ] A change that alters what an assistant does has an entry in `CHANGELOG.md` under "Unreleased" (only the release pull request raises the version)
+- [ ] A change that alters what an assistant does has an entry in `CHANGELOG.md` under the date it merges
 - [ ] Nothing shipped names something only one repository has
 - [ ] No hooks, MCP definitions, settings files or scripts were added to what ships

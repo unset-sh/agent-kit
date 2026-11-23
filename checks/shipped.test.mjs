@@ -3,7 +3,7 @@
 import assert from "node:assert/strict";
 import { readFileSync, statSync } from "node:fs";
 import { test } from "node:test";
-import { shippedPaths } from "../scripts/bundle.mjs";
+import { shippedPaths } from "../scripts/shipped.mjs";
 import { destinationOf } from "../sync.mjs";
 import { readText, root } from "./repo.mjs";
 
