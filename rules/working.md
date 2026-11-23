@@ -29,10 +29,10 @@ A copy of `rules/working.md` in `unset-sh/agent-kit`: change it there, never in 
 - Never commit on `main`, `staging`, another shared branch or a detached HEAD. Work on your own branch
   (`claude/<task>`, `cursor/<task>`) cut from the freshly fetched default branch.
 - Never checkout, reset, rebase or force-push a branch you did not create.
-- Every change lands through a pull request. Only the owner merges into `main`: never merge, auto-merge or
-  queue that pull request. Elsewhere the repository's rule says who merges; with none, only on his say-so.
-- One purpose per pull request, small enough to review in one sitting. Refactoring and behaviour changes go in
-  separate commits.
+- Every change lands through a pull request. Check yours (full diff, required checks green), then merge it into
+  `staging`, or into `main` in tooling and `.github` (org-0014). docs `main`: only on the owner's word for now;
+  agent-kit: another thread merges (org-0013). Never merge, auto-merge or queue a promotion into `main`.
+- One purpose per pull request, reviewable in one sitting; refactoring and behaviour changes in separate commits.
 - Commit subject: a capitalised imperative summary with no trailing period, at most 72 characters, completing
   "if applied, this commit will ...". Then a blank line and a body wrapped at 72 that says what and why. No
   Conventional Commits prefix. A repository may add its own prefix rule.
