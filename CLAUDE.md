@@ -58,8 +58,8 @@ Other repositories load a copy of these. Here they are the source, so they are i
   security decision: stop and ask.
 - **A change that alters what a repository's assistant does** gets an entry in `CHANGELOG.md` under
   "Unreleased". A release is one pull request that renames that heading to the new version and raises
-  `package.json` to match; merging it starts the release, and Alex's one step is Approve
-  (`skills/org-release/SKILL.md`). A separate thread reviews the full diff since the last release before that
+  `package.json` to match. It lands on `staging`; the release starts when Alex merges `staging` into `main`,
+  and he then presses Approve (`skills/org-release/SKILL.md`). A separate thread reviews the full diff since the last release before that
   pull request is merged.
 - Node 26 (`.nvmrc`), no dependencies, `node:test` only. Actions are pinned by full commit SHA.
 
