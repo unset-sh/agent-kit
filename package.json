@@ -2,7 +2,7 @@
   "name": "@unset-sh/agent-kit",
   "version": "0.0.0",
   "private": true,
-  "description": "Shared rules, skills and templates for AI assistants working on unset.sh, copied into each repository as a pinned release.",
+  "description": "Shared rules, skills and templates for AI assistants working on unset.sh, copied into each repository from a pinned commit of main.",
   "license": "AGPL-3.0-only",
   "repository": {
     "type": "git",
@@ -10,7 +10,6 @@
   },
   "type": "module",
   "scripts": {
-    "check": "node --test \"checks/*.test.mjs\"",
-    "bundle": "node scripts/bundle.mjs"
+    "check": "node --test \"checks/*.test.mjs\""
   }
 }

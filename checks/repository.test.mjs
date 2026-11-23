@@ -2,7 +2,6 @@
 // workflows.
 import assert from "node:assert/strict";
 import { test } from "node:test";
-import { notesFor, versionsIn } from "../scripts/release-notes.mjs";
 import { exists, filesIn, readText } from "./repo.mjs";
 
 const FITS = "## Where this repository fits";
@@ -27,32 +26,17 @@ test("the templates and the project instructions exist", () => {
   }
 });
 
-test("the newest changelog entry is the package version and says something", () => {
-  // 0.0.0 means nothing is released yet, so there is no versioned entry to match.
-  const changelog = readText("CHANGELOG.md");
-  const { version } = JSON.parse(readText("package.json"));
-  if (version === "0.0.0") {
-    assert.deepEqual(versionsIn(changelog), []);
-    return;
-  }
-  assert.equal(versionsIn(changelog)[0], version);
-  assert.ok(notesFor(changelog, version).length > 40);
+test("the changelog has one dated section per merge day, newest first, none empty", () => {
+  const sections = readText("CHANGELOG.md").split(/^## /m).slice(1);
+  assert.ok(sections.length > 0);
+  const dates = sections.map((section) => section.slice(0, section.indexOf("\n")));
+  for (const date of dates) assert.match(date, /^\d{4}-\d{2}-\d{2}$/, `"## ${date}" is not a date`);
+  assert.deepEqual(dates, [...new Set(dates)].sort().reverse(), "dates are unique and newest first");
+  for (const section of sections) assert.ok(section.trim().length > 40, `## ${section.slice(0, 10)} says nothing`);
 });
 
-test("unreleased changes sit in one section above the released versions", () => {
-  const headings = readText("CHANGELOG.md").split("\n").filter((line) => line.startsWith("## "));
-  const unreleased = headings.filter((line) => line === "## Unreleased");
-  assert.ok(unreleased.length <= 1, "one Unreleased section at most");
-  if (unreleased.length === 1) assert.equal(headings[0], "## Unreleased", "Unreleased comes first");
-});
-
-test("release notes are one version's entry, and a missing or empty entry is an error", () => {
-  const changelog = "# Changelog\n\n## v0.2.0\n\nSecond.\n\n## v0.1.0\n\nFirst.\n\n## v0.0.1\n\n";
-  assert.equal(notesFor(changelog, "0.2.0"), "Second.\n");
-  assert.equal(notesFor(changelog, "0.1.0"), "First.\n");
-  assert.throws(() => notesFor(changelog, "0.3.0"), /no entry/);
-  assert.throws(() => notesFor(changelog, "0.0.1"), /is empty/);
-  assert.deepEqual(versionsIn(changelog), ["0.2.0", "0.1.0", "0.0.1"]);
+test("the kit has no release workflow", () => {
+  assert.ok(!exists(".github/workflows/release.yml"));
 });
 
 test("every workflow drops all permissions at the top and pins each action to a full commit", () => {
@@ -69,15 +53,4 @@ test("every workflow drops all permissions at the top and pins each action to a 
       assert.match(checkout[1], /persist-credentials: false/, `${path}: a checkout keeps its token`);
     }
   }
-});
-
-test("a release starts only from main, is gated on the environment, and creates its own tag", () => {
-  const text = readText(".github/workflows/release.yml");
-  const trigger = text.slice(text.indexOf("\non:"), text.indexOf("\npermissions:"));
-  assert.match(trigger, /push:\n\s+branches: \[main\]/);
-  assert.doesNotMatch(trigger, /tags|workflow_dispatch|pull_request|workflow_run/, "a release may start only from a push to main");
-  assert.match(text, /node scripts\/release-gate\.mjs/);
-  assert.match(text, /environment: release/);
-  assert.match(text, /gh release create "v\$VERSION"[^\n]*\\\n\s+--target "\$GITHUB_SHA"/);
-  assert.doesNotMatch(text, /--verify-tag/);
 });

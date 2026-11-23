@@ -1,14 +1,19 @@
 # Changelog
 
-Each entry says what changes for a repository that takes the release, in plain words. The release page shows
-the entry of its version.
+Each entry says what changes for a repository that takes the kit, in plain words. The kit has no releases:
+a repository takes a commit of `main`, and reads here what changed since the commit in its lock.
 
-Changes merged since the last release go under "Unreleased". The release pull request renames that heading to
-the new version and raises `package.json` to match; the release starts when that change reaches `main`.
+Entries go under the date the change is merged into `main`, newest first, one heading per date.
 
-## Unreleased
+## 2026-11-23
 
-The first release. A repository that takes it gains:
+- The kit is installed from a pinned commit of `main` instead of a release. `sync.mjs` takes a full commit
+  id, fetches `main` with git, refuses a commit that is not on it, and copies the shipped files from that
+  commit's tree. The lock records the commit instead of a version and a bundle hash. `org-kit-update` says
+  how to pick a commit, adopt the kit from a clone checked to be on `main`, and update. Take a commit from
+  this change on: an older commit brings the release-based `sync.mjs`, whose check cannot read the new lock.
+
+The first version a repository can take. Adopting it gives:
 
 - **Organisation rules** (`.claude/rules/org/org.md`): the licence rule, how the owner is named, how
   repositories meet, where decisions go, how releases are approved, and who handles keys and tokens.
@@ -17,12 +22,12 @@ The first release. A repository that takes it gains:
 - **Engineering principles, in short** (`.claude/rules/org/principles.md`), with the three full documents in
   the skill `org-principles`.
 - **Skills**: `org-new-repo` (set up a repository), `org-release` (prepare a release for approval) and
-  `org-kit-update` (take a newer kit release).
-- **`sync.mjs`** and its lock file under `.claude/agent-kit/`, which install a release and check the copy.
+  `org-kit-update` (take a newer commit of the kit).
+- **`sync.mjs`** and its lock file under `.claude/agent-kit/`, which install the kit and check the copy.
 
 Remove from the repository's own `CLAUDE.md` any rule these files now state.
 
-Also in this release:
+Also:
 
 - Add org-0010: work enters `staging` and only a person merges it into `main`. That merge decides a
   release, and the repository's automation then publishes; releases are never re-tagged. tooling,
@@ -62,5 +67,5 @@ Also in this release:
 - Add org-0005: keep AI plans, notes and review reports in agent-kit under `notes/<task>/`, and supporting
   artifacts under `artifacts/<task>/`, outside the distributed kit. Maintained human docs belong in the
   owning repository's `docs/` and export to `unset-sh/docs` for publication. The shared standard that
-  org-0005 names, `org-documentation`, is not in this release.
+  org-0005 names, `org-documentation`, is not in the kit yet.
   Historical files are not moved or deleted by this rule alone.
