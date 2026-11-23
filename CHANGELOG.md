@@ -7,6 +7,11 @@ Entries go under the date the change is merged into `main`, newest first, one he
 
 ## 2026-11-23
 
+- Adds the skill `org-experience-review`, with seven reviewer perspectives inside it, for reviewing how a
+  design supports orientation, competence, autonomy, trust, expression, comfort and satisfaction. Reports
+  separate observed behaviour from emotional hypotheses and questions for later human testing. The
+  coordinator runs each perspective as a fresh general subagent; none is installed as a subagent. Human
+  guides live in agent-kit's `docs/` for the documentation site and are not installed.
 - Adds `org-documentation`, the shared standard for human documentation: page templates, guidance for
   explaining architecture and code with worked examples, and an adoption checklist for a repository's own
   source paths and checks. Code, workflow and ownership changes come with related documentation or a

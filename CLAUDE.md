@@ -10,7 +10,8 @@ copied into each repository from a pinned commit of `main`.
   `CLAUDE.md` and `AGENTS.md` templates, the text of the Claude project instructions, and `sync.mjs`, which
   installs the kit at one commit of `main` in a repository and checks the copy; AI working notes in
   `notes/<task>/` and supporting artifacts in `artifacts/<task>/` (org-0005), kept here but excluded from the
-  distributed kit.
+  distributed kit; and this repository's own human guides in `docs/`, for the `agent-kit/` section of
+  `unset-sh/docs`, also not installed. A change to review behaviour updates those guides in the same pull request.
 - **Does not belong here:** a repository's own rules (its `CLAUDE.md`); the map of repositories (that is
   `unset-sh/.github`); a repository's own decision records; shared developer-tooling implementations
   (`unset-sh/tooling`, org-0006); another repository's maintained human documentation (its own `docs/`,
