@@ -44,6 +44,10 @@ Also added on 2026-11-23 at Alex's request: reuse the old app's code wherever it
 only what the move needs, in separate commits with provenance), and keep a `findings.md` of weak spots
 noticed while copying. Security weaknesses are reported, never copied as is.
 
+Also added on 2026-11-23 at Alex's request: a "Where to look things up" section pointing the agent at
+agent-kit's rules, records, skills and notes throughout the work, and the UI convention (shadcn-svelte on
+Tailwind v4, styled only through brand's published CSS, with versions matching brand's gallery).
+
 Smaller fixes: profile-recipes listed as a staged repo; lexicons' move to `main` + `drafts` noted; `email` added
 to the never-logged list; display name limits taken from the schema (`maxGraphemes 64`, `maxLength 640`);
 ADRs 0014 and 0054 added to the reading list; "web-to-backend network authentication" listed as out of scope

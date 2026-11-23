@@ -115,6 +115,26 @@ files win; say so in the PR.
   (artifacts under `artifacts/first-e2e-slice/`), never in the product repos. Human docs go in each repo's
   `docs/`. Never add or edit an ADR in the old app.
 
+## 1a. Where to look things up as you go
+
+`unset-sh/agent-kit` is the organisation's memory. When you are unsure how something is done here, look there
+before you guess or invent a convention, and re-read the part that matters at each step, not only at the start:
+
+- `rules/` for the rules above, and `skills/org-decisions/records/` for every organisation decision and why.
+- `skills/org-principles/` before you design a module, add a dependency, a layer or a contract.
+- `skills/org-documentation/` before you write anything in a repo's `docs/`.
+- `skills/org-brand-request/` when brand lacks a token, asset or style you need: ask brand, never add a
+  local copy.
+- `skills/org-release/` before anything that publishes, `skills/org-new-repo/` and `skills/org-map-maintenance/`
+  before touching the map, `skills/org-kit-update/` before installing the kit's copy in a repo.
+- `notes/` for the working history: `notes/first-e2e-slice/` (this prompt and its review), and, once merged,
+  `notes/unset-core/` (product scope and Alex's security proposals), `notes/bun-tooling/audit.md` (verified
+  Bun facts), `notes/org-conformance/`. If a note is still in an open PR, read it from that PR's branch and
+  say so.
+- `unset-sh/tooling` `docs/` for how to call the shared workflows, and each repo's `CLAUDE.md` for its own rules.
+
+If agent-kit does not answer a question, say so in your report rather than deciding it silently.
+
 ## 2. What exists today (verify; do not assume)
 
 | Repo | Default | State on 2026-11-23 | What this slice takes from it |
@@ -227,6 +247,14 @@ web     ──► @unset-sh/brand@0.1.1 (tokens, fonts)    backend ──► sh.
   from the old app's `shared/http` and ADR 0054's outcomes, and its tests passing on Bun. SvelteKit 3: `$lib`
   is gone (use `#lib`), env vars are declared in `src/env.ts` and read from `$app/env/public|private`. Keep
   the official `@sveltejs/adapter-node` output and a small `server.ts`, run with `bun`.
+- **UI: shadcn-svelte styled by brand (Alex, 2026-11-23).** Web's components are shadcn-svelte (Bits UI
+  underneath), on Tailwind v4, and get every colour, font, radius and state from `@unset-sh/brand`, following
+  brand's README "Use the package": import `tokens.css`, `shadcn.css`, `tailwind.css` (and `recipes.css` if
+  used) after `tailwindcss` and `tw-animate-css`, put `class="style-vega"` on the root element, and use
+  brand's `data-theme` dark variant. Add components with the shadcn-svelte CLI at its pinned version and
+  keep them as generated, so restyling stays a brand change, not a web change. No hard-coded colours, fonts
+  or spacing scales in web, and no second copy of the palette. Match the component versions to the ones
+  brand's gallery pins, so brand's adapter fits the markup.
 - A session is valid only while its OAuth token set exists (old app ADR 0049): enforce it in the schema
   (foreign key with `ON DELETE CASCADE` from Better Auth's session to the token set, or the reverse link the
   plugin needs) or prove the equivalent with a test.
@@ -254,6 +282,11 @@ web     ──► @unset-sh/brand@0.1.1 (tokens, fonts)    backend ──► sh.
 | `typescript` | 7.0.2 | |
 | `@biomejs/biome` | 2.5.15 | the org's version |
 | `dependency-cruiser` | 18.7.2 | |
+| `tailwindcss`, `@tailwindcss/vite` | 4.3.5 | same as brand's gallery |
+| `shadcn-svelte` (CLI) | 1.8.1 | |
+| `bits-ui` | 2.20.6 | brand's gallery pin; 2.21.0 is also allowed, check brand first |
+| `tailwind-variants` | 3.3.1 | brand's gallery pin |
+| `tw-animate-css` | 1.4.0 | |
 | `@unset-sh/brand` | 0.1.1 | exempt from the wait |
 
 Docs to read first: <https://elysiajs.com/integrations/better-auth>, <https://elysiajs.com/quick-start>,
@@ -321,8 +354,8 @@ Docs to read first: <https://elysiajs.com/integrations/better-auth>, <https://el
    `actions/attest`; staging images only, no production tag) and wait for Alex's decision before you write it
    in tooling. Then add backend's Dockerfile (`oven/bun` by digest, non-root) and thin caller.
 9. **backend profile operations, then web.** Backend: `GET`/`PUT /me/profile` validating against the pinned
-   `sh.unset.profile` copy. Web (once Alex has chosen the client, §3): SvelteKit on Bun with brand 0.1.1
-   tokens and fonts, the request gate, the CSRF gate, strict CSP, the three pages, avatar shown as initials
+   `sh.unset.profile` copy. Web (once Alex has chosen the client, §3): SvelteKit on Bun with shadcn-svelte components styled by
+   brand 0.1.1 (§3), the request gate, the CSRF gate, strict CSP, the three pages, avatar shown as initials
    (no blobs), the client behind web's capability interface, Vitest on Bun, the same image caller as
    `ghcr.io/unset-sh/web`. CI uses tooling's Bun check with `packages: read` for brand. If option A or B
    needs backend to publish a package and backend's staging prerelease channel is not set up, **STOP**: that
