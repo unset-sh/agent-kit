@@ -1,0 +1,177 @@
+✖ export uses the exact requested commit, ignoring later commits, dirty and staged files (153.464625ms)
+✖ provenance names the source revision and hashes every exported source file (98.538042ms)
+✖ a caller repository selects its own section and provenance (194.902792ms)
+✖ unsupported or unsafe repository names are refused without mutation (105.207084ms)
+✖ framework and generated documentation sections are reserved (94.39825ms)
+✔ two exports of one commit have identical bytes and no timestamps or output paths (142.732666ms)
+✔ only a full commit object is accepted as a revision (104.86825ms)
+✖ local replace refs cannot change the committed tree being exported (146.291042ms)
+✔ missing index or licence fails before creating output (268.092792ms)
+✔ committed symlinks and submodules are refused before any writes (349.393875ms)
+✔ unsafe committed filenames and reserved provenance paths are refused (1136.505375ms)
+✔ case-folded file and ancestor collisions are refused (290.596958ms)
+✖ a source licence matching the root is kept, and a conflicting one is refused (143.854375ms)
+✔ existing output directories, files and links are never overwritten (156.064542ms)
+✔ output symlink ancestors, traversal and missing parents are refused (50.928375ms)
+✔ output must be an absolute path (49.210291ms)
+✖ CLI exports and rejects missing, unknown and duplicate arguments (76.209083ms)
+ℹ tests 17
+ℹ suites 0
+ℹ pass 9
+ℹ fail 8
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 3618.824959
+
+✖ failing tests:
+
+test at scripts/export-docs.test.mjs:66:1
+✖ export uses the exact requested commit, ignoring later commits, dirty and staged files (153.464625ms)
+  Error: ENOENT: no such file or directory, open '/private/var/folders/pk/prqk5y2165b7mp_wxvpx2m800000gn/T/docs-export-NpMl6G/export/tooling/_index.md'
+      at Object.openSync (node:fs:782:18)
+      at readFileSync (node:fs:628:35)
+      at TestContext.<anonymous> (file:///private/tmp/unset-tooling-20261122/scripts/export-docs.test.mjs:77:20)
+      at Test.runInAsyncScope (node:async_hooks:226:14)
+      at Test.run (node:internal/test_runner/test:1402:25)
+      at Test.start (node:internal/test_runner/test:1262:17)
+      at startSubtestAfterBootstrap (node:internal/test_runner/harness:387:17) {
+    errno: -2,
+    code: 'ENOENT',
+    syscall: 'open',
+    path: '/private/var/folders/pk/prqk5y2165b7mp_wxvpx2m800000gn/T/docs-export-NpMl6G/export/tooling/_index.md'
+  }
+
+test at scripts/export-docs.test.mjs:86:1
+✖ provenance names the source revision and hashes every exported source file (98.538042ms)
+  Error: ENOENT: no such file or directory, open '/private/var/folders/pk/prqk5y2165b7mp_wxvpx2m800000gn/T/docs-export-eKdH6n/export/tooling/source.json'
+      at readFileSync (node:fs:624:20)
+      at TestContext.<anonymous> (file:///private/tmp/unset-tooling-20261122/scripts/export-docs.test.mjs:89:33)
+      at Test.runInAsyncScope (node:async_hooks:226:14)
+      at Test.run (node:internal/test_runner/test:1402:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:974:18)
+      at Test.postRun (node:internal/test_runner/test:1542:19)
+      at Test.run (node:internal/test_runner/test:1467:12)
+      at async startSubtestAfterBootstrap (node:internal/test_runner/harness:387:3) {
+    errno: -2,
+    code: 'ENOENT',
+    syscall: 'open',
+    path: '/private/var/folders/pk/prqk5y2165b7mp_wxvpx2m800000gn/T/docs-export-eKdH6n/export/tooling/source.json'
+  }
+
+test at scripts/export-docs.test.mjs:103:1
+✖ a caller repository selects its own section and provenance (194.902792ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly deep-equal:
+  + actual - expected
+  
+    [
+  +   'github'
+  -   'profile-recipes'
+    ]
+  
+      at TestContext.<anonymous> (file:///private/tmp/unset-tooling-20261122/scripts/export-docs.test.mjs:107:12)
+      at Test.runInAsyncScope (node:async_hooks:226:14)
+      at Test.run (node:internal/test_runner/test:1402:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:974:18)
+      at Test.postRun (node:internal/test_runner/test:1542:19)
+      at Test.run (node:internal/test_runner/test:1467:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:974:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: [ 'github' ],
+    expected: [ 'profile-recipes' ],
+    operator: 'deepStrictEqual',
+    diff: 'simple'
+  }
+
+test at scripts/export-docs.test.mjs:119:1
+✖ unsupported or unsafe repository names are refused without mutation (105.207084ms)
+  AssertionError [ERR_ASSERTION]: Missing expected exception: null
+      at TestContext.<anonymous> (file:///private/tmp/unset-tooling-20261122/scripts/export-docs.test.mjs:127:12)
+      at Test.runInAsyncScope (node:async_hooks:226:14)
+      at Test.run (node:internal/test_runner/test:1402:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:974:18)
+      at Test.postRun (node:internal/test_runner/test:1542:19)
+      at Test.run (node:internal/test_runner/test:1467:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:974:7) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: undefined,
+    expected: /repository|section|reserved/i,
+    operator: 'throws',
+    diff: 'simple'
+  }
+
+test at scripts/export-docs.test.mjs:133:1
+✖ framework and generated documentation sections are reserved (94.39825ms)
+  AssertionError [ERR_ASSERTION]: Missing expected exception: assets
+      at TestContext.<anonymous> (file:///private/tmp/unset-tooling-20261122/scripts/export-docs.test.mjs:137:12)
+      at Test.runInAsyncScope (node:async_hooks:226:14)
+      at Test.run (node:internal/test_runner/test:1402:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:974:18)
+      at Test.postRun (node:internal/test_runner/test:1542:19)
+      at Test.run (node:internal/test_runner/test:1467:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:974:7) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: undefined,
+    expected: /repository|reserved|section/i,
+    operator: 'throws',
+    diff: 'simple'
+  }
+
+test at scripts/export-docs.test.mjs:161:1
+✖ local replace refs cannot change the committed tree being exported (146.291042ms)
+  Error: ENOENT: no such file or directory, open '/private/var/folders/pk/prqk5y2165b7mp_wxvpx2m800000gn/T/docs-export-ZUuhZk/export/tooling/_index.md'
+      at readFileSync (node:fs:624:20)
+      at TestContext.<anonymous> (file:///private/tmp/unset-tooling-20261122/scripts/export-docs.test.mjs:167:16)
+      at Test.runInAsyncScope (node:async_hooks:226:14)
+      at Test.run (node:internal/test_runner/test:1402:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:974:18)
+      at Test.postRun (node:internal/test_runner/test:1542:19)
+      at Test.run (node:internal/test_runner/test:1467:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:974:7) {
+    errno: -2,
+    code: 'ENOENT',
+    syscall: 'open',
+    path: '/private/var/folders/pk/prqk5y2165b7mp_wxvpx2m800000gn/T/docs-export-ZUuhZk/export/tooling/_index.md'
+  }
+
+test at scripts/export-docs.test.mjs:219:1
+✖ a source licence matching the root is kept, and a conflicting one is refused (143.854375ms)
+  Error: ENOENT: no such file or directory, open '/private/var/folders/pk/prqk5y2165b7mp_wxvpx2m800000gn/T/docs-export-exxCco/export/tooling/LICENSE'
+      at readFileSync (node:fs:624:20)
+      at TestContext.<anonymous> (file:///private/tmp/unset-tooling-20261122/scripts/export-docs.test.mjs:223:16)
+      at Test.runInAsyncScope (node:async_hooks:226:14)
+      at Test.run (node:internal/test_runner/test:1402:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:974:18)
+      at Test.postRun (node:internal/test_runner/test:1542:19)
+      at Test.run (node:internal/test_runner/test:1467:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:974:7) {
+    errno: -2,
+    code: 'ENOENT',
+    syscall: 'open',
+    path: '/private/var/folders/pk/prqk5y2165b7mp_wxvpx2m800000gn/T/docs-export-exxCco/export/tooling/LICENSE'
+  }
+
+test at scripts/export-docs.test.mjs:261:1
+✖ CLI exports and rejects missing, unknown and duplicate arguments (76.209083ms)
+  AssertionError [ERR_ASSERTION]: Docs export failed: Invalid or duplicate argument. Usage: node scripts/export-docs.mjs --revision <40sha> --out <fresh-dir> [--root <repo>]
+  
+  
+  1 !== 0
+  
+      at TestContext.<anonymous> (file:///private/tmp/unset-tooling-20261122/scripts/export-docs.test.mjs:265:10)
+      at Test.runInAsyncScope (node:async_hooks:226:14)
+      at Test.run (node:internal/test_runner/test:1402:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:974:18)
+      at Test.postRun (node:internal/test_runner/test:1542:19)
+      at Test.run (node:internal/test_runner/test:1467:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:974:7) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: 1,
+    expected: 0,
+    operator: 'strictEqual',
+    diff: 'simple'
+  }

@@ -35,7 +35,7 @@ Until these facts are supplied, do not guess paths, commands, owners, or a sourc
 
 ## Adoption checklist for each source
 
-- Take the approved `agent-kit` release through the existing sync workflow; do not modify its installed copy.
+- Take a reviewed `agent-kit` commit through the skill `org-kit-update`; do not modify its installed copy.
 - Fill in the local facts above. Link human contributing guidance to the installed
   `.claude/skills/org-documentation/standard.md` and its templates, so readers and assistants use the same version.
 - Pick one useful learning page and one architecture or conceptual page as the first examples of the standard.
@@ -43,11 +43,11 @@ Until these facts are supplied, do not guess paths, commands, owners, or a sourc
 - Apply the standard's change-review and periodic-verification rules to the repository's code, workflows and ownership. Explain important workflows using their actual source files and checked revisions.
 - Check the export and rendered result before enabling publication.
 
-Publishing this skill does not enroll repositories, configure export jobs, or enable publication. Each source
-adopts the approved kit release through its own reviewed update.
+Shipping this skill does not enroll repositories, configure export jobs, or enable publication. Each source
+takes the kit commit that contains it through its own reviewed update.
 
 Workflow automation and executable checks belong in their implementing repositories, not this text-only kit.
-The reusable documentation-impact check planned in `unset-sh/docs` remains proposed until its framework
-change lands. Each repository must explicitly adopt and configure an available check before claiming it is
+Shared executable checks belong in `unset-sh/tooling` (org-0006); a reusable documentation-impact check
+there remains proposed until it lands. Each repository must explicitly adopt and configure an available check before claiming it is
 enforced. Keep any reviewed no-change reason with the source pull request; do not treat a passing check as a
 substitute for reviewing meaning, examples, and current behaviour.
