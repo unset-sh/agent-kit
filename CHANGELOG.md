@@ -29,6 +29,14 @@ Remove from the repository's own `CLAUDE.md` any rule these files now state.
 
 Also:
 
+- Add org-0010: work enters `staging` and only a person merges it into `main`. That merge decides a
+  release, and the repository's automation then publishes; releases are never re-tagged. tooling,
+  agent-kit, `.github` and docs have no `staging` and no releases: their pull requests go straight to
+  `main`, and consumers pin a `main` commit. The release rule now says this. A release environment approval
+  is removed only when the owner decides it.
+- Add org-0011: `presentation` is now `rendering`, and `unset-sh/tooling` replaces `unset-sh/workflows`.
+- Add org-0007: backend, web and deployment have separate ownership behind small capability contracts.
+  The proposed server-kit and standalone messaging repositories are dropped.
 - Work branches are cut from the freshly fetched default branch, pull requests land on `staging`, and only
   the owner merges `staging` into `main`. The working rules, `org-new-repo` and `org-release` say so; a
   release starts when the owner's promotion reaches `main`.
