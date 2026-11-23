@@ -25,9 +25,9 @@ network."
 2. **Production deploys and lexicon publication.** No agent approves, triggers or merges anything that leads to a
    production deploy or to publishing lexicons to the network unless Alex has authorised that release himself.
    The release environments for these keep their Approve step, and only Alex presses it.
-3. **Lexicon drafts stay off the network.** Drafts for an upcoming app or feature live in lexicons `staging`. Its
-   prereleases serve staging consumers only, and nothing on it is published to the network. Only a promotion to
-   `main` that Alex authorised publishes lexicons.
+3. **Lexicon drafts stay off the network.** Drafts for an upcoming app or feature live on a lexicons branch that
+   is not `main`, and nothing on that branch is published to the network. Only a promotion to `main` that Alex
+   authorised publishes lexicons. Which branch holds the drafts is still open (see Consequences).
 4. This settles the question org-0010 left open. No approval gate is removed except by Alex's decision.
 
 ## Consequences
@@ -36,9 +36,8 @@ network."
   is not Alex's authorisation.
 - Removing the Approve step from the brand or rendering environments stays Alex's decision. Agents may only press
   it.
-- On 2026-11-23 Alex was asked whether lexicon drafts belong on `staging` (recommended) or on a separate draft
-  branch. If he picks a separate branch, a later record replaces decision 3. Until then, drafts never go to
-  `main`.
+- On 2026-11-23 Alex was asked whether lexicon drafts belong on `staging` or on a separate draft branch. A later
+  record states his answer. Until then, drafts never go to `main`.
 - Lexicon evolution rules make published schemas effectively permanent, which is why drafts stay off the network:
   see the [Lexicon specification](https://atproto.com/specs/lexicon#lexicon-evolution), read 2026-11-22 for
   org-0007.

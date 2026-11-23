@@ -46,8 +46,8 @@ them there, never in this copy. A repository's own `CLAUDE.md` adds its own rule
 ## Releases
 
 - Production is `main`; the owner's merge into it decides a release (org-0010). Never bypass, remove or weaken a
-  `release` approval without his decision. Agents may approve brand or rendering releases, never a production deploy
-  or a lexicon publication unless he authorised it (org-0012). Never move or reuse a tag: release a new version.
+  `release` approval without his decision. After his merge, agents may approve brand or rendering; never a
+  production deploy or lexicon publication unless he authorised it (org-0012). Never move or reuse a release tag.
 - Pin dependencies to exact versions and GitHub Actions to full commit SHAs.
 - A new version of an `@unset-sh` package may be taken at once. Third-party packages keep the 7-day wait.
 
