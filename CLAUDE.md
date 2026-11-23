@@ -57,9 +57,13 @@ Other repositories load a copy of these. Here they are the source, so they are i
   that shows it refusing. Changing where it may write, what it accepts or where it downloads from is a
   security decision: stop and ask.
 - **A change that alters what a repository's assistant does** gets an entry in `CHANGELOG.md` under the
-  date it merges, newest first. The kit has no releases: whatever `main` holds is what a repository can take,
-  and only Alex merges into `main`. Before he merges a pull request that changes what ships, a separate thread
-  reviews its diff.
+  date it merges, newest first. The kit has no releases and no `staging`: pull requests go straight into
+  `main`, and whatever `main` holds is what a repository can take.
+- **Assistants manage this repository** (Alex, 2026-11-23: "For the agent kit, you're allowed to manage it
+  yourself"; "agent can merge ... to main without me"). This replaces the organisation rule that only the owner merges into `main`, here only. A pull
+  request merges once its checks pass and a thread other than its author has reviewed its diff; the author
+  never merges its own. A change to what `sync.mjs` accepts, where it writes or where it fetches from still
+  needs Alex's decision first.
 - Node 26 (`.nvmrc`), no dependencies, `node:test` only. Actions are pinned by full commit SHA.
 
 ## Commands
