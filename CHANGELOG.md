@@ -7,6 +7,8 @@ Entries go under the date the change is merged into `main`, newest first, one he
 
 ## 2026-11-23
 
+- Accept org-0015 (Alex, 2026-11-23). The first slice's session, contract, egress and database choices are now
+  the decision to build on, not a proposal.
 - Bun replaces Node (Alex, 2026-11-23). `org-kit-update`, `org-new-repo` and the `CLAUDE.md` template now run
   `bun .claude/agent-kit/sync.mjs`. `sync.mjs` itself is unchanged: it uses only `node:` built-in modules, so a
   copy that is already installed keeps working, with Bun or with Node. The map command they name in
