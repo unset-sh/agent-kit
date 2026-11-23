@@ -24,6 +24,16 @@ Remove from the repository's own `CLAUDE.md` any rule these files now state.
 
 Also in this release:
 
+- Make the AI working-material rule explicit for plans, drafts, notes, reviews and supporting artifacts in
+  every format. They stay in agent-kit; a consumer's `docs/` is for maintained human documentation.
+- Add `org-brand-request` and org-0008. Agents request missing shared design tokens or brand assets through
+  brand issues, coordinate provider work and verify the released result in the consumer. The handoff lives
+  in agent-kit, and `AGENTS.md` points to the relevant rules and skills. This does not start a queue monitor,
+  publish a kit release or change installed consumer copies.
+- Add `org-map-maintenance` and org-0009. Register maps with their authoritative sources and refresh them
+  through shared tooling, with provenance, validation and visible freshness. Changed workflow YAML marks
+  its digest-bound explanation for review. Automatic refresh does not infer ownership or rewrite human
+  meaning; failed refreshes retain the previous successful output. Consumer integration remains separate.
 - Add the `org-decisions` skill and preserve the accepted history in org-0001 to org-0004. Org-0003's
   separate workflows repository was superseded by org-0004's `.github` ownership; org-0006 now supersedes
   that implementation placement with the public `unset-sh/tooling` repository.
