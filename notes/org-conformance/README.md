@@ -11,7 +11,7 @@ tooling, `.github` and agent-kit's own runtime, every release workflow and every
 package scripts, lockfiles, `bunfig.toml`, rule conformance, and the install step of each content repository's
 non-release workflows, which has to change together with the lockfile.
 
-Every check result below was run locally on Bun 1.4.4 (the container's version; `.bun-version` pins 1.4.5) and,
+Every check result below was run locally on Bun 1.4.4, the version `.bun-version` pins (1.4.5 is inside the 7-day wait until 2026-11-26), and,
 where stated, in a fresh clone of the pushed branch. No workflow has run on GitHub for these branches yet.
 
 ## Pull requests, in review order
