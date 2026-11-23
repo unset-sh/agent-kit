@@ -2,7 +2,9 @@
 
 Status: accepted (2026-11-23, Alex: "The stage delivery, that's fine. We can do that. The draft says master, but
 we'll be using the main branch."; on which repositories work on main alone, "Yeah, okay, I agree with those. make
-them similar, make them like the appropriate way.")
+them similar, make them like the appropriate way."; on release approvals, 2026-11-23: "for the production deploy, and
+then for the push to the lexicon, uh, let's make it a rule that the AI is not going to do it under unless I authorize
+it")
 
 ## Context
 
@@ -42,14 +44,24 @@ agent-kit, `.github` and docs as well.
    queue it, or go around it by direct push, cherry-pick or tag. Because agents act through the owner's account,
    this is a written rule in the shared rules, not something GitHub can enforce.
 3. **That merge is the release decision.** After it, the repository's own automation builds and publishes what
-   the repository ships. A bad release is fixed by a new version; tags never move.
+   the repository ships. A bad release is fixed by a new version; tags never move. Where a `release` environment
+   asks for an Approve click:
+   - for brand and rendering, an agent may press it after the owner's merge ("in brand and rendering and stuff,
+     it's not that much of a big deal to me");
+   - for a production deploy and for publishing lexicons to the network, no agent approves, triggers or merges
+     anything that leads to it unless Alex has authorised that release himself.
 4. **Staging prereleases.** A repository that publishes something has a separate, automated staging prerelease
    channel. It never updates a stable channel or a production deployment. A repository that ships nothing does
    not invent a package or an image.
-5. **Main-only repositories.** tooling, agent-kit, `.github` and docs have no `staging` branch and publish no
+5. **Lexicon drafts.** Whatever reaches lexicons `main` is published to the network, where it can no longer be
+   changed, so drafts for the next app or feature must stay off the network. Alex: "it will be nice to have a draft
+   branch for when we're designing the next app or feature of the app. So that way we know we can draft like some
+   lexicon, but we don't submit it right away on the network." Lexicons `staging` is that draft branch. Its
+   prereleases serve staging consumers only, and nothing on it is published to the network.
+6. **Main-only repositories.** tooling, agent-kit, `.github` and docs have no `staging` branch and publish no
    releases. Work goes straight into `main` by pull request, and only a person merges it. Their consumers pin a
    full commit on `main`: tooling's reusable workflows, the kit's files, the organisation map and the docs site.
-6. This supersedes the separate release-environment approval kept by org-0006 decision 5, and the `master`
+7. This supersedes the separate release-environment approval kept by org-0006 decision 5, and the `master`
    name in the unmerged staged-delivery draft. org-0006's ownership, pinned references and reviewed consumer
    updates remain in force.
 
@@ -63,10 +75,12 @@ agent-kit, `.github` and docs as well.
   2. Make `main` the default branch and remove the staging ruleset.
   3. Re-pin callers to tooling commits that accept `main`, which is tooling pull request 17.
 - How the kit installer pins a commit is a separate reviewed change, so this record names no mechanism.
-- Release environments stay as they are until each repository's reviewed cutover. On 2026-11-23 Alex was asked
-  whether to keep the environment's Approve click for packages and production deploys, since it is the one step
-  GitHub reserves for him by name. A later record or that cutover follows his answer. Until then, no approval
-  gate is removed.
+- The environment's Approve click is the one step GitHub reserves for Alex by name, because agents act through
+  his account. It stays on the release environments for lexicons and production deploys, and an agent never
+  presses it there. For brand and rendering it may stay or go; an agent may press it. No approval gate is removed
+  without the owner's decision.
+- Whether lexicon drafts sit on `staging` or on a separate draft branch was put to Alex on 2026-11-23, with
+  `staging` recommended. This record states the recommended option; a different answer is recorded before merge.
 - What each repository ships, as proposed on 2026-11-23 and not separately decided:
 
   | Ships | Repositories |

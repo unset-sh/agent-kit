@@ -28,7 +28,9 @@ Also in this release:
   release, and the repository's automation then publishes; releases are never re-tagged. tooling,
   agent-kit, `.github` and docs have no `staging` and no releases: their pull requests go straight to
   `main`, and consumers pin a `main` commit. The release rule now says this. A release environment approval
-  is removed only when the owner decides it.
+  is removed only when the owner decides it. Agents may press Approve for brand and rendering, never
+  for a production deploy or a lexicon publication unless the owner authorised that release.
+  Lexicons `staging` holds drafts, and nothing on it reaches the network.
 - Add org-0011: `presentation` is now `rendering`, and `unset-sh/tooling` replaces `unset-sh/workflows`.
 - Add org-0007: backend, web and deployment have separate ownership behind small capability contracts.
   The proposed server-kit and standalone messaging repositories are dropped.

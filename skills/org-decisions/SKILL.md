@@ -23,7 +23,7 @@ for organisation work.
 | [org-0007](records/org-0007-backend-web-and-deployment-boundaries.md) | Backend, web and deployment have separate ownership; capability contracts and runtime-appropriate adapters replace the server-kit and standalone messaging proposals |
 | [org-0008](records/org-0008-brand-requests-use-issues.md) | Brand requests use issues; shared handoff instructions and AI working material live in agent-kit |
 | [org-0009](records/org-0009-maps-refresh-through-shared-tooling.md) | Maintained maps refresh automatically through shared tooling; human meaning remains reviewed |
-| [org-0010](records/org-0010-staged-delivery-on-main.md) | Work enters `staging` and only a person promotes it to `main`, which then releases on its own; tooling, agent-kit, `.github` and docs work on `main` alone, with no releases |
+| [org-0010](records/org-0010-staged-delivery-on-main.md) | Work enters `staging` and only a person promotes it to `main`, which then releases on its own; agents never approve a production deploy or lexicon publication; lexicons `staging` holds drafts; tooling, agent-kit, `.github` and docs work on `main` alone, with no releases |
 | [org-0011](records/org-0011-presentation-is-rendering-and-workflows-retired.md) | `presentation` is renamed `rendering`; `unset-sh/tooling` replaces `unset-sh/workflows` |
 
 ## Before you decide something
