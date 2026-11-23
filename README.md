@@ -33,6 +33,16 @@ and exports through the documentation pipeline to `unset-sh/docs` for publicatio
 and link those guides. This rule does not start a bulk move or deletion of historical files. The bundle's
 existing allowlist excludes `notes/` and `artifacts/`.
 
+For missing shared design tokens or brand assets, use [brand requests](skills/org-brand-request/SKILL.md).
+The organisation rule sends concrete requests to `unset-sh/brand` issues; the shared handoff stays here.
+[`AGENTS.md`](AGENTS.md) and its [consumer template](templates/AGENTS.md) point to the relevant source or
+installed files. This is a procedure for assigned agents, not a running queue monitor.
+
+For repository, workflow and other maintained maps, follow [map maintenance](skills/org-map-maintenance/SKILL.md).
+Maps use authoritative sources and automatic shared-tooling refresh; their ownership claims and explanations
+still need review. The skill describes registration, provenance, freshness and recovery without claiming an
+integration is active before its consumer verifies it.
+
 ## How a repository uses it
 
 A repository commits a copy of one release under `.claude/`. The file `.claude/agent-kit/lock.json` records
