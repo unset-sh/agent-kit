@@ -7,6 +7,7 @@ Entries go under the date the change is merged into `main`, newest first, one he
 
 ## 2026-11-23
 
+- Add org-0015, still proposed: the first slice keeps sessions in backend, uses a TypeBox contract and a sorted `openapi.yaml`, sends a bearer token from web, resolves AT Protocol OAuth with `@atproto/oauth-client` and the egress guard, and uses `pg` for Better Auth's tables only. It does not start that implementation by itself.
 - Add org-0014: assistants check and merge their own pull requests into `staging`, and into `main` in
   tooling, `.github` and docs, without waiting for the owner. Only the owner merges `staging` into `main`.
   Production deploys and lexicon publication still need his authorisation (org-0012), and docs merges into
