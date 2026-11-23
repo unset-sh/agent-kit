@@ -29,8 +29,8 @@ decision; caller adoption, signer verification and automatic update delivery cha
 [Org-0005](skills/org-decisions/records/org-0005-ai-working-material-lives-in-agent-kit.md) keeps AI working
 material here, grouped by task, instead of adding ad hoc Markdown to consuming repositories. Maintained
 human documentation belongs in its owning repository's `docs/` and exports through the documentation
-pipeline to `unset-sh/docs` for publication; the shared `org-documentation` standard is not released yet. A README can introduce
-and link those guides. This rule does not start a bulk move or deletion of historical files. The bundle's
+pipeline to `unset-sh/docs` for publication; the shared `org-documentation` standard is not released yet.
+A README can introduce and link those guides. This rule does not start a bulk move or deletion of historical files. The bundle's
 existing allowlist excludes `notes/` and `artifacts/`.
 
 For missing shared design tokens or brand assets, use [brand requests](skills/org-brand-request/SKILL.md).

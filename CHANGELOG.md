@@ -24,9 +24,9 @@ Remove from the repository's own `CLAUDE.md` any rule these files now state.
 
 Also in this release:
 
-- Pull requests land on `staging`, cut from the freshly fetched default branch, and only the owner merges
-  `staging` into `main`. The working rules, `org-new-repo` and `org-release` say so; a release starts when the
-  owner's promotion reaches `main`.
+- Work branches are cut from the freshly fetched default branch, pull requests land on `staging`, and only
+  the owner merges `staging` into `main`. The working rules, `org-new-repo` and `org-release` say so; a
+  release starts when the owner's promotion reaches `main`.
 - Clarify that checked, generated-only map refreshes need no separate owner approval. Source declarations and
   generator changes retain normal review. Register the dedicated organisation Markdown publisher separately
   from the JSON-only website snapshot path; neither may rewrite authored meaning or bypass merge restrictions.
