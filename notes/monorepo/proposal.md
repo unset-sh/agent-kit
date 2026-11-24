@@ -12,8 +12,8 @@ what Bun says, because Elysia is like a framework of Bun"; SvelteKit runs "insid
 packages for shared code; the catalog for versions; the isolated linker; `bunfig.toml` at the root; Dockerfiles in
 each app; `sv create`'s ESLint (and Prettier) add-ons instead of Biome; and `bun test` should run at the root.
 
-Nothing has moved. The decision is drafted as
-[org-0020](../../skills/org-decisions/records/org-0020-product-apps-share-one-repository.md), status proposed.
+Nothing has moved yet. The decision is
+[org-0020](../../skills/org-decisions/records/org-0020-product-apps-share-one-repository.md), accepted 2026-11-24.
 
 ## 1. The short answer
 

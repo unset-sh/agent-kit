@@ -1,10 +1,12 @@
 # org-0020. The product's apps and their packages share one repository
 
-Status: proposed (2026-11-24). Alex asked for it the same day: "It should be like a mono repo ... some repository
+Status: accepted (2026-11-24). Alex asked for it the same day: "It should be like a mono repo ... some repository
 heavily depend on each other's", using the frameworks' own tools "to create those workspace", named by app
 ("apps/web, apps/API, app/worker ... eventually ... app/mobile"). His review of the first draft (17:23Z) added brand,
 named the server app, made `apps/worker` "the one home for the background jobs", and said that where the tools'
-docs disagree, "follow what Bun says". Nothing in it is decided until he accepts it.
+docs disagree, "follow what Bun says". After the scratch proof passed (`notes/monorepo/proof.md`) he accepted it
+(23:31Z): "ok create the monorepo on git, what should we call it?", and on the name `unset-sh/unset`, "allright
+let's make it that".
 
 ## Context
 
@@ -60,5 +62,9 @@ holding several apps and packages. The full proposal, with the documentation rea
 - Every pull request runs every app's check, one required check per app.
 - Creating `unset-sh/unset`, its rulesets, package access and archiving the old repositories are Alex's actions.
 - Drizzle for the database replaces org-0015's Kysely, `pg` and raw `Bun.sql` only through its own record.
-- A first step proves the layout in a scratch repository (isolated installs with Vite and svelte-check, both images
-  built from the root, the Eden type across the link) before any product repository moves.
+- A scratch repository proved the layout first (`notes/monorepo/proof.md`); its seven findings are part of the
+  setup, among them that each vendor is listed only by the package that uses it, so Bun's isolated install refuses
+  any other import.
+- `apps/mobile`, when it comes, calls the server's member API directly, not through web
+  (`notes/monorepo/web-and-mobile.md`). Member routes are written for an untrusted caller from the start, and product
+  logic stays in the server or `packages/*`, never in SvelteKit `load` functions.
