@@ -173,6 +173,27 @@ Rule from Alex: where they disagree, Bun's way wins.
    imports another app's files by path; packages never import apps.
 3. **The isolated linker**: a workspace imports only what its `package.json` declares.
 
+**Every outside tool stays replaceable** (Alex, 2026-11-24: "I want to keep it easy to replace"). Backend already
+enforces this in `.dependency-cruiser.cjs` (`SDK_HOMES`: each vendor package may be imported from one folder only;
+`domain-no-vendor`: a domain imports no package). The monorepo keeps that check at the root and extends the list:
+
+| Outside tool | The only place allowed to import it | What the rest of the code sees |
+| --- | --- | --- |
+| `drizzle-orm`, `drizzle-kit` | `packages/db` | our own functions (`members.findByDid`, `profiles.update`, ...) with our own types |
+| `better-auth` | `apps/server/src/adapters/auth/` | the session contract `src/modules/session/` uses |
+| OpenFGA's SDK | `packages/authz/src/openfga/` | `may()` and the tuple writes behind it |
+| Redis/Valkey (`bun`'s client) | one `redis/` adapter folder | a small key-value or rate-limit port |
+| `@atproto/*` | `apps/server/src/adapters/atproto/` | the identity and profile contracts |
+| `elysia`, `@elysia/*` | route files only: `src/index.ts`, `src/api/`, each module's `index.ts` | — services and models stay plain TypeScript |
+| `bun` built-ins for I/O (`Bun.sql`, `redis`) | their adapter or `packages/db` | — |
+
+So a feature's `service.ts` calls `@unset-sh/db` functions, never a Drizzle query; replacing Drizzle means rewriting
+`packages/db` behind the same functions, and nothing else changes. A new tool is a new row in the same pull request.
+
+One overlap to note: Elysia's best-practice example has its `service.ts` call `status()` from `elysia` and run SQL
+directly. We keep our rule instead: services return our own results and errors, and only the route file turns them
+into HTTP, as backend's problem+json errors do today. That is what keeps Elysia itself replaceable too.
+
 **Eden**: the server keeps generating its declaration-only `app.d.ts` (no Better Auth types) and checks it for
 drift. Web takes `"@unset-sh/server": "workspace:*"` and writes `import type { App } from "@unset-sh/server/app"`,
 Eden's own pattern with a generated file in the middle, so web's type check never compiles the whole server.
