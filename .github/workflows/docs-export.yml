@@ -1,0 +1,33 @@
+name: docs-export
+
+# Packages docs/ as the agent-kit section of docs.unset.sh. unset-sh/docs imports only a successful
+# push run of this file on main (tooling docs/import-docs.md, source key agent-kit), so the check
+# runs first and the export only after it passes. Pinned to a full tooling commit.
+
+on:
+  pull_request:
+    branches: [main]
+  push:
+    branches: [main]
+
+permissions: {}
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  check:
+    name: Check rules, skills, sync and bundle
+    uses: unset-sh/tooling/.github/workflows/ci-check.yml@37ea5787ba7ecbfc9c910be7a8762a58479f2dc5
+    permissions:
+      contents: read
+      packages: read # required by the shared check; the kit installs nothing
+    with:
+      timeout-minutes: 5
+
+  export:
+    needs: check
+    uses: unset-sh/tooling/.github/workflows/automation-docs-export.yml@37ea5787ba7ecbfc9c910be7a8762a58479f2dc5
+    permissions:
+      contents: read

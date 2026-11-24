@@ -47,6 +47,8 @@ comment, and read the action's release notes before raising one.
    Rulesets, environments and deploy keys are the owner's to set; assistants ask for them.
 6. If the repository releases anything, ask the owner for the `release` environment, then follow the skill
    `org-release`.
-7. Human docs live in the repository's `docs/` folder. Wiring it to docs.unset.sh needs a deploy key, which
-   the owner places.
+7. Human docs live in the repository's `docs/site/` folder, with a section `_index.md`. To publish them on
+   docs.unset.sh, add `.github/workflows/docs-export.yml` (the check, then tooling's
+   `automation-docs-export.yml`), make sure the repository's key is in tooling's docs import sources, and add
+   that key to the import matrix in `unset-sh/docs`. No deploy key or stored token is involved.
 8. Update the map entry from planned or proposed to active, and check its description matches GitHub's.
