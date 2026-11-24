@@ -1,252 +1,250 @@
 # One repository for the Unset product: proposal
 
-Written 2026-11-24 for Alex, who asked (thread "Plan a move to a monorepo"): "It should be like a mono repo
-... some repository heavily depend on each other's", using "those tools that like each framework that we're using
-is providing to create those workspace", named by app ("apps/web, apps/API, app/worker ... eventually ...
-app/mobile"), with authorization through OpenFGA planned in ("let's plan to add like FGA"), and checked against
-"the official doc of each one and see where like things overlap".
+Written 2026-11-24 for Alex, revised the same day after his review. He asked (thread "Plan a move to a
+monorepo"): "It should be like a mono repo ... some repository heavily depend on each other's", using "those tools
+that like each framework that we're using is providing to create those workspace", named by app, with OpenFGA
+planned in, checked against "the official doc of each one and see where like things overlap".
 
-Nothing has moved. This is a proposal for review; the decision it needs is drafted as
+His review, 2026-11-24 17:23Z, set these: brand becomes a package like rendering; `apps/server` instead of
+`apps/api`, the API living inside it as its own Elysia group; `apps/worker` as "the one home for the background
+jobs", the indexer and OpenFGA's background work inside it; Drizzle for the database; where tools overlap, "follow
+what Bun says, because Elysia is like a framework of Bun"; SvelteKit runs "inside wherever it belongs"; workspace
+packages for shared code; the catalog for versions; the isolated linker; `bunfig.toml` at the root; Dockerfiles in
+each app; `sv create`'s ESLint (and Prettier) add-ons instead of Biome; and `bun test` should run at the root.
+
+Nothing has moved. The decision is drafted as
 [org-0020](../../skills/org-decisions/records/org-0020-product-apps-share-one-repository.md), status proposed.
 
 ## 1. The short answer
 
-- **Move web, backend and rendering into one new repository, `unset-sh/unset`.** They change together, they are
-  one licence (AGPL-3.0-only), and two of today's hardest seams exist only because they are separate: the Eden
-  types package (org-0017) and rendering's package release.
-- **Keep everything else separate.** Each of the others has a reason the monorepo would make worse: a different
-  licence, its own publication to the outside world, a different branch model, or it serves every repository.
-- **Lay it out the way the tools lay it out.** Bun workspaces (`apps/*`, `packages/*`), `bunx sv create` for
-  `apps/web`, `bun create elysia` and Elysia's feature folders for `apps/api`. Section 3 is the tree.
-- **Keep the history.** Each old repository's commits are merged in unchanged, so every commit link and
-  provenance citation already written still points at a real commit. The old repositories are archived, not
-  deleted.
-- **Do it before slice 2.** The three repositories hold about 26,000 lines today (backend 17,000, web 7,400,
-  rendering 2,000, tests included). It only gets more expensive.
+- **One new repository, `unset-sh/unset`**, holding `apps/web`, `apps/server`, `apps/worker`, and the packages
+  `brand`, `rendering`, `db` and `authz`. Later `apps/mobile`.
+- **Everything else stays separate**: deployment, lexicons, profile-recipes, pds, tooling, agent-kit, `.github`, docs.
+- **Laid out by the tools**: Bun workspaces, `bunx sv create` for web, `bun create elysia` for server, Drizzle Kit
+  for the database. Where they disagree, Bun wins (section 4).
+- **History kept**: every old commit keeps its id. The old repositories are archived, not deleted.
+- **Do it before slice 2.** Web, backend and rendering hold about 26,000 lines today, tests included.
 
 ## 2. What goes in, what stays out
 
 | Repository | Goes in? | Why |
 | --- | --- | --- |
-| backend | **Yes**, as `apps/api` | Web's only server dependency; every route change is a two-repository change today. |
-| web | **Yes**, as `apps/web` | Same. The pinned `app.d.ts` copy and its hash check become a workspace link. |
-| rendering | **Yes**, as `packages/rendering` | Used only by backend and web. It stops being published: nothing outside needs it. |
-| deployment | No | It selects image digests that CI builds from the product. In the same repository every digest bump would rebuild the images it pins, and deploy settings (and, later, deploy credentials) would sit beside product code. Keeping it separate also lets it roll web and api back independently. |
-| lexicons | No | MIT, not AGPL. Its `main` is what the network sees, and it has its own `drafts` flow. The apps keep a pinned, hash-checked copy as now. |
-| brand | No | A published package with consumers outside the product (docs, and pds's theme later), its own site and Pages deploy, and fonts under OFL. The apps take it at an exact version as now. |
-| profile-recipes | No | CC0 recipes, outside contributions under DCO, its own docs export. |
-| pds | No | A customised upstream image with its own upstream release cadence. It talks to the product only over the protocol. |
-| tooling, agent-kit, `.github`, docs | No | They serve every repository, work on `main` alone, and the product repository is one of their consumers. |
+| backend | **Yes**, as `apps/server` (and `packages/db`) | Web's only server dependency; every route change is two repositories today. |
+| web | **Yes**, as `apps/web` | Same. The pinned `app.d.ts` copy becomes a workspace link. |
+| rendering | **Yes**, as `packages/rendering` | Used only by product code. Stops being published. |
+| brand | **Yes**, as `packages/brand` (Alex, 17:23Z) | Web and rendering use it on every screen. It **keeps publishing** `@unset-sh/brand`, because docs (and pds's theme later) are outside and still need it. Its guide site and gallery come along. |
+| deployment | No | It selects image digests CI builds from the product. Inside, every digest bump would rebuild the images it pins, and deploy settings would sit beside product code. Separate, it can roll web and server back independently. |
+| lexicons | No | MIT, not AGPL. Its `main` is what the network sees, with its own `drafts` flow. The apps keep a pinned, hash-checked copy. |
+| profile-recipes | No | CC0 recipes and outside contributions under DCO. |
+| pds | No | A customised upstream image with upstream's cadence; it meets the product only over the protocol. |
+| tooling, agent-kit, `.github`, docs | No | They serve every repository and work on `main` alone. |
 
-Name: `unset-sh/unset` reads best beside `apps/web` and `apps/api`. The old app is `Undefined6799/unset`, a
-different owner, so there is no clash, only a familiar name for its successor. `unset-sh/app` is the alternative.
-Creating the repository is Alex's action (org rule).
+Name: `unset-sh/unset` (alternative `unset-sh/app`). Creating it is Alex's action.
 
 ## 3. The tree
 
-Where a folder comes from a tool, it says so. Everything not marked is ours.
+Marked `(tool)` where a scaffolding tool or framework puts it; the rest is ours.
 
 ```text
-unset/                              unset-sh/unset
-├── package.json                    Bun workspaces ["apps/*", "packages/*"] and a catalog of shared exact versions
-├── bun.lock                        one lockfile for everything (Bun workspaces)
-├── bunfig.toml                     install rules once: exact, ignoreScripts, 7-day minimumReleaseAge, @unset-sh scope
+unset/                                   unset-sh/unset
+├── package.json                         workspaces ["apps/*", "packages/*"] + catalog of exact versions (tool: Bun)
+├── bun.lock                             one lockfile (tool: Bun)
+├── bunfig.toml                          install rules once; [test] settings for `bun test` at the root
 ├── .bun-version
-├── tsconfig.json                   shared compiler options; each app extends it (Elysia's Eden monorepo advice)
-├── biome.json                      one lint and format config
-├── .dependency-cruiser.cjs         the boundaries between apps and packages (section 5)
-├── CLAUDE.md, AGENTS.md            the repository's rules; each app adds its own CLAUDE.md
-├── .claude/                        the agent-kit copy, once, at the root
-├── .github/workflows/              thin callers of tooling: one check job and one image job per app
-├── docs/                           human docs, exported to unset-sh/docs as one section with a folder per app
+├── tsconfig.json                        shared options; every workspace extends it (tool: Bun workspace layout)
+├── eslint.config.js                     one lint config (tool: sv add eslint), reused by `bun lint` later
+├── CLAUDE.md, AGENTS.md, .claude/       repository rules and the agent-kit copy, once
+├── .github/workflows/                   thin tooling callers: a check per workspace, an image per app
+├── docs/                                human docs, exported as one section with a folder per app
 ├── apps/
-│   ├── web/                        bunx sv create apps/web --template minimal --types ts --package-manager bun --no-install
-│   │   ├── src/routes/             SvelteKit routes (tool)
-│   │   ├── src/lib/                #lib; src/lib/server/ is server-only, enforced by SvelteKit (tool)
-│   │   ├── src/app.html            (tool)
-│   │   ├── static/                 (tool)
-│   │   ├── vite.config.ts          (tool) SvelteKit config lives here in Kit 3
-│   │   ├── server.ts, Dockerfile   ours: run the built app on Bun; the image
-│   │   └── package.json            @unset-sh/web
-│   ├── api/                        bun create elysia apps/api, then Elysia's recommended feature folders
-│   │   ├── src/index.ts            the composition root: builds the app, mounts each module, exports `type App`
-│   │   ├── src/modules/<feature>/  Elysia's layout: index.ts (routes), service.ts (logic), model.ts (schemas)
-│   │   │                           identity, profile, access, sign-in, ...
-│   │   ├── src/adapters/<tech>/    ours: postgres, atproto, openfga (or cerbos) behind small contracts
-│   │   ├── src/utils/              Elysia's name for shared helpers: config, log, errors
-│   │   ├── policies/               Cerbos policies and tests today; authz/ with the OpenFGA model later (section 7)
-│   │   ├── openapi.yaml, app.d.ts  generated contracts, drift-checked as now
-│   │   ├── Dockerfile              built from the repository root (Elysia's monorepo deploy guide)
-│   │   └── package.json            @unset-sh/api; exports only "./app" (types)
-│   ├── indexer/                    later: the Tap indexer, its own process (Alex's "apps/worker")
-│   └── mobile/                     later
+│   ├── web/                             bunx sv create apps/web --template minimal --types ts --add eslint
+│   │   │                                  --package-manager bun --no-install
+│   │   ├── src/routes/  src/lib/  src/app.html  static/  vite.config.ts   (tool: SvelteKit)
+│   │   ├── server.ts                    runs the built app on Bun
+│   │   └── Dockerfile
+│   ├── server/                          bun create elysia apps/server
+│   │   ├── src/index.ts                 (tool) composition root; exports `type App`
+│   │   ├── src/api/internal.ts          the internal API group web calls; later public.ts (api.unset.sh), xrpc.ts
+│   │   ├── src/modules/<feature>/       (Elysia's layout) index.ts routes, service.ts logic, model.ts schemas
+│   │   ├── src/adapters/<tech>/         atproto, egress, ... behind small contracts
+│   │   ├── src/utils/                   (Elysia's name) config, log, errors
+│   │   ├── openapi.yaml, app.d.ts       generated contracts, drift-checked
+│   │   └── Dockerfile                   (Elysia: the Dockerfile lives in the app, built from the root)
+│   ├── worker/                          one home for background jobs, one image, one entry per job
+│   │   ├── src/indexer/                 Tap indexer
+│   │   ├── src/authz-sync/              OpenFGA outbox relay and daily reconciliation
+│   │   └── Dockerfile
+│   └── mobile/                          later
 └── packages/
-    └── rendering/                  @unset-sh/rendering, unchanged inside, no longer published
+    ├── brand/                           @unset-sh/brand, still published; its guide site and gallery inside
+    ├── rendering/                       @unset-sh/rendering, no longer published
+    ├── db/                              @unset-sh/db: Drizzle schema, drizzle.config.ts, migrations/ (tool: Drizzle Kit)
+    └── authz/                           @unset-sh/authz: OpenFGA model + tests, the client, the may() port
 ```
 
-Notes on the tree:
+Why these packages exist now: each has two users. `db` is used by server and worker. `authz` is checked by server
+and written by worker. `brand` by web, rendering and docs. `rendering` by server and web.
 
-- **`apps/api`, not `apps/backend`**, as Alex asked. It is the internal API web's server calls. The later public
-  API (api.unset.sh) is a separate Elysia group with its own contract, so it becomes a second module set in the
-  same app or a second app; that choice belongs to its own decision record, as already planned.
-- **`apps/indexer` rather than `apps/worker`.** Alex offered "worker" as an example. Our principles ask names to
-  say what a thing is responsible for, and the indexer is a separately privileged process (org-0007). A second
-  background job (the OpenFGA outbox relay, say) would get its own name or join the process whose privileges it
-  shares. Alex's call; "worker" works if he prefers one process for all background jobs.
-- **Shared server code waits for a second user.** When the indexer needs backend's Postgres schema or domain
-  rules, that code moves to a package named for its job (for example `packages/db` for migrations and the
-  schema). Moving it earlier would be a layer with no second user, which the principles rule out.
-- **Backend's current folders map onto Elysia's.** `src/domains/<x>` becomes `src/modules/<x>` (routes now in
-  `index.ts`, the operations in `service.ts`, TypeBox schemas in `model.ts`); `src/server/internal-api.ts` becomes
-  `src/index.ts`; `src/shared/` becomes `src/utils/`; `src/adapters/` stays. Backend's rule "each route group is
-  one plain `new Elysia({ name })` chain" is exactly Elysia's module `index.ts`.
-- **Web is already close to `sv create`.** Its `src/routes`, `src/lib`, `static`, `vite.config.ts`, `#lib`
-  imports and `src/lib/server/` all match. What is ours stays ours: `server.ts`, the gate tests, the shadcn copy.
+**Server and its groups.** Elysia's own monorepo example names the app `apps/server`. `src/index.ts` mounts groups,
+each one plain `new Elysia({ prefix })` chain (backend's rule for Eden): `internal` today, `public` and `xrpc`
+later. Features live in `src/modules/<feature>/` and are mounted by the groups that expose them.
+
+**Worker and privilege.** One app and one image, but each job runs as its own container with its own database role
+and credentials, chosen by its entry command (as backend's `migrate` does today). That keeps org-0007's separate
+privileged processes. The OpenFGA server itself is not a worker: it is upstream's image, run by deployment beside
+Postgres. Only Unset's background work for it (the outbox relay) lives in the worker.
 
 ## 4. Where the official docs overlap, and what we pick
 
-Read 2026-11-24: Bun docs at tag `bun-v1.4.4` (38afee6, `docs/pm/workspaces.mdx`, `catalogs.mdx`,
-`isolated-installs.mdx`, `filter.mdx`, `runtime/bunfig.mdx`, `runtime/environment-variables.mdx`,
-`test/discovery.mdx`); Elysia docs at `elysiajs/documentation` bb88abe (`essential/best-practice.md`,
-`eden/installation.md`, `patterns/deploy.md`); SvelteKit docs at `sveltejs/kit` efced48
-(`getting-started/project-structure.md`, `build-and-deploy/adapter-bun.md`); sv CLI docs at `sveltejs/cli` ced6fcd
-(`commands/sv-create.md`). The SvelteKit docs are `main`, ahead of web's Kit 3.2.0; anything they say that 3.2
-may not have is marked.
+Read 2026-11-24: Bun at tag `bun-v1.4.4` (38afee6): `pm/workspaces`, `catalogs`, `isolated-installs`, `filter`,
+`runtime/bunfig`, `runtime/environment-variables`, `test/discovery`, `test/mocks`, `format/index`, `lint/index`,
+`guides/ecosystem/sveltekit`, `guides/test/svelte-test`. Elysia `elysiajs/documentation` bb88abe:
+`essential/best-practice`, `eden/installation`, `patterns/deploy`, `integrations/drizzle`. SvelteKit `sveltejs/kit`
+efced48 (main, ahead of web's 3.2.0): `project-structure`, `adapter-bun`. sv CLI `sveltejs/cli` ced6fcd:
+`sv-create`. Drizzle `drizzle-team/drizzle-orm-docs` fb09abd: `pg/connect-bun-sql`, `typebox`,
+`typebox-legacy`, `kit-migrations-for-teams`. Better Auth `better-auth/better-auth` c70565a: `adapters/drizzle`.
+Rule from Alex: where they disagree, Bun's way wins.
 
-| Overlap | Bun says | Elysia says | SvelteKit / sv says | Pick |
-| --- | --- | --- | --- | --- |
-| Folder names | Workspaces "by convention ... in a directory called `packages`" | Its monorepo example uses `apps/server` and `packages/config` | `sv create [path]` works in any folder | `apps/` for things that run, `packages/` for things they import. Both tools accept it. |
-| Sharing code between apps | `workspace:*` links | Path aliases "can be tricky": if the frontend cannot resolve the backend's alias, Eden's types become `any`; it recommends one root tsconfig | `#lib` (Kit's alias) is for the app's own code | Cross-app imports go only through workspace package names, never aliases. No tsconfig `paths`. Eden's gotcha cannot happen. |
-| TypeScript config | `bun init` writes a root `tsconfig.json` | One root tsconfig, each module extends it | Web's tsconfig must extend the generated `.svelte-kit/tsconfig.json` | Root holds shared options; api extends the root; web extends both (tsconfig `extends` takes a list). Web keeps TypeScript 6 for Kit as today; per-workspace versions are allowed. |
-| Dependency versions | Catalogs: one version list in the root `package.json`, referenced as `catalog:` | Eden needs "Elysia ... matching the server" | — | `elysia`, `@elysia/eden`, `@biomejs/biome`, `@types/bun` come from the catalog, exact. Web and api cannot drift apart, so org-0017's peer check and bump bot are no longer needed. |
-| Install layout | New workspaces default to the **isolated** linker (pnpm-style: a package sees only what it declares) | — | — | Keep isolated: it blocks phantom imports, which helps the boundaries. Not yet tried with Vite and svelte-check: the first step proves it (section 8). |
-| Test runners | `bun test` searches the whole folder tree for `*.test.ts` | Uses `bun test` | `sv add vitest`; web runs `bunx --bun vitest` | Never run `bun test` at the root: it would pick up web's Vitest files. Each workspace runs its own `test` script; the root runs `bun run --filter '*' check`. Root `bunfig.toml` also sets `test.pathIgnorePatterns = ["apps/web/**"]` as a guard. |
-| `.env` files | Bun loads `.env` files automatically from where it runs | — | Vite and SvelteKit load their own `.env` handling | No `.env` at the root. Config comes from the environment and `_FILE` secrets as now. Worth knowing when debugging. |
-| bunfig | "Put `bunfig.toml` in your project root" | — | — | One root `bunfig.toml`. Whether `bun test` run inside `apps/api` reads it is not stated: the first step checks it, and api keeps its own `bunfig.toml` with only `[test]` if needed. |
-| Running scripts | `bun run --filter '*' <script>`, in dependency order; `--parallel` for dev | — | `vite dev` | Root scripts: `check` (all, in dependency order), `dev` (web and api in parallel). |
-| Images | — | Put the Dockerfile in the app (`apps/server/Dockerfile`) and build from the root so the lockfile and packages are in reach | adapter-node output, or adapter-bun (on Kit `main`; not known for 3.2) | `apps/<app>/Dockerfile`, built with context `.`. Web keeps adapter-node + `server.ts` for now; adapter-bun is a separate, later look. |
-| Lint and format | — | — | `sv create` offers Prettier and ESLint add-ons | Skip them (`--no-add-ons`): Biome stays, one root config. |
-
-## 5. Keeping the parts apart
-
-A repository wall was never a security boundary (backend's rules say so), but it did stop accidental imports.
-Inside one repository three things do that job instead, and all are checks, not promises:
-
-1. **Package `exports`.** `@unset-sh/api` exports only `./app`, a type. Anything else under `apps/api` cannot be
-   resolved by name from web.
-2. **dependency-cruiser at the root** (backend already uses it). Rules: web may import from `@unset-sh/api` only
-   `./app`, and only as a type, only from `src/lib/server/`; no app imports another app's files by path; packages
-   never import apps; browser code imports no server module (Kit already enforces `server/` folders).
-3. **The isolated linker.** A workspace can import only what its own `package.json` declares.
-
-**Eden stays clean.** Backend keeps generating `app.d.ts`, declaration only, without Better Auth's types, and
-checking it for drift. Web takes it as `"@unset-sh/api": "workspace:*"` and imports
-`import type { App } from "@unset-sh/api/app"`. That is Eden's own pattern (export `type App`, import it in the
-client) with a generated file in the middle, so web's type check does not compile the whole API.
-
-## 6. How the rules change
-
-Records (drafted as org-0020, which supersedes parts of these; the rest of each stays in force):
-
-| Record | Today | After |
+| Overlap | What each says | Pick |
 | --- | --- | --- |
-| org-0007 | backend, web and deployment are separate repositories | web and api are apps in `unset-sh/unset`; their ownership lines stay, enforced by section 5. Deployment stays separate. Rendering is a package there. |
-| org-0010 | brand, rendering, lexicons, pds, backend, web, deployment, profile-recipes are staged | `unset-sh/unset` replaces backend, web and rendering in that list. Staged, `staging` default, Alex promotes to `main`. One promotion releases all apps at once; deployment still picks each app's digest on its own. |
-| org-0014 | agents merge checked pull requests into `staging` | Unchanged, applied to `unset-sh/unset`. |
-| org-0017 | backend publishes a types package; web pins Elysia to its peer; a bot bumps both | The types come over a workspace link. The catalog keeps Elysia equal. No package, no peer check, no bump bot. Points 1 and 3 (Eden from web's server only, `openapi.yaml` stays) stand. |
-| org-0019 | backend's image holds `policies/` | "Backend's image" means the api image. No other change. (If OpenFGA replaces Cerbos, its own record supersedes 0018 and 0019.) |
-| org-0006 | tooling is the single CI source, main-only | Unchanged. The product repository is a caller like any other. |
+| Folder names | Bun: workspaces "by convention" in `packages/`. Elysia's monorepo example: `apps/server` + `packages/`. | `apps/` for what runs, `packages/` for what is imported. Bun accepts any glob; Elysia's example is exactly this. |
+| Code shared between apps | Bun: `workspace:*`. Elysia: path aliases are "tricky", Eden turns to `any` if they don't resolve. Kit: `#lib` for the app's own code. | Workspace package names only, no tsconfig `paths`. Eden's alias problem can't happen. |
+| TypeScript config | Bun: root `tsconfig.json`, one per package. Elysia: one root, each extends it. Kit: web extends `.svelte-kit/tsconfig.json`. | Root + one per workspace; web extends both (tsconfig `extends` takes a list). |
+| Versions | Bun: catalogs. Eden: Elysia "matching the server". | Catalog, exact versions. org-0017's peer check and bump bot go away. |
+| Install layout | Bun: new workspaces default to isolated. | Isolated (Alex agreed). Untried with Vite and svelte-check; the proof (section 8) checks it. |
+| Database | Drizzle: `drizzle-orm/bun-sql` on Bun's own SQL client. sv: `sv add drizzle` adds it to a SvelteKit app. Elysia: models from tables with `drizzle-typebox`. | Drizzle on Bun SQL in `packages/db`, used by server and worker only, **never by web**, so sv's drizzle add-on is not used. See section 6. |
+| Tests | Bun: `bun test` finds every `*.test.ts` below where it runs. sv: Vitest. | `bun test` at the root runs everything except web; `bun run test` at the root runs all of it. Section 5 explains why web keeps Vitest. |
+| Formatting | Bun 1.4.4 ships `bun fmt`: "the same output as Prettier", formats `.svelte` (tried here on 1.4.4: it works). sv: Prettier add-on. | **`bun fmt`** instead of Prettier: Bun's way, Prettier's output, nothing to install. Prettier if Alex prefers it. |
+| Linting | Bun: `bun lint` is canary-only today and "works with your existing ESLint ... config". sv: ESLint add-on with Svelte support. | **ESLint** from `sv add eslint`, one root config for every workspace. Move to `bun lint` on the same config once it is in a stable Bun. Biome goes. |
+| `.env` files | Bun loads `.env` files automatically. Vite has its own `.env` handling. | No `.env` files in the repository; config comes from the environment and `_FILE` secrets, as now. |
+| Running scripts | Bun: `bun run --filter '*' <script>`, in dependency order; `--parallel` for dev. | Root `check`, `test`, `dev` scripts use it. |
+| Images | Elysia: Dockerfile in the app, built from the root. Kit: adapter-node, or adapter-bun on `main`. | `apps/<app>/Dockerfile`, context `.`. Web keeps adapter-node + `server.ts` now; adapter-bun is a later, separate look (not known to exist in Kit 3.2). |
 
-Shipped rules (`rules/org.md`): "One job per repository" gains one sentence: the product's apps and the packages
-only they use are one job and share `unset-sh/unset`. The pinning rule is unchanged between repositories; inside
-one repository a workspace link needs no pin. 150-line budget: +1 line.
+## 5. Bun, Vite and the tests, in plain words
 
-Tooling needs one change: **the staging image workflow takes an image name.** Today it names the image after the
-repository (`ghcr.io/unset-sh/staging/<repository>`). It gains an `image-name` input, validated as
-`[a-z0-9-]+` and refused otherwise, so the product pushes `staging/web` and `staging/api`. The `context` and
-`dockerfile` inputs already exist. The check workflow needs nothing: its `command` input runs
-`bun run --filter @unset-sh/api check` and so on, one required check per app (`web / Check`, `api / Check`,
-`rendering / Check`). All run on every pull request; no path filters, so a required check is never skipped.
+- **Bun replaces Node, not Vite.** Bun runs our code, installs packages and runs `bun test`. It does not build a
+  SvelteKit app. SvelteKit is a Vite plugin: `vite dev` and `vite build` are SvelteKit's dev server and build, and
+  Vite turns `.svelte` files into browser JavaScript. Bun's own SvelteKit guide does exactly this: create with
+  `sv create`, then `bun --bun run dev`, which starts `vite dev` running on Bun. So Vite stays, running on Bun.
+- **Why web's tests use Vitest.** Web's tests import `.svelte` components and SvelteKit modules such as `$app/...`
+  that exist only inside Vite. Vitest is Vite's test runner, so it sees them; `bun test` does not. Bun's guide
+  for Svelte tests uses a hand-written plugin for Svelte 4 and does not cover SvelteKit's modules. We already run
+  Vitest on Bun (`bunx --bun vitest`, spike of 2026-11-23); that is why the command has `--bun`.
+- **What runs at the root.** `bun test` at the root runs every server, worker and package test. The root
+  `bunfig.toml` keeps it out of `apps/web` (`test.pathIgnorePatterns`), because there it would pick up Vitest files
+  it cannot run. `bun run test` at the root runs both: `bun test` for everything else, then web's Vitest.
 
-Images and deployment: images become `ghcr.io/unset-sh/staging/web` and `.../staging/api` (a new package; the
-old `staging/backend` stays for history). Deployment verifies attestations from `unset-sh/unset` instead of the old
-repositories. The new repository needs write access to the packages, which is a package setting (Alex).
+## 6. Drizzle
 
-Other repositories: `.github` `repos.json` (unset active; web, backend, rendering archived); docs registers the new
-export source; each app's `CLAUDE.md` moves into its folder, and a new root `CLAUDE.md` holds what is shared.
+- **Where**: `packages/db`, `@unset-sh/db`: the schema in TypeScript (`src/schema/`), `drizzle.config.ts`, the
+  migrations `drizzle-kit generate` writes as SQL (committed and reviewed), and the migrate entry, run as the
+  `migrator` role as today. Server and worker import it; web never does.
+- **Driver**: `drizzle-orm/bun-sql`, on `Bun.SQL`, so no `pg` package. Each process opens its own connection with
+  its own role (app, auth, migrator, indexer), keeping today's least-privilege roles. Roles and grants stay as custom
+  SQL migrations (`drizzle-kit generate --custom`), since table schemas do not express them.
+- **Better Auth**: its Drizzle adapter (`better-auth/adapters/drizzle`); `auth generate` writes its tables into the
+  same schema. This replaces Kysely and `pg` for Better Auth and raw `Bun.sql` for ours, which org-0015 chose, so
+  it needs its own record (org-0021) after a spike.
+- **API models are not derived from tables.** Elysia's guide shows API schemas made from tables with
+  `drizzle-typebox`. That couples the public contract to the database, which our principles rule out ("do not
+  mirror"); `model.ts` schemas stay written by hand. Table-derived schemas are fine inside the server.
+- **Which Drizzle.** Stable is `0.45.4` (2026-10-08). The docs, the Bun SQL guide and the TypeBox support are
+  written for `1.0.0-rc.6` (2026-11-20, inside the 7-day wait until 2026-11-27), and 1.0 changes the migrations
+  folder layout. Recommendation: start on the 1.0 release candidate once it clears the wait, pinned exactly, so we
+  never migrate the migration format. Alex's call.
+- **No live data**, so the first Drizzle migration is a fresh baseline taken from today's schema
+  (`drizzle-kit pull`), checked against the eight current migrations.
 
-## 7. Authorization with OpenFGA in this layout
+## 7. Keeping the parts apart
 
-Alex wants OpenFGA planned in. The proof of concept and the switch are still open in the thread "Assess OpenFGA
-as the authorization engine" (agent-kit #48, `notes` there); the switch needs its own record superseding org-0018
-and org-0019. The layout is ready for it either way:
+1. **Package `exports`.** `@unset-sh/server` exports only `./app`, a type; `@unset-sh/db` and `@unset-sh/authz` are
+   server-side packages.
+2. **One boundary check at the root** (dependency-cruiser, which backend already runs): web may import from
+   `@unset-sh/server` only the `./app` type, only in `src/lib/server/`; web never imports `db` or `authz`; no app
+   imports another app's files by path; packages never import apps.
+3. **The isolated linker**: a workspace imports only what its `package.json` declares.
 
-- `apps/api/authz/` holds the model (`fga.mod` and its modules, schema 1.2) and `tests.fga.yaml`. Api's `check`
-  runs `fga model test`, pinned, like `cerbos compile` today. Until the switch, Cerbos's `policies/` stays
-  where it is, because deployment mounts `app/policies` from the image (org-0019, deployment #11).
-- `apps/api/src/adapters/openfga/` implements the existing small authorization port (`may()` in
-  `src/modules/access`). Nothing outside the adapter sees OpenFGA.
-- The outbox relay (domain change and tuple rows in one transaction, removals first) runs where the assessment
-  puts it; if it leaves api's process, it is an app of its own (`apps/authz-relay` or inside `apps/indexer`).
-- Writing the model to OpenFGA at release is a one-shot job from the api image, like `migrate` today, so one api
-  digest still selects the code and the model it was tested with.
-- Deployment adds OpenFGA (pinned by digest) and its own database on the shared Postgres, in the local stack
-  first. That is deployment's work, unchanged by the monorepo.
+**Eden**: the server keeps generating its declaration-only `app.d.ts` (no Better Auth types) and checks it for
+drift. Web takes `"@unset-sh/server": "workspace:*"` and writes `import type { App } from "@unset-sh/server/app"`,
+Eden's own pattern with a generated file in the middle, so web's type check never compiles the whole server.
 
-## 8. Migration order
+## 8. Authorization with OpenFGA
 
-Each step is a pull request unless it is a setting. Nothing starts until Alex accepts org-0020.
+The proof of concept and the switch are open in the thread "Assess OpenFGA as the authorization engine" (agent-kit
+#48). The switch needs its own record superseding org-0018 and org-0019. The layout is ready:
 
-1. **Prove the layout in a scratch repository** (no product repository touched): a workspace root, `sv create`,
-   `bun create elysia`, the isolated linker, web's `svelte-check` and Vitest, api's `bun test` against Postgres,
-   both Dockerfiles built from the root, the Eden type crossing the workspace link. Report what broke.
-2. **Tooling:** the `image-name` input (section 6), reviewed by another thread, merged into tooling `main`.
-3. **Alex creates `unset-sh/unset`** with `staging` as default and `main`, rulesets copied from web and backend.
-4. **Short freeze** of web, backend and rendering: land or close their open pull requests (none open today in web
-   or backend), then stop merging. Expected to last one working session.
-5. **Import with history.** In a clone of each old repository, one commit moves everything into its folder
-   (`git mv`, no other change), then the new repository merges it with `--allow-unrelated-histories`. Commit ids
-   stay the same, so every provenance link and pin written so far still resolves, and `git log --follow` and blame
-   go through the move. Order: backend to `apps/api`, web to `apps/web`, rendering to `packages/rendering`. The old
-   per-repository `.github/workflows` and `.claude/` are dropped in the same commit.
-6. **Make it one workspace** (one PR): root `package.json`, catalog, one `bun.lock`, root `bunfig.toml`, root
-   tsconfig, Biome, dependency-cruiser, CI callers, image callers, root `CLAUDE.md`, the kit copy.
-7. **Replace the seams** (one PR each): web takes `@unset-sh/api` over the workspace link instead of its pinned
-   copy; api and web take `@unset-sh/rendering` over the link when they first use it.
-8. **Adopt Elysia's folders in api** (one PR, moves only, no behaviour change, as the working rules ask).
-9. **Elsewhere:** deployment points at `staging/api`, `staging/web` and the new attestation source; `.github` map;
-   docs export source; agent-kit records and CHANGELOG.
-10. **Alex archives** web, backend and rendering (read-only, all links keep working). `@unset-sh/rendering` 0.1.0
-    stays in the registry; no new versions.
+- `packages/authz`: the model (`fga.mod` and modules), `tests.fga.yaml` run by `fga model test` in its check, the
+  OpenFGA client, and the `may()` port. The server checks through it; the worker writes tuples through it.
+- `apps/worker/src/authz-sync/`: the outbox relay (removals first) and the daily reconciliation.
+- Writing the model to OpenFGA at release is a one-shot job from the server image, like `migrate`.
+- Deployment runs OpenFGA (pinned by digest) with its own database, in the local stack first.
+- Until the switch, Cerbos's `policies/` stays in `apps/server` where deployment mounts it (org-0019, deployment #11).
 
-## 9. Risks
+## 9. How the rules change
 
-- **Isolated installs with Vite and svelte-check are untried.** Step 1 settles it. Fallback: the hoisted linker,
-  which loses one of the three boundary guards but keeps the other two.
-- **One promotion releases everything.** Alex reviews one bigger promotion instead of three. Deployment still picks
-  each app's digest separately, so a bad web release rolls back without touching api.
-- **Every pull request runs every app's check.** A few extra minutes per pull request. Path filters would save time,
-  but a required check whose workflow a path filter skips stays pending and blocks the merge; not worth it at this size.
-- **One lockfile.** Merging three lockfiles can move transitive versions. Every direct version is already exact;
-  the 7-day rule still applies; the diff of resolved versions is reviewed in step 6.
-- **Lost branches.** Work on old branches does not follow automatically. Step 4's freeze exists for that.
-- **Larger blast radius for a mistake in CI.** One repository's `GITHUB_TOKEN` now builds both images. The image
-  workflow's permissions are already per job and the same as today.
-- **Docs and the map** need the new source registered, or the export and the map show stale repositories. Step 9.
+| Record | After |
+| --- | --- |
+| org-0007 | Web and server are apps in `unset-sh/unset`; ownership lines stay, enforced by section 7. Brand and rendering are packages there. Deployment stays separate. |
+| org-0010 | `unset-sh/unset` replaces backend, web, rendering and brand in the staged list. One promotion releases every app and brand's package. |
+| org-0014 | Unchanged, applied to `unset-sh/unset`. |
+| org-0015 | Its database part (Kysely, `pg`, raw `Bun.sql`) is replaced by Drizzle in a separate record, org-0021, after a spike. |
+| org-0017 | Types over a workspace link; the catalog keeps Elysia equal. No types package, peer check or bump bot. |
+| org-0019 | "Backend's image" is the server image, until OpenFGA's record replaces it. |
+| org-0006 | Unchanged: the product is a caller of tooling like any repository. |
 
-## 10. In-flight work
+`rules/org.md`: one sentence under "One job per repository" naming `unset-sh/unset`. Brand's and the backend's
+`CLAUDE.md` rules move into their folders.
 
-- **Cerbos in backend** (org-0018, org-0019, backend #25): moves as it is into `apps/api`. No conflict.
-- **deployment #11** (Cerbos PDP in the local stack): independent of the move; it can merge as it is. Its image
-  references change in step 9 with everything else.
-- **OpenFGA** (#48): best run its proof of concept after step 6, inside the new layout, so the switch lands once.
-- **Slice 2** (public profile page): start after step 8. If it cannot wait, build it in the old repositories now;
-  its history comes across in step 5 anyway.
-- **Decisions waiting elsewhere** (2FA plan, public API record, lexicons `drafts`) are unaffected.
+Tooling: (1) the staging image workflow gains a validated `image-name` input, so the product pushes
+`staging/web`, `staging/server`, `staging/worker`; (2) the package release workflow gains a working-directory input
+so brand publishes from `packages/brand`. The check workflow needs nothing: its `command` input runs each
+workspace's check as its own required check. No path filters, so a required check never sits skipped.
 
-## 11. What Alex decides
+Deployment re-points at the new images and verifies attestations from `unset-sh/unset`; Alex gives the new
+repository write access to the packages. `.github`'s map and docs' export register the new repository.
 
-1. Accept the split in section 2: web, backend and rendering in; the rest out.
-2. The repository name: `unset-sh/unset` (recommended) or `unset-sh/app`.
-3. `apps/indexer` (named by job) or `apps/worker` (one home for background jobs).
-4. Go ahead with step 1, the scratch proof, before anything real moves.
+## 10. Migration order
+
+Nothing starts until Alex accepts org-0020.
+
+1. **Prove the layout in a scratch repository**: workspace root, `sv create`, `bun create elysia`, isolated
+   linker, web's `svelte-check` and Vitest, `bun test` at the root with web excluded, `bun fmt` and ESLint over
+   `.svelte` and `.ts`, Drizzle on Bun SQL with Better Auth's adapter against Postgres, images built from the root,
+   the Eden type across the link.
+2. **Tooling**: the two inputs in section 9.
+3. **Alex creates `unset-sh/unset`** (`staging` default, `main`, rulesets copied).
+4. **Short freeze** of web, backend, rendering and brand: land or close their open pull requests, stop merging.
+5. **Import with history**: in a clone of each, one commit moves everything into its folder; the new repository
+   merges it with `--allow-unrelated-histories`. Commit ids stay, so every provenance link still resolves.
+6. **One workspace** (one PR): root files, catalog, one lockfile, CI and image callers, kit copy.
+7. **Tooling swaps** (one PR each): Biome to ESLint and `bun fmt`; Eden over the link; rendering and brand over links.
+8. **Elysia's folders in the server** (moves only, no behaviour change).
+9. **Drizzle** (after org-0021): `packages/db`, baseline migration, Better Auth adapter, Kysely and `pg` removed.
+10. **Worker**: when the indexer or the OpenFGA relay is built, not before.
+11. **Elsewhere**: deployment, `.github` map, docs export, agent-kit records and CHANGELOG.
+12. **Alex archives** web, backend, rendering and brand. Published package versions stay.
+
+## 11. Risks
+
+- **Isolated installs with Vite and svelte-check are untried.** Fallback: the hoisted linker.
+- **One promotion releases everything**, brand's package included. Deployment still picks each app's digest alone.
+- **Drizzle 1.0 is a release candidate.** Better Auth's Drizzle adapter on Bun SQL is untried here; the spike settles it.
+- **ESLint is slower than Biome** and brings more dependencies; `bun lint` later removes most of that.
+- **The other repositories keep Biome**, so this one differs from them until they follow.
+- **One lockfile** can move transitive versions; the 7-day rule applies; the resolved diff is reviewed.
+- **Lost branches**: the freeze exists so nothing is left behind.
+
+## 12. In-flight work
+
+- **Cerbos** (org-0018, org-0019): moves as it is into `apps/server`.
+- **deployment #11** (Cerbos in the local stack): independent; can merge.
+- **OpenFGA** (#48): run its proof of concept after step 6, inside the new layout.
+- **Slice 2**: start after step 8. Built earlier, its history comes across anyway.
+
+## 13. What Alex decides now
+
+1. The revised split and tree above.
+2. Repository name: `unset-sh/unset` or `unset-sh/app`.
+3. `bun fmt` or Prettier for formatting.
+4. Drizzle 1.0 release candidate (after 2026-11-27) or 0.45.4 stable.
+5. Go ahead with step 1, the scratch proof.
