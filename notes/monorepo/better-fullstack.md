@@ -65,3 +65,40 @@ licence, where it runs, what data it sees, and its folder in the check.
 Use it as a reference, not as the generator. Its layout confirms ours, but running it would undo several of Alex's
 decisions at once and add more than a dozen vendors no feature needs yet. Keep `sv create` and `bun create elysia`
 as the scaffolding tools, and take pg-boss, knip and gitleaks as the first candidates to decide on.
+
+## The same generator with our decisions applied
+
+Alex asked (22:54Z) what it generates with the plan's choices. Run again with 2.8.1 and `--no-install`: Svelte +
+Tailwind + shadcn-svelte, Elysia on Bun, `--api none`, Better Auth, `--validation typebox`, Drizzle on Postgres,
+`--job-queue pg-boss`, `--caching redis`, `--testing none`, `--forms none`, Docker deploys, every other service
+`none`, only knip and gitleaks as extras, no AI files.
+
+```text
+unset/
+├── package.json  bun.lock  bunfig.toml  tsconfig.json  turbo.json  knip.jsonc  .gitleaks.toml  docker-compose.yml
+├── apps/
+│   ├── server/   src/index.ts (one Elysia chain), src/jobs/{queue,enqueue,worker}.ts, src/lib/cache.ts, Dockerfile, .env
+│   └── web/      src/routes/{login,dashboard}, src/components/*Form.svelte, src/lib/auth-client.ts, svelte.config.js, Dockerfile, .env
+└── packages/
+    ├── auth/     Better Auth instance
+    ├── config/   tsconfig.base.json
+    ├── db/       Drizzle schema (auth + a sample "task" table), drizzle.config.ts, its own docker-compose.yml
+    └── env/      validated settings for server, web and native
+```
+
+Still different from the plan, so each would be a hand edit:
+
+1. It adds Turborepo when nx is left out; the plan uses `bun run --filter`.
+2. SvelteKit `^2.70`; web runs Kit 3.2 (`svelte.config.js`, `$lib`, no `#lib`).
+3. Better Auth's raw `/api/auth/*` routes are open to the browser with CORS, and web holds `auth-client.ts` and
+   depends on `packages/auth`: the opposite of our session routes and "the browser never calls the server".
+4. No `apps/worker`: pg-boss's worker runs inside the server process. pg-boss migrates its own schema at start.
+5. The server is one Elysia chain in `src/index.ts`, with no `src/modules/`, no adapters and no boundary check.
+6. `pg` and `ioredis` instead of Bun's SQL and Redis clients; `dotenv`; `.env` files with a generated secret.
+7. Version ranges everywhere, `better-auth` 1.6.22 (we run 1.7.25), `@tanstack/svelte-form` added despite `--forms none`.
+8. No ESLint (its lint choices are Biome-based), no `bun fmt`, no `bun test` set-up.
+9. No `packages/brand`, `packages/rendering` or `packages/authz`.
+
+It is a starting skeleton, but the monorepo is built from our existing code with its history (proposal, migration
+step 5), so nearly every generated file would be replaced. The scratch proof keeps using `sv create` and
+`bun create elysia` directly.
