@@ -30,6 +30,7 @@ for organisation work.
 | [org-0014](records/org-0014-agents-merge-reviewed-pull-requests.md) | Agents check and merge their own pull requests into `staging`, and into `main` in tooling, `.github` and docs (org-0016); only Alex promotes `staging` to `main` |
 | [org-0015](records/org-0015-first-slice-session-and-contract.md) | The first slice's session, TypeBox contract, egress guard, `pg` for Better Auth, and `@atproto/oauth-client` |
 | [org-0016](records/org-0016-agents-merge-docs-into-main.md) | Agents merge their checked docs pull requests into `main`; publishing docs.unset.sh is not a production deploy |
+| [org-0017](records/org-0017-web-calls-backend-through-eden.md) | Web's server calls backend through Eden Treaty on backend's published `App` type, with an exact Elysia peer; `openapi.yaml` stays generated for other consumers |
 
 ## Before you decide something
 
