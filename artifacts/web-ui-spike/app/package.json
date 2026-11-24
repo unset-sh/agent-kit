@@ -1,0 +1,25 @@
+{
+  "name": "web-ui-spike",
+  "private": true,
+  "type": "module",
+  "dependencies": {
+    "@sveltejs/adapter-node": "6.0.2",
+    "@sveltejs/kit": "3.2.0",
+    "@sveltejs/vite-plugin-svelte": "7.3.1",
+    "@tailwindcss/vite": "4.3.5",
+    "@unset-sh/brand": "0.1.1",
+    "bits-ui": "2.20.6",
+    "cn": "0.5.0",
+    "svelte": "5.57.3",
+    "svelte-sonner": "1.2.0",
+    "tailwind-variants": "3.3.1",
+    "tailwindcss": "4.3.5",
+    "tw-animate-css": "1.4.0",
+    "vite": "8.3.5"
+  },
+  "scripts": {
+    "dev": "bunx --bun vite dev",
+    "build": "bunx --bun vite build",
+    "start": "bun build/index.js"
+  }
+}

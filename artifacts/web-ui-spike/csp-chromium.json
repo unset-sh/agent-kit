@@ -1,0 +1,78 @@
+{
+ "dark/load": [
+  "Applying inline style violates the following Content Security Policy directive 'style-src 'self''. Either the 'unsafe-inline' keyword, a hash ('sha256-S8qMpvofolR8Mpjy4kQvEm7m1q8clzU4dfDH0AmvZjo='), or a nonce ('nonce-...') is required to enable inline execution. Note that hashes do not apply to event handlers, style attributes and javascript: navigations unless the 'unsafe-hashes' keyword is present. The action has been blocked.",
+  "EVENT style-src-attr blocked=inline sample= src=http://localhost:4173/_app/immutable/chunks/BXcvxDOb.js:1"
+ ],
+ "dark/focus-button": [],
+ "dark/hover-button": [],
+ "dark/focus-input": [],
+ "dark/focus-invalid": [],
+ "dark/form-error": [],
+ "dark/tooltip": [],
+ "dark/menu": [],
+ "dark/menu-closed": [],
+ "dark/dialog": [],
+ "dark/dialog-closed": [],
+ "dark/toast": [],
+ "dark/toggle-theme": [],
+ "dark/focus-trap": {
+  "trapped": [
+   true,
+   true,
+   true,
+   true,
+   true,
+   true
+  ],
+  "restoredTo": "dialog-trigger"
+ },
+ "dark/inlineStyleAttrs": [
+  "body[] ",
+  "ol[true] --normal-bg: var(--color-popover); --normal-text: var(--color-popover-foreground); --norma",
+  "li[] --index: 0; --toasts-before: 0; --z-index: 1; --offset: 0px; --initial-height: 80px;",
+  "input[input] ",
+  "input[input] ",
+  "input[input] ",
+  "input[input] ",
+  "div[] position: absolute; left: 0; top: 0; clip: rect(0 0 0 0); clip-path: inset(50%); overflow:"
+ ],
+ "dark/styleElements": [],
+ "light/load": [
+  "Applying inline style violates the following Content Security Policy directive 'style-src 'self''. Either the 'unsafe-inline' keyword, a hash ('sha256-S8qMpvofolR8Mpjy4kQvEm7m1q8clzU4dfDH0AmvZjo='), or a nonce ('nonce-...') is required to enable inline execution. Note that hashes do not apply to event handlers, style attributes and javascript: navigations unless the 'unsafe-hashes' keyword is present. The action has been blocked.",
+  "EVENT style-src-attr blocked=inline sample= src=http://localhost:4173/_app/immutable/chunks/BXcvxDOb.js:1"
+ ],
+ "light/focus-button": [],
+ "light/hover-button": [],
+ "light/focus-input": [],
+ "light/focus-invalid": [],
+ "light/form-error": [],
+ "light/tooltip": [],
+ "light/menu": [],
+ "light/menu-closed": [],
+ "light/dialog": [],
+ "light/dialog-closed": [],
+ "light/toast": [],
+ "light/toggle-theme": [],
+ "light/focus-trap": {
+  "trapped": [
+   true,
+   true,
+   true,
+   true,
+   true,
+   true
+  ],
+  "restoredTo": "dialog-trigger"
+ },
+ "light/inlineStyleAttrs": [
+  "body[] ",
+  "ol[true] --normal-bg: var(--color-popover); --normal-text: var(--color-popover-foreground); --norma",
+  "li[] --index: 0; --toasts-before: 0; --z-index: 1; --offset: 0px; --initial-height: 80px;",
+  "input[input] ",
+  "input[input] ",
+  "input[input] ",
+  "input[input] ",
+  "div[] position: absolute; left: 0; top: 0; clip: rect(0 0 0 0); clip-path: inset(50%); overflow:"
+ ],
+ "light/styleElements": []
+}
