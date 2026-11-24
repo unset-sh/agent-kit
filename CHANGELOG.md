@@ -7,6 +7,9 @@ Entries go under the date the change is merged into `main`, newest first, one he
 
 ## 2026-11-24
 
+- The agent-kit guides in `docs/` now publish to docs.unset.sh through a new `docs-export.yml` workflow, as
+  the agent-kit section. The skill `org-new-repo` explains how a new repository publishes its docs the same
+  way, without a deploy key.
 - Add org-0016: assistants merge their checked docs pull requests into `main`, as in tooling and `.github`.
   Publishing docs.unset.sh is not a production deploy under org-0012. The working rules say so.
 

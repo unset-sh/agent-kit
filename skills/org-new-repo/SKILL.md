@@ -42,11 +42,14 @@ comment, and read the action's release notes before raising one.
 
 5. Ask the owner to protect `staging` and `main` with rulesets: pull requests only, no force pushes or
    deletion, the CI and branch-policy checks required, and branches up to date before merging. `staging` takes squash and merge commits; `main` takes merge commits only, and only
-   the owner merges into it. A repository that receives pushes the map records (docs into
-   `unset-sh/docs`, the lexicon mirror) needs an exception for that deploy key, or the push fails.
+   the owner merges into it. A repository that receives pushes the map records (the lexicon
+   mirror) needs an exception for that deploy key, or the push fails.
    Rulesets, environments and deploy keys are the owner's to set; assistants ask for them.
 6. If the repository releases anything, ask the owner for the `release` environment, then follow the skill
    `org-release`.
-7. Human docs live in the repository's `docs/` folder. Wiring it to docs.unset.sh needs a deploy key, which
-   the owner places.
+7. Human docs live in the folder tooling's docs import sources name for the repository (usually
+   `docs/site/`), with a section `_index.md`. To publish them on docs.unset.sh, add
+   `.github/workflows/docs-export.yml` (the check, then tooling's `automation-docs-export.yml`), make sure the
+   repository's key is in tooling's docs import sources, and add that key to the import matrix in
+   `unset-sh/docs`. No deploy key or stored token is involved.
 8. Update the map entry from planned or proposed to active, and check its description matches GitHub's.
