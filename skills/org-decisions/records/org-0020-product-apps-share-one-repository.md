@@ -44,7 +44,6 @@ holding several apps and packages. The full proposal, with the documentation rea
    backend, web, rendering and brand.
 7. **One image per app.** Images are `ghcr.io/unset-sh/staging/<app>` (`web`, `server`, `worker`), built by tooling's shared
    workflow from the repository root with each app's Dockerfile. Deployment selects each app's digest on its own.
-   org-0019's "backend's image" is the server image.
 8. **Rendering is no longer published**; brand still is. Released versions stay in the registry.
 9. **Lint and format**: ESLint from `sv add eslint`, one root config, and `bun fmt`, replacing Biome in this
    repository. `bun test` runs every test from the root, web's included; Vitest is removed (all 257 web tests passed

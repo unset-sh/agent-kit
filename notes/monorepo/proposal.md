@@ -203,15 +203,15 @@ Eden's own pattern with a generated file in the middle, so web's type check neve
 
 ## 8. Authorization with OpenFGA
 
-The proof of concept and the switch are open in the thread "Assess OpenFGA as the authorization engine" (agent-kit
-#48). The switch needs its own record superseding org-0018 and org-0019. The layout is ready:
+Alex chose OpenFGA as the policy engine (22:57Z); org-0022 records it and supersedes Cerbos (org-0018 points 1 and
+7, all of org-0019). The scratch proof ran it in this layout ([proof.md](proof.md)):
 
 - `packages/authz`: the model (`fga.mod` and modules), `tests.fga.yaml` run by `fga model test` in its check, the
   OpenFGA client, and the `may()` port. The server checks through it; the worker writes tuples through it.
 - `apps/worker/src/authz-sync/`: the outbox relay (removals first) and the daily reconciliation.
 - Writing the model to OpenFGA at release is a one-shot job from the server image, like `migrate`.
 - Deployment runs OpenFGA (pinned by digest) with its own database, in the local stack first.
-- Until the switch, Cerbos's `policies/` stays in `apps/server` where deployment mounts it (org-0019, deployment #11).
+- Cerbos does not move into the monorepo: org-0022 replaces it in backend first, or the monorepo starts without it.
 
 ## 9. The edge and scaling: Traefik and Redis
 
@@ -245,7 +245,6 @@ as a mean to manage a session and stuff like that to plan for scalability."
 | org-0014 | Unchanged, applied to `unset-sh/unset`. |
 | org-0015 | Its database part (Kysely, `pg`, raw `Bun.sql`) is replaced by Drizzle in a separate record, org-0021, after a spike. |
 | org-0017 | Types over a workspace link; the catalog keeps Elysia equal. No types package, peer check or bump bot. |
-| org-0019 | "Backend's image" is the server image, until OpenFGA's record replaces it. |
 | org-0006 | Unchanged: the product is a caller of tooling like any repository. |
 
 `rules/org.md`: one sentence under "One job per repository" naming `unset-sh/unset`. Brand's and the backend's
@@ -292,9 +291,8 @@ Nothing starts until Alex accepts org-0020.
 
 ## 13. In-flight work
 
-- **Cerbos** (org-0018, org-0019): moves as it is into `apps/server`.
-- **deployment #11** (Cerbos in the local stack): independent; can merge.
-- **OpenFGA** (#48): run its proof of concept after step 6, inside the new layout.
+- **OpenFGA** (org-0022): replaces Cerbos. If backend switches before the move, the history comes across; otherwise
+  it is built straight into `packages/authz`. Cerbos and deployment #11 do not move.
 - **Slice 2**: start after step 8. Built earlier, its history comes across anyway.
 
 ## 14. What Alex decides now
