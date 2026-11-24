@@ -7,6 +7,9 @@ Entries go under the date the change is merged into `main`, newest first, one he
 
 ## 2026-11-24
 
+- Add org-0017 (Alex, 2026-11-24): web's server calls backend through Eden Treaty on a published `App` types
+  package with an exact `elysia` peer. Web's CI checks the versions match, and the bump bot updates both together.
+  Backend keeps generating `openapi.yaml` for other consumers.
 - The agent-kit guides in `docs/` now publish to docs.unset.sh through a new `docs-export.yml` workflow, as
   the agent-kit section. The skill `org-new-repo` explains how a new repository publishes its docs the same
   way, without a deploy key.
