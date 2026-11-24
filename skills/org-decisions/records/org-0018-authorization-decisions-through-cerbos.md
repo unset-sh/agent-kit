@@ -1,10 +1,10 @@
 # org-0018. Backend's authorization decisions go through Cerbos
 
-Status: proposed (2026-11-24). Alex asked for it on 2026-11-24: "we may find way to improve it as well with our
-new stack. I also want to include cerbos". Asked the three main choices, he answered on 2026-11-24 at 04:01Z: a
-separate process ("i think as a separate services with back end"), one engine ("I think it should be the only rule
-engine, unless there is a better option"), and policies in backend ("yes"). Points 1, 4 and 7 follow those answers;
-the alternatives are weighed below. The record is not accepted until Alex accepts it.
+Status: accepted (2026-11-24, Alex: "ok good, you may integrate it, seems clean", after reading the record with
+the spike results folded in). He had asked for it the same day: "we may find way to improve it as well with our new
+stack. I also want to include cerbos", and answered the three main choices: a separate process ("i think as a
+separate services with back end"), one engine ("I think it should be the only rule engine, unless there is a better
+option"), and policies in backend ("yes"). The alternatives are weighed below.
 
 ## Context
 
