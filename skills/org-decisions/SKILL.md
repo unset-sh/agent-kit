@@ -27,8 +27,9 @@ for organisation work.
 | [org-0011](records/org-0011-presentation-is-rendering-and-workflows-retired.md) | `presentation` is renamed `rendering`; `unset-sh/tooling` replaces `unset-sh/workflows` |
 | [org-0012](records/org-0012-release-approvals-and-lexicon-drafts.md) | Agents may press Approve for brand and rendering; never for a production deploy or lexicon publication unless Alex authorised it; lexicon drafts stay on lexicons `staging`, off the network |
 | [org-0013](records/org-0013-agents-manage-agent-kit.md) | Agents merge agent-kit pull requests into `main` after a separate review; see org-0014 for the others |
-| [org-0014](records/org-0014-agents-merge-reviewed-pull-requests.md) | Agents check and merge their own pull requests into `staging`, and into `main` in tooling and `.github` (docs on his word for now); only Alex promotes `staging` to `main` |
+| [org-0014](records/org-0014-agents-merge-reviewed-pull-requests.md) | Agents check and merge their own pull requests into `staging`, and into `main` in tooling, `.github` and docs (org-0016); only Alex promotes `staging` to `main` |
 | [org-0015](records/org-0015-first-slice-session-and-contract.md) | The first slice's session, TypeBox contract, egress guard, `pg` for Better Auth, and `@atproto/oauth-client` |
+| [org-0016](records/org-0016-agents-merge-docs-into-main.md) | Agents merge their checked docs pull requests into `main`; publishing docs.unset.sh is not a production deploy |
 
 ## Before you decide something
 
