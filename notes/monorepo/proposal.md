@@ -102,6 +102,9 @@ and credentials, chosen by its entry command (as backend's `migrate` does today)
 privileged processes. The OpenFGA server itself is not a worker: it is upstream's image, run by deployment beside
 Postgres. Only Unset's background work for it (the outbox relay) lives in the worker.
 
+A comparison with Better-Fullstack's generator (Alex's command, 22:45Z) is in [better-fullstack.md](better-fullstack.md):
+same shape, but it conflicts with several decisions and adds a dozen vendors, so it stays a reference.
+
 ## 4. Where the official docs overlap, and what we pick
 
 Read 2026-11-24: Bun at tag `bun-v1.4.4` (38afee6): `pm/workspaces`, `catalogs`, `isolated-installs`, `filter`,
