@@ -6,7 +6,7 @@ cascade:
   type: docs
 menus:
   main:
-    weight: 40
+    weight: 90
 params:
   doc_kind: overview
 ---

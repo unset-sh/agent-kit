@@ -12,7 +12,7 @@ whatever repository they are in, and gets it to them as a pinned copy that each 
 | [`rules/`](rules/) | The organisation's rules, how to work, and the engineering principles in short. Loaded at the start of every session, so kept to 150 lines in total | `.claude/rules/org/` |
 | [`docs/`](docs/) | Human guides maintained here for export to the documentation website | The `agent-kit/` website section; not part of the installed kit |
 | [`skills/`](skills/) | Procedures for jobs that repeat across repositories and organisation decision records, read when needed | `.claude/skills/org-*/` |
-| [`sync.mjs`](sync.mjs) | Installs the kit at one commit of `main` in a repository and checks the copy. Node built-ins and git only | `.claude/agent-kit/sync.mjs` |
+| [`sync.mjs`](sync.mjs) | Installs the kit at one commit of `main` in a repository and checks the copy. `node:` built-in modules and git only, run with Bun | `.claude/agent-kit/sync.mjs` |
 | [`templates/`](templates/) | The `CLAUDE.md` and `AGENTS.md` a new repository starts from | Copied once, then owned by the repository |
 | [`projects/`](projects/) | The text of the instructions for Claude projects | Pasted into a project's settings by hand |
 | `notes/<task>/` | AI plans, working notes, investigations and review reports from organisation work | Stays here; excluded from the kit |
@@ -95,7 +95,7 @@ is on `main` before running anything from it, then install:
 git clone https://github.com/unset-sh/agent-kit.git /path/to/agent-kit
 git -C /path/to/agent-kit merge-base --is-ancestor <commit> origin/main && echo "on main"
 git -C /path/to/agent-kit -c advice.detachedHead=false checkout <commit>
-node /path/to/agent-kit/sync.mjs <commit>
+bun /path/to/agent-kit/sync.mjs <commit>
 ```
 
 **Check the copy** in the repository's CI. It needs no network and fails when a kit file was edited by hand,
@@ -104,14 +104,14 @@ catches accidents, not intent: someone who edits a kit file and its lock togethe
 needs a check outside the repository that compares each copy with the kit at the commit its lock names:
 
 ```sh
-node .claude/agent-kit/sync.mjs --check
+bun .claude/agent-kit/sync.mjs --check
 ```
 
 **Take a newer commit** on a branch, then open a pull request. It is reviewed and merged like code. Read what
 changed first (`CHANGELOG.md` and `git log <old>..<new>` here), then:
 
 ```sh
-node .claude/agent-kit/sync.mjs <new commit>
+bun .claude/agent-kit/sync.mjs <new commit>
 ```
 
 The full steps are in the skill `org-kit-update`.
@@ -138,10 +138,10 @@ and [page templates](skills/org-documentation/templates.md). Contributors and as
 Repositories adopting it fill in only their [local documentation facts](skills/org-documentation/repository-rules.md).
 
 ```sh
-npm run check
+bun run check
 ```
 
-Node 26 (see `.nvmrc`), no dependencies.
+Bun (see `.bun-version`), no dependencies.
 
 ## Licence
 

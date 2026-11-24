@@ -1,0 +1,16 @@
+@import "tailwindcss";
+@import "tw-animate-css";
+@import "@unset-sh/brand/tokens.css";
+@import "@unset-sh/brand/shadcn.css";
+@import "@unset-sh/brand/tailwind.css";
+@import "@unset-sh/brand/recipes.css";
+@custom-variant dark (&:where([data-theme="dark"], [data-theme="dark"] *));
+
+html { background: var(--ground); color: var(--ink); }
+body { font-family: var(--font-sans); }
+a { color: var(--link); }
+a:visited { color: var(--link-visited); }
+
+/* SvelteKit's route announcer hides itself with an inline style attribute, which
+   style-src 'self' blocks; hide it from stylesheet instead (same declarations). */
+#svelte-announcer { position: absolute; left: 0; top: 0; clip: rect(0 0 0 0); clip-path: inset(50%); overflow: hidden; white-space: nowrap; width: 1px; height: 1px; }

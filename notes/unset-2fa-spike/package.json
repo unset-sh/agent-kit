@@ -1,0 +1,12 @@
+{
+  "name": "unset-2fa-spike",
+  "private": true,
+  "type": "module",
+  "dependencies": {
+    "@better-auth/utils": "0.5.1",
+    "better-auth": "1.7.25",
+    "kysely": "0.29.9",
+    "pg": "8.23.1",
+    "zod": "4.6.7"
+  }
+}
