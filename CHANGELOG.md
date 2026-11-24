@@ -8,7 +8,7 @@ Entries go under the date the change is merged into `main`, newest first, one he
 ## 2026-11-24
 
 - Propose org-0018 (awaiting Alex): backend's authorization decisions go through a Cerbos PDP running beside
-  it, behind a small `Authorizer` port, failing closed. Policies and their YAML tests live in backend. Nothing
+  it, behind a small `Authorizer` port, called over gRPC on a Unix socket, failing closed. Policies and their YAML tests live in backend. Nothing
   changes for a repository until Alex accepts it.
 - Add org-0017 (Alex, 2026-11-24): web's server calls backend through Eden Treaty on a published `App` types
   package with an exact `elysia` peer. Web's CI checks the versions match, and the bump bot updates both together.
