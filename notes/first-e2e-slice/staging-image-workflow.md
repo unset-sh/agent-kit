@@ -46,9 +46,37 @@ Nothing has been pushed to GHCR or attested yet: that first happens when a calle
   `@sigstore/oci`), so the workflow signs in with `docker login`. A runner with a credential helper
   configured would break that. Not seen on `ubuntu-24.04`, unverified.
 
+## What the separate review found (2026-11-24)
+
+The review is in the project's shared files (`tooling/review-pr26.md`). Fixed in tooling commits `ea836ca`,
+`449027b` and `afae162`.
+
+- **F1: the digest-pin check read less than BuildKit.** Four Dockerfiles passed the check while BuildKit
+  v0.35.0 pulled an unpinned image: a quoted `"<<EOF"` taken for a heredoc, a `#!` line before
+  `# syntax=` (`DetectSyntax` drops it), an escape in a flag name (`--fr\om=`), and quotes inside
+  `--mount`. Reading `frontend/dockerfile/parser` at v0.35.0 found five more, each confirmed against that
+  BuildKit locally: continued lines joined with a space (BuildKit adds none, so `COPY --fr\` + `om=x`
+  is `--from=x`), `\\` at a line end taken for a continuation, a lone CR after a heredoc's name
+  (`trimNewline` trims every trailing CR), an indented `# escape=` (the parser strips leading space
+  first), and whitespace Go and JavaScript disagree on (`extractBuilderFlags` tests single bytes, so a
+  0xA0 byte inside `à` splits a flag). The check now mirrors BuildKit for line ends, joining and
+  directives, and refuses the rest: a `#!` first line, odd whitespace, unknown instructions, flags with
+  quotes, backslash, backtick or non-ASCII, and `<<` outside the plain heredoc forms.
+  **Lesson:** a second parser in front of a real one must refuse every shape it does not read the same
+  way, and the only way to find them is to read the real parser's source and test it.
+- **F2: `push-to-registry: true` writes a tag.** `actions/attest` v4.2.2 (`@sigstore/oci`
+  `#createReferrersIndexByTag`) falls back to the OCI referrers tag `sha256-<image hex>` when the registry
+  has no referrers API, and GHCR has none. That tag names an index of attestations and moves when another
+  is attached. `gh attestation verify` reads GitHub's API unless `--bundle-from-oci` is given, so nothing
+  needs it. Whether to keep the registry copy is open with Alex; the docs now describe the tag.
+- **F3: Re-run failed jobs cannot rerun publish alone**, because the artifact name carries the run
+  attempt. The guide says to use Re-run all jobs. FROM and `RUN --mount from=` no longer take a stage
+  number; only `COPY --from` does.
+
 ## Local evidence
 
 Built a scratch-based image with BuildKit v0.35.0 to `type=oci,tar=false,rewrite-timestamp=true`.
 `index.json` held one manifest with its platform, and an empty `ingest/` folder sat beside it (the
 workflow removes it). A second build gave the same digest. `crane push <layout> <repo>@<digest>` to a
-local `crane registry serve` created no tag, and the manifest read back hashed to the digest.
+local `crane registry serve` created no tag (the referrers tag above comes from `actions/attest`), and
+the manifest read back hashed to the digest.
