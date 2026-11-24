@@ -47,8 +47,8 @@ holding several apps and packages. The full proposal, with the documentation rea
    org-0019's "backend's image" is the server image.
 8. **Rendering is no longer published**; brand still is. Released versions stay in the registry.
 9. **Lint and format**: ESLint from `sv add eslint`, one root config, and `bun fmt`, replacing Biome in this
-   repository. `bun test` runs at the root for everything except web, which keeps Vitest on Bun because its tests
-   need Vite.
+   repository. `bun test` runs every test from the root, web's included; Vitest is removed (all 257 web tests passed
+   under `bun test` on 2026-11-24).
 
 ## Consequences
 

@@ -113,7 +113,7 @@ Rule from Alex: where they disagree, Bun's way wins.
 | Versions | Bun: catalogs. Eden: Elysia "matching the server". | Catalog, exact versions. org-0017's peer check and bump bot go away. |
 | Install layout | Bun: new workspaces default to isolated. | Isolated (Alex agreed). Untried with Vite and svelte-check; the proof (section 8) checks it. |
 | Database | Drizzle: `drizzle-orm/bun-sql` on Bun's own SQL client. sv: `sv add drizzle` adds it to a SvelteKit app. Elysia: models from tables with `drizzle-typebox`. | Drizzle on Bun SQL in `packages/db`, used by server and worker only, **never by web**, so sv's drizzle add-on is not used. See section 6. |
-| Tests | Bun: `bun test` finds every `*.test.ts` below where it runs. sv: Vitest. | `bun test` at the root runs everything except web; `bun run test` at the root runs all of it. Section 5 explains why web keeps Vitest. |
+| Tests | Bun: `bun test` finds every `*.test.ts` below where it runs. sv: Vitest. | `bun test` for every workspace, web included, run from the root. Vitest goes (section 5). |
 | Formatting | Bun 1.4.4 ships `bun fmt`: "the same output as Prettier", formats `.svelte` (tried here on 1.4.4: it works). sv: Prettier add-on. | **`bun fmt`** instead of Prettier: Bun's way, Prettier's output, nothing to install. Prettier if Alex prefers it. |
 | Linting | Bun: `bun lint` is canary-only today and "works with your existing ESLint ... config". sv: ESLint add-on with Svelte support. | **ESLint** from `sv add eslint`, one root config for every workspace. Move to `bun lint` on the same config once it is in a stable Bun. Biome goes. |
 | `.env` files | Bun loads `.env` files automatically. Vite has its own `.env` handling. | No `.env` files in the repository; config comes from the environment and `_FILE` secrets, as now. |
@@ -122,17 +122,18 @@ Rule from Alex: where they disagree, Bun's way wins.
 
 ## 5. Bun, Vite and the tests, in plain words
 
-- **Bun replaces Node, not Vite.** Bun runs our code, installs packages and runs `bun test`. It does not build a
-  SvelteKit app. SvelteKit is a Vite plugin: `vite dev` and `vite build` are SvelteKit's dev server and build, and
-  Vite turns `.svelte` files into browser JavaScript. Bun's own SvelteKit guide does exactly this: create with
-  `sv create`, then `bun --bun run dev`, which starts `vite dev` running on Bun. So Vite stays, running on Bun.
-- **Why web's tests use Vitest.** Web's tests import `.svelte` components and SvelteKit modules such as `$app/...`
-  that exist only inside Vite. Vitest is Vite's test runner, so it sees them; `bun test` does not. Bun's guide
-  for Svelte tests uses a hand-written plugin for Svelte 4 and does not cover SvelteKit's modules. We already run
-  Vitest on Bun (`bunx --bun vitest`, spike of 2026-11-23); that is why the command has `--bun`.
-- **What runs at the root.** `bun test` at the root runs every server, worker and package test. The root
-  `bunfig.toml` keeps it out of `apps/web` (`test.pathIgnorePatterns`), because there it would pick up Vitest files
-  it cannot run. `bun run test` at the root runs both: `bun test` for everything else, then web's Vitest.
+- **Bun replaces Node, not Vite.** SvelteKit is built on Vite: `vite dev` and `vite build` are SvelteKit's dev
+  server and build, and Vite turns `.svelte` files into browser JavaScript. Bun runs Vite (Bun's own SvelteKit guide:
+  `bun --bun run dev` starts `vite dev` on Bun).
+- **Bun can test web today.** Tried 2026-11-24 on web at `ceef5ee`, Bun 1.4.4: after `bun run build`, changing each
+  test's `from "vitest"` to `from "bun:test"` and running `bun test` passed all 257 tests in 26 files (2.5 s);
+  Vitest on the same tree also passes 257. None of web's tests imports a `.svelte` file or a SvelteKit module such
+  as `$app/...`; they test plain TypeScript and the built server.
+- **So: `bun test` everywhere, Vitest removed**, and `bun test` at the root runs every test in the repository.
+- **The limit.** A future test that renders a `.svelte` component or imports `$app/...` needs Vite, which `bun test`
+  does not run. Bun's Svelte guide adds a loader plugin, written for Svelte 4 and without SvelteKit's modules. Keep
+  logic in plain TypeScript modules, as web does now, and test components in the browser later; if component tests
+  become necessary, choose then between a Bun preload plugin and Vitest for that folder alone.
 
 ## 6. Drizzle
 
@@ -208,7 +209,7 @@ repository write access to the packages. `.github`'s map and docs' export regist
 Nothing starts until Alex accepts org-0020.
 
 1. **Prove the layout in a scratch repository**: workspace root, `sv create`, `bun create elysia`, isolated
-   linker, web's `svelte-check` and Vitest, `bun test` at the root with web excluded, `bun fmt` and ESLint over
+   linker, web's `svelte-check`, `bun test` at the root over every workspace, `bun fmt` and ESLint over
    `.svelte` and `.ts`, Drizzle on Bun SQL with Better Auth's adapter against Postgres, images built from the root,
    the Eden type across the link.
 2. **Tooling**: the two inputs in section 9.
