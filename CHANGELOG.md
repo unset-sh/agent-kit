@@ -5,6 +5,11 @@ a repository takes a commit of `main`, and reads here what changed since the com
 
 Entries go under the date the change is merged into `main`, newest first, one heading per date.
 
+## 2026-11-24
+
+- Add org-0016: assistants merge their checked docs pull requests into `main`, as in tooling and `.github`.
+  Publishing docs.unset.sh is not a production deploy under org-0012. The working rules say so.
+
 ## 2026-11-23
 
 - Accept org-0015 (Alex, 2026-11-23). The first slice's session, contract, egress and database choices are now
