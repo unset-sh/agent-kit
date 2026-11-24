@@ -2,7 +2,8 @@
 
 Status: accepted (2026-11-24, Alex. After the Eden and OpenAPI client comparison he wrote: "so its not like we
 would have to maintain the openapi anyway", then "and that could be updated via ci right?", and "ok good" to the
-plan below.)
+plan below.) Points 2, 4 and 5 (the published types package, the peer check and the bump bot) are superseded
+by org-0020: web takes the type over a workspace link. Points 1 and 3 stand.
 
 ## Context
 
