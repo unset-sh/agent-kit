@@ -18,7 +18,9 @@ concurrency:
 
 jobs:
   check:
-    name: Check rules, skills, sync and bundle
+    # A name of its own: ci.yml's job carries the required check name, and two runs under one name make
+    # the ruleset's result depend on which finished last.
+    name: Check before export
     uses: unset-sh/tooling/.github/workflows/ci-check.yml@37ea5787ba7ecbfc9c910be7a8762a58479f2dc5
     permissions:
       contents: read
