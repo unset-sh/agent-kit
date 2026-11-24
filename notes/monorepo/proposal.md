@@ -266,7 +266,7 @@ Nothing starts until Alex accepts org-0020.
 1. **Prove the layout in a scratch repository**: workspace root, `sv create`, `bun create elysia`, isolated
    linker, web's `svelte-check`, `bun test` at the root over every workspace, `bun fmt` and ESLint over
    `.svelte` and `.ts`, Drizzle on Bun SQL with Better Auth's adapter against Postgres, images built from the root,
-   the Eden type across the link.
+   the Eden type across the link, OpenFGA behind `may()`. **Done 2026-11-24, all passed: [proof.md](proof.md).**
 2. **Tooling**: the two inputs in section 10.
 3. **Alex creates `unset-sh/unset`** (`staging` default, `main`, rulesets copied).
 4. **Short freeze** of web, backend, rendering and brand: land or close their open pull requests, stop merging.
@@ -304,4 +304,4 @@ Nothing starts until Alex accepts org-0020.
 3. `bun fmt` or Prettier for formatting.
 4. Drizzle 1.0 release candidate (after 2026-11-27) or 0.45.4 stable.
 5. Valkey as the Redis server when it arrives (section 9).
-6. Go ahead with step 1, the scratch proof.
+6. ~~Go ahead with step 1, the scratch proof.~~ Done at Alex's request (22:56Z); see [proof.md](proof.md).
