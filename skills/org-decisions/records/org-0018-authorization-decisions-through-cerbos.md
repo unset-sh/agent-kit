@@ -1,7 +1,10 @@
 # org-0018. Backend's authorization decisions go through Cerbos
 
 Status: proposed (2026-11-24). Alex asked for it on 2026-11-24: "we may find way to improve it as well with our
-new stack. I also want to include cerbos". This record proposes how; it is not accepted until Alex says so.
+new stack. I also want to include cerbos". Asked the three main choices, he answered on 2026-11-24 at 04:01Z: a
+separate process ("i think as a separate services with back end"), one engine ("I think it should be the only rule
+engine, unless there is a better option"), and policies in backend ("yes"). Points 1, 4 and 7 follow those answers;
+the alternatives are weighed below. The record is not accepted until Alex accepts it.
 
 ## Context
 
@@ -90,6 +93,27 @@ if (decision === "deny") return status(403, problem(403, "forbidden"));
 
 On `/me` the owner check always holds. It is there so the route already goes through the one decision point when
 the onboarding and e-mail conditions, and later routes that take another member's DID, arrive.
+
+## Alternatives
+
+Alex asked for Cerbos as the only engine "unless there is a better option". These were weighed (npm metadata and
+READMEs read 2026-11-24):
+
+- **Cedar** (`@cedar-policy/cedar-wasm` 4.15.0, Apache-2.0). The strongest alternative: a policy language with a
+  formal analyser, run in process from WebAssembly with no hosted service, so no extra process. Not chosen
+  because Alex prefers a separate service, and Cerbos brings policy test suites in its CLI and query plans for
+  filtering lists, which Cedar would need us to build or offers only as partial evaluation. Revisit Cedar if the
+  spike shows the sidecar's latency or running cost is too high.
+- **OpenFGA or SpiceDB** (Zanzibar-style relationship engines; `@openfga/sdk` 0.9.8, Apache-2.0). Good for deep
+  sharing graphs, but each needs its own datastore holding a copy of relationships that our database already
+  holds. Too much for owner and visibility rules; worth a look again if sharing grows into groups and spaces.
+- **OPA** (Rego). General-purpose and widely used, but Rego is harder to read and review than Cerbos's YAML and
+  CEL, and its JavaScript WebAssembly loader (`@open-policy-agent/opa-wasm` 1.10.0) was last released in 2024.
+- **Casbin** (`casbin` 5.51.1). An in-process library with model files; its rules are less expressive for
+  attribute conditions and it has no test-suite tool of its own.
+- **Oso**. Its open-source library is deprecated in favour of Oso Cloud (`oso` README).
+- **Native TypeScript rules**, as Alex's first proposal had them. Simple to start, but it is the scattered pattern
+  the old app already shows, and Alex wants Cerbos.
 
 ## Consequences
 
