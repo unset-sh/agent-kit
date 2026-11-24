@@ -1,0 +1,11 @@
+import { chromium } from 'playwright';
+const b = await chromium.launch(); const p = await b.newPage();
+const v = []; await p.exposeBinding('__csp', (_s, x) => v.push(x));
+await p.addInitScript(() => document.addEventListener('securitypolicyviolation', (e) => window.__csp(`${e.effectiveDirective} ${e.sourceFile}:${e.lineNumber}`)));
+await p.goto('http://localhost:4173/', { waitUntil: 'networkidle' }); console.log('load', v.splice(0));
+await p.click('#other'); await p.waitForURL('**/other'); await p.waitForTimeout(300);
+console.log('nav', v.splice(0), await p.evaluate(() => { const a = document.getElementById('svelte-announcer'); const r = a?.getBoundingClientRect(); return { text: a?.textContent, w: r?.width, h: r?.height }; }));
+await p.click('#fly'); await p.waitForTimeout(100);
+console.log('transition', v.splice(0), await p.evaluate(() => ({ styles: [...document.querySelectorAll('style')].length, anims: document.getAnimations().length, opacity: getComputedStyle(document.getElementById('flown')).opacity })));
+await p.waitForTimeout(600); console.log('after', v.splice(0), await p.evaluate(() => getComputedStyle(document.querySelector('.scoped')).textDecorationLine));
+await b.close();
