@@ -1,0 +1,51 @@
+name: unset spike
+model_file: ./model/fga.mod
+tuples:
+  - {user: member:did%3Aplc%3Aalice, relation: owner, object: profile:did%3Aplc%3Aalice}
+  - {user: "member:*", relation: public_viewer, object: profile:did%3Aplc%3Aalice}
+  - {user: member:did%3Aplc%3Abob, relation: owner, object: profile:did%3Aplc%3Abob}
+  - {user: member:did%3Aplc%3Aalice, relation: owner, object: organization:acme}
+  - {user: member:did%3Aplc%3Acarol, relation: admin, object: organization:acme}
+  - {user: member:did%3Aplc%3Adave, relation: member, object: organization:acme}
+  - {user: organization:acme, relation: organization, object: role:acme-developer}
+  - {user: member:did%3Aplc%3Aerin, relation: assignee, object: role:acme-developer}
+  - {user: organization:acme, relation: organization, object: org_document:spec}
+  - {user: role:acme-developer#assignee, relation: editor, object: org_document:spec}
+  - {user: organization:acme, relation: organization, object: community:acme-forum}
+  - {user: role:acme-developer#assignee, relation: moderator, object: community:acme-forum}
+  - {user: module:photos, relation: module_reader, object: profile:did%3Aplc%3Aalice}
+  - {user: plan:pro, relation: plan, object: feature:advanced-privacy}
+  - user: member:did%3Aplc%3Adave
+    relation: subscriber
+    object: plan:pro
+    condition: {name: not_expired, context: {expires_at: "2026-12-24T00:00:00Z"}}
+tests:
+  - name: profiles
+    check:
+      - {user: member:did%3Aplc%3Aalice, object: profile:did%3Aplc%3Aalice, assertions: {can_update: true}}
+      - {user: member:did%3Aplc%3Abob, object: profile:did%3Aplc%3Aalice, assertions: {can_update: false, can_read: true}}
+      - {user: member:did%3Aplc%3Aalice, object: profile:did%3Aplc%3Abob, assertions: {can_read: false}}
+  - name: organization roles inherit
+    check:
+      - {user: member:did%3Aplc%3Aalice, object: organization:acme, assertions: {admin: true, member: true, can_delete: true}}
+      - {user: member:did%3Aplc%3Acarol, object: organization:acme, assertions: {can_manage_members: true, can_delete: false}}
+      - {user: member:did%3Aplc%3Adave, object: organization:acme, assertions: {can_manage_members: false}}
+      - {user: member:did%3Aplc%3Acarol, object: role:acme-developer, assertions: {can_assign: true}}
+      - {user: member:did%3Aplc%3Adave, object: role:acme-developer, assertions: {can_assign: false}}
+  - name: custom role grants
+    check:
+      - {user: member:did%3Aplc%3Aerin, object: org_document:spec, assertions: {can_update: true}}
+      - {user: member:did%3Aplc%3Adave, object: org_document:spec, assertions: {can_read: true, can_update: false}}
+      - {user: member:did%3Aplc%3Aerin, object: community:acme-forum, assertions: {can_moderate: true}}
+      - {user: member:did%3Aplc%3Abob, object: community:acme-forum, assertions: {can_read: false, can_post: false}}
+    list_objects:
+      - {user: member:did%3Aplc%3Aerin, type: community, assertions: {can_moderate: [community:acme-forum]}}
+  - name: modules only what was granted
+    check:
+      - {user: module:photos, object: profile:did%3Aplc%3Aalice, assertions: {module_reader: true}}
+      - {user: module:photos, object: profile:did%3Aplc%3Abob, assertions: {module_reader: false}}
+  - name: entitlements expire
+    check:
+      - {user: member:did%3Aplc%3Adave, object: feature:advanced-privacy, context: {current_time: "2026-12-01T00:00:00Z"}, assertions: {can_use: true}}
+      - {user: member:did%3Aplc%3Adave, object: feature:advanced-privacy, context: {current_time: "2027-01-01T00:00:00Z"}, assertions: {can_use: false}}
+      - {user: member:did%3Aplc%3Abob, object: feature:advanced-privacy, context: {current_time: "2026-12-01T00:00:00Z"}, assertions: {can_use: false}}

@@ -1,0 +1,16 @@
+module modules
+
+# A module (third-party extension). A member installs it and grants it named capabilities on their resources.
+type module
+
+extend type profile
+  relations
+    # The module may read this profile only if the owner granted it AND the module's caller could read it.
+    define module_reader: [module]
+
+type storage_folder
+  relations
+    define owner: [member, organization#admin]
+    define module_writer: [module]
+    define can_write: owner
+    define module_can_write: module_writer
