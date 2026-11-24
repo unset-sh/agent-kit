@@ -4,7 +4,8 @@ Status: accepted (2026-11-24, Alex: "ok good, you may integrate it, seems clean"
 the spike results folded in). He had asked for it the same day: "we may find way to improve it as well with our new
 stack. I also want to include cerbos", and answered the three main choices: a separate process ("i think as a
 separate services with back end"), one engine ("I think it should be the only rule engine, unless there is a better
-option"), and policies in backend ("yes"). The alternatives are weighed below.
+option"), and policies in backend ("yes"). The alternatives are weighed below. Point 7's policy image is
+superseded by org-0019: the policies ship inside backend's image.
 
 ## Context
 
