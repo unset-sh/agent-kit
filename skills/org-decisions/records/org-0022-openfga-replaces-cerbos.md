@@ -1,4 +1,4 @@
-# org-0020. OpenFGA replaces Cerbos as backend's authorization engine
+# org-0022. OpenFGA replaces Cerbos as backend's authorization engine
 
 Status: accepted (2026-11-24, Alex: "oh yea and we would use openfga for policy engine"). He chose it knowing
 the trade-off org-0018 weighed: OpenFGA keeps its own copy of relationships in a datastore. It supersedes
@@ -27,8 +27,8 @@ What was checked (2026-11-24):
   `tiny-async-pool` and `@opentelemetry/api`.
 - **Tests**: the `fga` CLI runs model tests from `*.fga.yaml` files (`fga model test --tests ...`, `openfga/cli` README).
 
-openfga.dev could not be reached from here, so its pages on conditions, contextual tuples and configuration were not
-read.
+openfga.dev could not be reached from here. A separate assessment read it and OpenFGA v1.23.0's source, and ran a
+spike model with `.fga.yaml` tests (agent-kit #48, `notes/openfga-authorization/`); it is input to the spike below.
 
 ## Decision
 

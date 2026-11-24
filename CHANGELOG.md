@@ -7,7 +7,7 @@ Entries go under the date the change is merged into `main`, newest first, one he
 
 ## 2026-11-24
 
-- Add org-0020 (Alex, 2026-11-24): OpenFGA replaces Cerbos as backend's authorization engine. The `Authorizer` port,
+- Add org-0022 (Alex, 2026-11-24): OpenFGA replaces Cerbos as backend's authorization engine. The `Authorizer` port,
   failing closed and the route declarations from org-0018 stay; org-0019 is superseded. A spike settles the
   datastore, how tuples stay in step with backend's tables, and the transport.
 - Add org-0019 (Alex, 2026-11-24): backend's image carries its Cerbos policies, and deployment mounts that folder into

@@ -1,6 +1,6 @@
 # org-0019. Cerbos reads backend's policies from backend's own image
 
-Status: superseded by org-0020 (OpenFGA replaces Cerbos). Accepted (2026-11-24, Alex, on a decision card asking "Choose how Cerbos gets backend's policies at run
+Status: superseded by org-0022 (OpenFGA replaces Cerbos). Accepted (2026-11-24, Alex, on a decision card asking "Choose how Cerbos gets backend's policies at run
 time": he chose "Inside backend's image" over "A separate policy image"). It supersedes point 7 of org-0018 in how
 the policies ship; the rest of org-0018 stands.
 

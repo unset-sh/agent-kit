@@ -31,9 +31,9 @@ for organisation work.
 | [org-0015](records/org-0015-first-slice-session-and-contract.md) | The first slice's session, TypeBox contract, egress guard, `pg` for Better Auth, and `@atproto/oauth-client` |
 | [org-0016](records/org-0016-agents-merge-docs-into-main.md) | Agents merge their checked docs pull requests into `main`; publishing docs.unset.sh is not a production deploy |
 | [org-0017](records/org-0017-web-calls-backend-through-eden.md) | Web's server calls backend through Eden Treaty on backend's published `App` type, with an exact Elysia peer; `openapi.yaml` stays generated for other consumers |
-| [org-0018](records/org-0018-authorization-decisions-through-cerbos.md) | Backend's authorization decisions go through a small port, failing closed (engine superseded by org-0020); originally a Cerbos PDP beside it, over gRPC on a Unix socket, behind a small port, failing closed; policies and their tests live in backend |
-| [org-0019](records/org-0019-cerbos-reads-policies-from-the-backend-image.md) | Superseded by org-0020; originally had Cerbos read backend's policies from backend's own image |
-| [org-0020](records/org-0020-openfga-replaces-cerbos.md) | OpenFGA replaces Cerbos as backend's authorization engine, behind the same port; our database stays the source of truth; datastore, sync and transport settled by a spike |
+| [org-0018](records/org-0018-authorization-decisions-through-cerbos.md) | Backend's authorization decisions go through a small port, failing closed (engine superseded by org-0022); originally a Cerbos PDP beside it, over gRPC on a Unix socket, behind a small port, failing closed; policies and their tests live in backend |
+| [org-0019](records/org-0019-cerbos-reads-policies-from-the-backend-image.md) | Superseded by org-0022; originally had Cerbos read backend's policies from backend's own image |
+| [org-0022](records/org-0022-openfga-replaces-cerbos.md) | OpenFGA replaces Cerbos as backend's authorization engine, behind the same port; our database stays the source of truth; datastore, sync and transport settled by a spike |
 
 ## Before you decide something
 
