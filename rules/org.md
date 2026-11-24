@@ -18,8 +18,8 @@ them there, never in this copy. A repository's own `CLAUDE.md` adds its own rule
 
 ## Repositories
 
-- One job per repository. Read <https://github.com/unset-sh/.github/blob/main/MAP.md>
-  before moving work between repositories or starting work that might belong elsewhere.
+- One job per repository; `unset-sh/unset` holds the product's apps as one workspace (org-0020). Read the map
+  <https://github.com/unset-sh/.github/blob/main/MAP.md> before moving or starting work that might belong elsewhere.
 - What one repository takes from another comes pinned: an exact package version, a release asset, or a full
   commit (a reusable workflow, or anything with no release yet). A copy of another repository's files needs a pin
   and a check that it still matches; the pushes the map records (the docs push, the lexicon mirror) are exceptions.

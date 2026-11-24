@@ -33,6 +33,7 @@ for organisation work.
 | [org-0017](records/org-0017-web-calls-backend-through-eden.md) | Web's server calls backend through Eden Treaty on backend's published `App` type, with an exact Elysia peer; `openapi.yaml` stays generated for other consumers |
 | [org-0018](records/org-0018-authorization-decisions-through-cerbos.md) | Backend's authorization decisions go through a small port, failing closed (engine superseded by org-0022); originally a Cerbos PDP beside it, over gRPC on a Unix socket, behind a small port, failing closed; policies and their tests live in backend |
 | [org-0019](records/org-0019-cerbos-reads-policies-from-the-backend-image.md) | Superseded by org-0022; originally had Cerbos read backend's policies from backend's own image |
+| [org-0020](records/org-0020-product-apps-share-one-repository.md) | Web, backend, rendering and brand move into one Bun workspace, `unset-sh/unset` (`apps/web`, `apps/server`, `apps/worker`, `packages/*`); everything else stays separate |
 | [org-0022](records/org-0022-openfga-replaces-cerbos.md) | OpenFGA replaces Cerbos as backend's authorization engine, behind the same port; our database stays the source of truth; datastore, sync and transport settled by a spike |
 
 ## Before you decide something
