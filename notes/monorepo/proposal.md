@@ -111,7 +111,7 @@ Rule from Alex: where they disagree, Bun's way wins.
 | Code shared between apps | Bun: `workspace:*`. Elysia: path aliases are "tricky", Eden turns to `any` if they don't resolve. Kit: `#lib` for the app's own code. | Workspace package names only, no tsconfig `paths`. Eden's alias problem can't happen. |
 | TypeScript config | Bun: root `tsconfig.json`, one per package. Elysia: one root, each extends it. Kit: web extends `.svelte-kit/tsconfig.json`. | Root + one per workspace; web extends both (tsconfig `extends` takes a list). |
 | Versions | Bun: catalogs. Eden: Elysia "matching the server". | Catalog, exact versions. org-0017's peer check and bump bot go away. |
-| Install layout | Bun: new workspaces default to isolated. | Isolated (Alex agreed). Untried with Vite and svelte-check; the proof (section 8) checks it. |
+| Install layout | Bun: new workspaces default to isolated. | Isolated (Alex agreed). Untried with Vite and svelte-check; the proof (section 11) checks it. |
 | Database | Drizzle: `drizzle-orm/bun-sql` on Bun's own SQL client. sv: `sv add drizzle` adds it to a SvelteKit app. Elysia: models from tables with `drizzle-typebox`. | Drizzle on Bun SQL in `packages/db`, used by server and worker only, **never by web**, so sv's drizzle add-on is not used. See section 6. |
 | Tests | Bun: `bun test` finds every `*.test.ts` below where it runs. sv: Vitest. | `bun test` for every workspace, web included, run from the root. Vitest goes (section 5). |
 | Formatting | Bun 1.4.4 ships `bun fmt`: "the same output as Prettier", formats `.svelte` (tried here on 1.4.4: it works). sv: Prettier add-on. | **`bun fmt`** instead of Prettier: Bun's way, Prettier's output, nothing to install. Prettier if Alex prefers it. |
@@ -181,7 +181,30 @@ The proof of concept and the switch are open in the thread "Assess OpenFGA as th
 - Deployment runs OpenFGA (pinned by digest) with its own database, in the local stack first.
 - Until the switch, Cerbos's `policies/` stays in `apps/server` where deployment mounts it (org-0019, deployment #11).
 
-## 9. How the rules change
+## 9. The edge and scaling: Traefik and Redis
+
+Alex, 2026-11-24 19:50Z: "we're going to use Traffic [Traefik] as a reverse proxy. And then we shall consider Redis
+as a mean to manage a session and stuff like that to plan for scalability."
+
+- **Traefik is the reverse proxy.** It ends HTTPS from the internet and routes by host: `unset.sh` to web, later
+  `api.unset.sh` to the server's public group. Routes come from Docker labels in deployment's Compose files, so it
+  belongs to **deployment**, not the monorepo. Web and server keep their private mutual-TLS link behind it; Traefik
+  never reaches the server's internal API. Staging's Pangolin is itself built on Traefik. Web's `trustedProxy`
+  setting then names Traefik as the one proxy whose forwarded client address it believes.
+- **Redis is planned for sessions and scaling**, added when a second copy of web or server runs. Its jobs then:
+  Better Auth's secondary storage (its documented `SecondaryStorage` interface: sessions, verification records,
+  rate-limit counters, Better Auth `docs/concepts/database`, c70565a), web's rate limits shared across copies
+  (today each process keeps them in memory), and the worker's job queue if Postgres stops being enough.
+- **Valkey proposed as the server** (the Linux Foundation's BSD-licensed fork of Redis), not decided. Bun's built-in
+  client (`import { redis } from "bun"`, Bun 1.4.4 `runtime/redis`) speaks to Redis 7.2+ and reads `VALKEY_URL`, so
+  no client package is added. It sits in **deployment**, on a private network reachable only by server and worker,
+  with a password from a `_FILE` secret, TLS, and no persistence needed for session caches.
+- **Not a shared HTTP cache.** Pages are mostly per member; a shared cache (Varnish) risks serving one member's page
+  to another. Public pages and preview images use `Cache-Control` headers, and a CDN in front later if measured.
+- **Where it shows in the tree**: nothing yet. When Redis arrives, its adapter lives in the server
+  (`src/adapters/redis/`), or in a `packages/` entry once the worker uses it too.
+
+## 10. How the rules change
 
 | Record | After |
 | --- | --- |
@@ -204,7 +227,7 @@ workspace's check as its own required check. No path filters, so a required chec
 Deployment re-points at the new images and verifies attestations from `unset-sh/unset`; Alex gives the new
 repository write access to the packages. `.github`'s map and docs' export register the new repository.
 
-## 10. Migration order
+## 11. Migration order
 
 Nothing starts until Alex accepts org-0020.
 
@@ -212,7 +235,7 @@ Nothing starts until Alex accepts org-0020.
    linker, web's `svelte-check`, `bun test` at the root over every workspace, `bun fmt` and ESLint over
    `.svelte` and `.ts`, Drizzle on Bun SQL with Better Auth's adapter against Postgres, images built from the root,
    the Eden type across the link.
-2. **Tooling**: the two inputs in section 9.
+2. **Tooling**: the two inputs in section 10.
 3. **Alex creates `unset-sh/unset`** (`staging` default, `main`, rulesets copied).
 4. **Short freeze** of web, backend, rendering and brand: land or close their open pull requests, stop merging.
 5. **Import with history**: in a clone of each, one commit moves everything into its folder; the new repository
@@ -222,10 +245,10 @@ Nothing starts until Alex accepts org-0020.
 8. **Elysia's folders in the server** (moves only, no behaviour change).
 9. **Drizzle** (after org-0021): `packages/db`, baseline migration, Better Auth adapter, Kysely and `pg` removed.
 10. **Worker**: when the indexer or the OpenFGA relay is built, not before.
-11. **Elsewhere**: deployment, `.github` map, docs export, agent-kit records and CHANGELOG.
+11. **Elsewhere**: deployment (Traefik at the edge, new image paths), `.github` map, docs export, agent-kit records and CHANGELOG.
 12. **Alex archives** web, backend, rendering and brand. Published package versions stay.
 
-## 11. Risks
+## 12. Risks
 
 - **Isolated installs with Vite and svelte-check are untried.** Fallback: the hoisted linker.
 - **One promotion releases everything**, brand's package included. Deployment still picks each app's digest alone.
@@ -235,17 +258,18 @@ Nothing starts until Alex accepts org-0020.
 - **One lockfile** can move transitive versions; the 7-day rule applies; the resolved diff is reviewed.
 - **Lost branches**: the freeze exists so nothing is left behind.
 
-## 12. In-flight work
+## 13. In-flight work
 
 - **Cerbos** (org-0018, org-0019): moves as it is into `apps/server`.
 - **deployment #11** (Cerbos in the local stack): independent; can merge.
 - **OpenFGA** (#48): run its proof of concept after step 6, inside the new layout.
 - **Slice 2**: start after step 8. Built earlier, its history comes across anyway.
 
-## 13. What Alex decides now
+## 14. What Alex decides now
 
 1. The revised split and tree above.
 2. Repository name: `unset-sh/unset` or `unset-sh/app`.
 3. `bun fmt` or Prettier for formatting.
 4. Drizzle 1.0 release candidate (after 2026-11-27) or 0.45.4 stable.
-5. Go ahead with step 1, the scratch proof.
+5. Valkey as the Redis server when it arrives (section 9).
+6. Go ahead with step 1, the scratch proof.
