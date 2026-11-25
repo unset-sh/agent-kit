@@ -35,7 +35,7 @@ for organisation work.
 | [org-0019](records/org-0019-cerbos-reads-policies-from-the-backend-image.md) | Superseded by org-0022; originally had Cerbos read backend's policies from backend's own image |
 | [org-0020](records/org-0020-product-apps-share-one-repository.md) | Web, backend, rendering and brand move into one Bun workspace, `unset-sh/unset` (`apps/web`, `apps/server`, `apps/worker`, `packages/*`); everything else stays separate |
 | [org-0022](records/org-0022-openfga-replaces-cerbos.md) | OpenFGA replaces Cerbos as backend's authorization engine, behind the same port; our database stays the source of truth; datastore, sync and transport settled by a spike |
-| [org-0023](records/org-0023-deployment-moves-into-the-product-repository.md) | Proposed: deployment moves into `unset-sh/unset` as `deploy/`, with `services/<name>/` grouped by service and `environments/<env>/` apart |
+| [org-0023](records/org-0023-deployment-moves-into-the-product-repository.md) | Deployment moves into `unset-sh/unset` as `deploy/`, with `services/<name>/` grouped by service and `environments/<env>/` apart; `deploy/` starts clean |
 
 ## Before you decide something
 

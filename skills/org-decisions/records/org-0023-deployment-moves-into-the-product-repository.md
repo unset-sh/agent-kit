@@ -1,6 +1,6 @@
 # org-0023. Deployment moves into the product repository
 
-Status: proposed (2026-11-25). Alex, 22:12Z: "if a repository is going to depend on another repository, it's a good
+Status: accepted (2026-11-25, Alex 22:50Z, answering "Accept the deploy record": "1 yes"). Alex, 22:12Z: "if a repository is going to depend on another repository, it's a good
 sign that they should be in the same mono repository. So that's why my decision of having like service under deploy
 and with the environment, maybe like the best way forward." Earlier the same evening (22:05Z) he wanted "something
 that describe like whatever we're going to use to put the stack up", with each service "with its own folder", and
