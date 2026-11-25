@@ -67,6 +67,11 @@ contract's `typography.families` and `mark.dimensions`. It has to pick a replace
 `gallery/expected/`, which is a reviewed change. This belongs with the brand and rendering release move that's
 still on Alex's card in "Set up the unset monorepo".
 
+**Decided (Alex, 2026-11-25):** "just copy the code for brand it will now live in the mono repo". Done in unset #23:
+rendering takes the workspace brand, `src/brand.ts` reads the 0.1.1 contract, the handle and letter avatar use `ink`
+in place of `plum`, and the gallery is redrawn. Until it merged, a preview could use different tokens from the app
+(web on 0.1.1, rendering on 0.1.0); no brand release was published for it.
+
 ### D. Report: the server boots only with a loopback web origin
 
 `apps/server/src/config.ts` requires `WEB_ORIGIN` to be `http://127.0.0.1:<port>`, because this slice signs in with
