@@ -34,8 +34,10 @@ folder `/deployments` or `/deploy` (README, `master`).
 3. **Environments apart from services.** `deploy/environments/<env>/` (`local`, `staging`, later `production`) says
    which services and image digests run there, with that environment's values and secret references, never secret
    values.
-4. **History is kept.** Deployment's `staging` is merged in under `deploy/` as org-0020 did for the apps.
-   `environments/local/` keeps its place; its services split into `deploy/services/` in a later, separate change.
+4. **`deploy/` starts clean.** Nothing is imported from `unset-sh/deployment`, its history included (Alex, 22:17Z:
+   "I will not bring the unset-sh/deployment into like that repo. I will keep that one clean since we're going to
+   plan it from the bottom up"). Each service and environment is designed fresh, and a file from the old repository
+   is reused only by a reviewed copy that cites it.
 5. **Production stays guarded.** Changes under `deploy/environments/staging/` and `production/` need their own
    review rule, so a product pull request cannot change an environment unnoticed. The release approvals of org-0010
    and org-0012 are unchanged.
@@ -47,8 +49,8 @@ and docs stay separate.
 
 ## Consequences
 
-- `unset-sh/deployment` is archived after the merge, on Alex's word (organisation rule on repositories). Its open
-  pull requests are moved or closed first.
+- `unset-sh/deployment` stays as it is until Alex archives it (organisation rule on repositories). Its open pull
+  requests are closed, not merged.
 - `.github`'s `repos.json` moves deployment's responsibility to `unset`, and the monorepo's `CLAUDE.md` changes
   "Does not belong here: environments and rollout".
 - The review rule in point 5 needs a ruleset or CODEOWNERS on `unset-sh/unset`, which Alex sets up.
