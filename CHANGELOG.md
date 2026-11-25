@@ -5,6 +5,14 @@ a repository takes a commit of `main`, and reads here what changed since the com
 
 Entries go under the date the change is merged into `main`, newest first, one heading per date.
 
+## 2026-11-25
+
+- Add org-0023 (Alex, 2026-11-25): deployment moves into `unset-sh/unset` as `deploy/`, with
+  `deploy/services/<name>/` grouped by service (one compose file for Docker and Podman) and
+  `deploy/environments/<env>/` for each environment's values and secret references. It starts clean: nothing is
+  imported from `unset-sh/deployment`, which stays until Alex archives it. It supersedes org-0020 point 2 for
+  deployment only.
+
 ## 2026-11-24
 
 - Add org-0020 (Alex, 2026-11-24): web, backend, rendering and brand move into one Bun workspace, `unset-sh/unset`
