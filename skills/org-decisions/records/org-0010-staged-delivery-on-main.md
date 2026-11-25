@@ -2,7 +2,8 @@
 
 Status: accepted (2026-11-23, Alex: "The stage delivery, that's fine. We can do that. The draft says master, but
 we'll be using the main branch."; on which repositories work on main alone, "Yeah, okay, I agree with those. make
-them similar, make them like the appropriate way.")
+them similar, make them like the appropriate way.") In point 1's list, `unset-sh/unset` replaces backend, web,
+rendering and brand (org-0020).
 
 ## Context
 
