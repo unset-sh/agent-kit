@@ -5,7 +5,8 @@ the spike results folded in). He had asked for it the same day: "we may find way
 stack. I also want to include cerbos", and answered the three main choices: a separate process ("i think as a
 separate services with back end"), one engine ("I think it should be the only rule engine, unless there is a better
 option"), and policies in backend ("yes"). The alternatives are weighed below. Point 7's policy image is
-superseded by org-0019: the policies ship inside backend's image.
+superseded by org-0019: the policies ship inside backend's image. Points 1 and 7, the choice of Cerbos, are
+superseded by org-0022: OpenFGA replaces it, and the rest stands.
 
 ## Context
 
