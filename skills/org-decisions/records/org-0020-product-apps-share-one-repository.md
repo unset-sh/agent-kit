@@ -6,7 +6,8 @@ heavily depend on each other's", using the frameworks' own tools "to create thos
 named the server app, made `apps/worker` "the one home for the background jobs", and said that where the tools'
 docs disagree, "follow what Bun says". After the scratch proof passed (`notes/monorepo/proof.md`) he accepted it
 (23:31Z): "ok create the monorepo on git, what should we call it?", and on the name `unset-sh/unset`, "allright
-let's make it that".
+let's make it that". Point 2 is superseded by org-0023 for deployment only: it moves into
+`unset-sh/unset` as `deploy/`.
 
 ## Context
 
