@@ -1,0 +1,24 @@
+module organizations
+
+type organization
+  relations
+    define owner: [member]
+    define admin: [member] or owner
+    define member: [member] or admin
+    define can_manage_members: admin
+    define can_delete: owner
+
+# A role an organization defines itself ("Developer", "Editor"). Permissions are granted to its assignees.
+type role
+  relations
+    define organization: [organization]
+    define assignee: [member]
+    define can_assign: admin from organization
+
+type org_document
+  relations
+    define organization: [organization]
+    define editor: [member, role#assignee]
+    define viewer: [member, role#assignee] or editor or member from organization
+    define can_read: viewer
+    define can_update: editor or admin from organization

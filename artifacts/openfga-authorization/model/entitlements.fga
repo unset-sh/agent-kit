@@ -1,0 +1,15 @@
+module entitlements
+
+type plan
+  relations
+    # Who holds the plan, written from billing events; the condition expires it without a second write.
+    define subscriber: [member with not_expired, organization#member with not_expired]
+
+type feature
+  relations
+    define plan: [plan]
+    define can_use: subscriber from plan
+
+condition not_expired(current_time: timestamp, expires_at: timestamp) {
+  current_time < expires_at
+}

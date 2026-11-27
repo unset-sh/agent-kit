@@ -1,0 +1,12 @@
+module communities
+
+type community
+  relations
+    define organization: [organization]
+    define owner: [member] or owner from organization
+    define moderator: [member, role#assignee] or owner or admin from organization
+    define member: [member] or moderator
+    define public_viewer: [member:*]
+    define can_read: member or public_viewer
+    define can_post: member
+    define can_moderate: moderator

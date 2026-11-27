@@ -1,0 +1,12 @@
+module core
+
+# A member is identified by their DID (e.g. member:did:plc:abc). Anonymous visitors are member:* (public).
+type member
+
+# A profile belongs to one member. Public profiles get a wildcard viewer tuple.
+type profile
+  relations
+    define owner: [member]
+    define public_viewer: [member:*]
+    define can_read: owner or public_viewer
+    define can_update: owner
