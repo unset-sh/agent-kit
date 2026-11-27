@@ -5,6 +5,12 @@ a repository takes a commit of `main`, and reads here what changed since the com
 
 Entries go under the date the change is merged into `main`, newest first, one heading per date.
 
+## 2026-11-27
+
+- Add org-0024 (Alex, 2026-11-27): use the official Elysia OpenAPI plugin and stop committing generated YAML.
+  It supersedes the YAML requirement in org-0015 point 1 and org-0017 point 3. TypeBox route schemas,
+  meaningful contract tests and the generated Eden declaration with its drift check remain.
+
 ## 2026-11-25
 
 - Add org-0023 (Alex, 2026-11-25): deployment moves into `unset-sh/unset` as `deploy/`, with

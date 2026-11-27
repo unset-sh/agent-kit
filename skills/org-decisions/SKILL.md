@@ -28,14 +28,15 @@ for organisation work.
 | [org-0012](records/org-0012-release-approvals-and-lexicon-drafts.md) | Agents may press Approve for brand and rendering; never for a production deploy or lexicon publication unless Alex authorised it; lexicon drafts stay on lexicons `staging`, off the network |
 | [org-0013](records/org-0013-agents-manage-agent-kit.md) | Agents merge agent-kit pull requests into `main` after a separate review; see org-0014 for the others |
 | [org-0014](records/org-0014-agents-merge-reviewed-pull-requests.md) | Agents check and merge their own pull requests into `staging`, and into `main` in tooling, `.github` and docs (org-0016); only Alex promotes `staging` to `main` |
-| [org-0015](records/org-0015-first-slice-session-and-contract.md) | The first slice's session, TypeBox contract, egress guard, `pg` for Better Auth, and `@atproto/oauth-client` |
+| [org-0015](records/org-0015-first-slice-session-and-contract.md) | The first slice's session, TypeBox contract, egress guard, `pg` for Better Auth, and `@atproto/oauth-client`; the committed-YAML requirement is superseded by org-0024 |
 | [org-0016](records/org-0016-agents-merge-docs-into-main.md) | Agents merge their checked docs pull requests into `main`; publishing docs.unset.sh is not a production deploy |
-| [org-0017](records/org-0017-web-calls-backend-through-eden.md) | Web's server calls backend through Eden Treaty on backend's published `App` type, with an exact Elysia peer; `openapi.yaml` stays generated for other consumers (the published package, peer check and bump bot superseded by org-0020) |
+| [org-0017](records/org-0017-web-calls-backend-through-eden.md) | Web's server calls backend through Eden Treaty on backend's published `App` type, with an exact Elysia peer; the published package, peer check and bump bot are superseded by org-0020, and the committed-YAML requirement by org-0024 |
 | [org-0018](records/org-0018-authorization-decisions-through-cerbos.md) | Backend's authorization decisions go through a small port, failing closed (engine superseded by org-0022); originally a Cerbos PDP beside it, over gRPC on a Unix socket, behind a small port, failing closed; policies and their tests live in backend |
 | [org-0019](records/org-0019-cerbos-reads-policies-from-the-backend-image.md) | Superseded by org-0022; originally had Cerbos read backend's policies from backend's own image |
 | [org-0020](records/org-0020-product-apps-share-one-repository.md) | Web, backend, rendering and brand move into one Bun workspace, `unset-sh/unset` (`apps/web`, `apps/server`, `apps/worker`, `packages/*`); everything else stays separate (deployment moves in too, by org-0023) |
 | [org-0022](records/org-0022-openfga-replaces-cerbos.md) | OpenFGA replaces Cerbos as backend's authorization engine, behind the same port; our database stays the source of truth; datastore, sync and transport settled by a spike |
 | [org-0023](records/org-0023-deployment-moves-into-the-product-repository.md) | Deployment moves into `unset-sh/unset` as `deploy/`, with `services/<name>/` grouped by service and `environments/<env>/` apart; `deploy/` starts clean |
+| [org-0024](records/org-0024-runtime-openapi-documentation.md) | The official Elysia plugin generates OpenAPI documentation; stop committing YAML, preserving TypeBox route schemas, Eden declarations and contract tests |
 
 ## Before you decide something
 
