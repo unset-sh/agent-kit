@@ -1,6 +1,6 @@
 # org-0015. The first slice's session, contract and egress
 
-Status: accepted (2026-11-23, Alex: "accepting org-0015". Before that, the same day, he accepted the two recommendations by pasting the follow-up prompt: use `@atproto/oauth-client` rather than `NodeOAuthClient`, and use `pg` for Better Auth's tables.)
+Status: accepted (2026-11-23, Alex: "accepting org-0015". Before that, the same day, he accepted the two recommendations by pasting the follow-up prompt: use `@atproto/oauth-client` rather than `NodeOAuthClient`, and use `pg` for Better Auth's tables.) Point 1's committed-YAML requirement is superseded by org-0024; the TypeBox route-schema contract stands.
 
 ## Context
 
